@@ -153,7 +153,7 @@ Project Link: [https://github.com/Mariefay/fp-ts-exercises](https://github.com/M
 [issues-shield]: https://img.shields.io/github/issues/Mariefay/fp-ts-exercises.svg?style=for-the-badge
 [issues-url]: https://github.com/Mariefay/fp-ts-exercises/issues
 [license-shield]: https://img.shields.io/github/license/Mariefay/fp-ts-exercises.svg?style=for-the-badge
-[license-url]: https://github.com/Mariefay/fp-ts-exercises/LICENSE.txt
+[license-url]: https://github.com/Mariefay/fp-ts-exercises/blob/main/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/marie-fayard-585aa4133/
 [product-screenshot]: images/screenshot.png
