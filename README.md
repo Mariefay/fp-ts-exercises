@@ -49,8 +49,9 @@
 
 ## About The Project
 
-Learning the fp-ts library when coming from a non functional-programming background can be difficult.
+Learning how to use the fp-ts library when coming from a non functional-programming background can be difficult.
 There are some good resources out there such as [the official documentation](https://gcanti.github.io/fp-ts/), [this fp-ts cheatsheet](https://github.com/inato/fp-ts-cheatsheet) or [this youtube playlist](https://www.youtube.com/playlist?list=PLuPevXgCPUIMbCxBEnc1dNwboH6e2ImQo).
+
 To my knowldege, there are not interactive exercises specific to the fp-ts library that allow people to learn or test their knowledge by writing small, isolated pieces of code. This is the purpose of this repositery.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
