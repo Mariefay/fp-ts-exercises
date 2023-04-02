@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "chai": "^4.3.7",
+    "chokidar": "^3.5.3",
+    "cross-env": "^7.0.3",
+    "fp-ts": "^2.13.1",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1"
+  },
+  "scripts": {
+    "exercise": "node scripts/exercise.js",
+    "solution": "cross-env SOLUTION=true node scripts/exercise.js"
+  }
+}
