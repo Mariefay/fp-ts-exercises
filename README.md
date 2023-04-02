@@ -149,7 +149,7 @@ Project Link: [https://github.com/Mariefay/fp-ts-exercises](https://github.com/M
 [forks-url]: https://github.com/Mariefay/fp-ts-exercises/network/members
 [stars-shield]: https://img.shields.io/github/stars/Mariefay/fp-ts-exercises.svg?style=for-the-badge
 [stars-url]: https://github.com/Mariefay/fp-ts-exercises/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Mariefay/fp-ts-exercises.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/Mariefay/fp-ts-exercises.svg?style=for-the-badge
 [issues-url]: https://github.com/Mariefay/fp-ts-exercises/issues
 [license-shield]: https://img.shields.io/github/license/Mariefay/fp-ts-exercises.svg?style=for-the-badge
 [license-url]: https://github.com/Mariefay/fp-ts-exercises/blob/main/LICENSE.txt
