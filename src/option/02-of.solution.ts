@@ -1,6 +1,5 @@
-import { Option, some, none } from 'fp-ts/Option';
-import { expect } from 'chai';
-import { option } from 'fp-ts';
+import { Option, some, none, of } from 'fp-ts/Option';
+import { expect, describe, it } from 'vitest';
 
 interface User {
   id: number;
@@ -8,9 +7,11 @@ interface User {
   age: number;
 }
 
-const createUserOptionFromAge = (age: number) => (user: User): Option<User> => {
-  return user.age === age ? option.of(user) : none;
-};
+const createUserOptionFromAge =
+  (age: number) =>
+  (user: User): Option<User> => {
+    return user.age === age ? of(user) : none;
+  };
 
 describe('createUserOptionFromAge', () => {
   const user1: User = { id: 1, name: 'Alice', age: 25 };

@@ -1,6 +1,5 @@
-import { Option } from "fp-ts/Option";
-import { expect } from "chai";
-import { option } from "fp-ts";
+import { Option, some, none, getOrElse } from 'fp-ts/Option';
+import { expect, describe, it } from 'vitest';
 
 //@ts-ignore
 const getAddressString = (addressOption: Option<string>): string => {
@@ -8,17 +7,17 @@ const getAddressString = (addressOption: Option<string>): string => {
   //Use option.getOrElse()
 };
 
-describe("getAddressString", () => {
-  const addressOption1: Option<string> = option.none;
-  const addressOption2: Option<string> = option.some("123 Main St");
+describe('getAddressString', () => {
+  const addressOption1: Option<string> = none;
+  const addressOption2: Option<string> = some('123 Main St');
 
-  it("returns default string when address option is none", () => {
+  it('returns default string when address option is none', () => {
     const result = getAddressString(addressOption1);
-    expect(result).to.equal("No address provided");
+    expect(result).to.equal('No address provided');
   });
 
-  it("returns the address string in the correct format when address option is some", () => {
+  it('returns the address string in the correct format when address option is some', () => {
     const result = getAddressString(addressOption2);
-    expect(result).to.equal("123 Main St");
+    expect(result).to.equal('123 Main St');
   });
 });
