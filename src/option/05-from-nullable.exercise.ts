@@ -1,6 +1,5 @@
-import { Option } from "fp-ts/Option";
-import { expect } from "chai";
-import { option } from "fp-ts";
+import { Option, fromNullable } from 'fp-ts/Option';
+import { expect, describe, it } from 'vitest';
 
 interface User {
   id: number;
@@ -11,26 +10,26 @@ interface User {
 
 //@ts-ignore
 const getUserAddress = (user: User): Option<string> => {
-  //Create an Option from a nullable value using option.fromNullable()
+  //Create an Option from a nullable value using fromNullable()
 };
 
-describe("getUserAddress", () => {
-  const user1: User = { id: 1, name: "Alice", age: 25 };
-  const user2: User = { id: 2, name: "Bob", age: 30, address: "123 Main St" };
-  const user3: User = { id: 3, name: "Charlie", age: 35, address: null };
+describe('getUserAddress', () => {
+  const user1: User = { id: 1, name: 'Alice', age: 25 };
+  const user2: User = { id: 2, name: 'Bob', age: 30, address: '123 Main St' };
+  const user3: User = { id: 3, name: 'Charlie', age: 35, address: null };
 
-  it("returns none if user has no address", () => {
+  it('returns none if user has no address', () => {
     const result = getUserAddress(user1);
-    expect(result).to.deep.equal({ _tag: "None" });
+    expect(result).to.deep.equal({ _tag: 'None' });
   });
 
-  it("returns some with the address if user has an address", () => {
+  it('returns some with the address if user has an address', () => {
     const result = getUserAddress(user2);
-    expect(result).to.deep.equal({ _tag: "Some", value: "123 Main St" });
+    expect(result).to.deep.equal({ _tag: 'Some', value: '123 Main St' });
   });
 
-  it("returns none if user has a null address", () => {
+  it('returns none if user has a null address', () => {
     const result = getUserAddress(user3);
-    expect(result).to.deep.equal({ _tag: "None" });
+    expect(result).to.deep.equal({ _tag: 'None' });
   });
 });

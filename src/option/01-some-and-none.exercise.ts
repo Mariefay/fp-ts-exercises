@@ -1,5 +1,5 @@
-import { option } from "fp-ts";
-import { expect } from "chai";
+import { Option, some, none } from 'fp-ts/Option';
+import { expect, describe, it } from 'vitest';
 
 interface User {
   id: number;
@@ -7,7 +7,7 @@ interface User {
 }
 
 // @ts-ignore
-const getUserById = (users: User[], id: number): option.Option<User> => {
+const getUserById = (users: User[], id: number): Option<User> => {
   //TODO:
   //Use the find method to search for the user in the users array that has the matching id.
   //If the find method returns a user, return an option with the user wrapped in some.
@@ -15,20 +15,20 @@ const getUserById = (users: User[], id: number): option.Option<User> => {
 };
 
 //TESTS
-describe("getUserById", () => {
+describe('getUserById', () => {
   const users = [
-    { id: 1, name: "Alice" },
-    { id: 2, name: "Bob" },
-    { id: 3, name: "Charlie" },
+    { id: 1, name: 'Alice' },
+    { id: 2, name: 'Bob' },
+    { id: 3, name: 'Charlie' },
   ];
 
-  it("returns an option with user if it exists", () => {
+  it('returns an option with user if it exists', () => {
     const user = getUserById(users, 2);
-    expect(user).to.deep.equal({ _tag: "Some", value: { id: 2, name: "Bob" } });
+    expect(user).to.deep.equal({ _tag: 'Some', value: { id: 2, name: 'Bob' } });
   });
 
-  it("returns none if user does not exist", () => {
+  it('returns none if user does not exist', () => {
     const user = getUserById(users, 4);
-    expect(user).to.deep.equal({ _tag: "None" });
+    expect(user).to.deep.equal({ _tag: 'None' });
   });
 });
