@@ -59,3 +59,15 @@ export const MARK_EXERCISE_COMPLETE = gql`
     markExerciseComplete(sessionId: $sessionId, exerciseSlug: $exerciseSlug)
   }
 `;
+
+export const CREATE_SESSION = gql`
+  mutation CreateSession {
+    createSession
+  }
+`;
+
+export const VALIDATE_SESSION = gql`
+  query ValidateSession($sessionId: String!) {
+    validateSession(sessionId: $sessionId)
+  }
+`;

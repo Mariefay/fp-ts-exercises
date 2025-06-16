@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useQuery } from '@apollo/client';
-import { GET_EXERCISES_BY_CATEGORY, GET_PROGRESS } from '@/lib/graphql/queries';
-import { getSessionId } from '@/lib/session';
-import { useEffect, useState } from 'react';
+import { GET_EXERCISES_BY_CATEGORY } from '@/lib/graphql/queries';
+import { useProgress } from '@/contexts/progress-context';
 
 interface Exercise {
   slug: string;
@@ -16,10 +15,7 @@ interface Exercise {
   tags: string[];
 }
 
-interface CompletedExercise {
-  exerciseSlug: string;
-  completedAt: string;
-}
+
 
 interface PageProps {
   params: {
@@ -29,26 +25,14 @@ interface PageProps {
 
 export default function CategoryPage({ params }: PageProps) {
   const { category } = params;
-  const [sessionId, setSessionId] = useState<string>('');
-
-  useEffect(() => {
-    setSessionId(getSessionId());
-  }, []);
+  const { completedExercises, isLoading: progressLoading, isOffline } = useProgress();
 
   const { data: exercisesData, loading: exercisesLoading, error: exercisesError } = useQuery<{ getExercisesByCategory: Exercise[] }>(
     GET_EXERCISES_BY_CATEGORY,
     { variables: { category } }
   );
 
-  const { data: progressData } = useQuery<{ getProgress: CompletedExercise[] }>(
-    GET_PROGRESS,
-    { 
-      variables: { sessionId },
-      skip: !sessionId
-    }
-  );
-
-  if (exercisesLoading) {
+  if (exercisesLoading || progressLoading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
@@ -74,7 +58,6 @@ export default function CategoryPage({ params }: PageProps) {
   }
 
   const exercises = exercisesData?.getExercisesByCategory || [];
-  const completedExercises = new Set(progressData?.getProgress?.map(p => p.exerciseSlug) || []);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -83,9 +66,16 @@ export default function CategoryPage({ params }: PageProps) {
           <Link href="/exercises" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
             ← Back to Categories
           </Link>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mt-4 mb-2">
-            {category.charAt(0).toUpperCase() + category.slice(1)} Exercises
-          </h1>
+          <div className="flex items-center gap-4 mt-4">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              {category.charAt(0).toUpperCase() + category.slice(1)} Exercises
+            </h1>
+            {isOffline && (
+              <span className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full text-sm font-medium">
+                ⚠️ Offline Mode
+              </span>
+            )}
+          </div>
           <p className="text-gray-600 dark:text-gray-300">
             Complete the exercises below to master {category} concepts
           </p>
