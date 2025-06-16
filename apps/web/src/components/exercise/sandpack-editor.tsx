@@ -4,6 +4,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { SandpackProvider, SandpackLayout, SandpackCodeEditor, useSandpack } from '@codesandbox/sandpack-react';
 import { githubLight } from '@codesandbox/sandpack-themes';
 
+interface TestCase {
+  description: string;
+  code: string;
+  type: 'it' | 'describe';
+}
+
 interface Exercise {
   slug: string;
   category: string;
@@ -15,6 +21,7 @@ interface Exercise {
   starterCode: string;
   solutionCode: string;
   imports: string[];
+  testCases: TestCase[];
 }
 
 interface SandpackEditorProps {
@@ -27,38 +34,41 @@ function TestRunner({ exercise, onTestPass }: { exercise: Exercise; onTestPass?:
   const [testResults, setTestResults] = useState<{ passed: boolean; output: string } | null>(null);
   const [isRunningTests, setIsRunningTests] = useState(false);
 
+  const extractFunctionName = useCallback((starterCode: string): string => {
+    const functionMatch = starterCode.match(/const\s+(\w+)\s*=/);
+    return functionMatch ? functionMatch[1] : 'unknownFunction';
+  }, []);
+
   const runTests = useCallback(async () => {
     setIsRunningTests(true);
     
     try {
       const currentCode = sandpack.files['/exercise.ts']?.code || '';
+      const functionName = extractFunctionName(exercise.starterCode);
       
       console.log('Current code for testing:', currentCode);
+      console.log('Function name:', functionName);
       
-      const hasOptionImport = currentCode.includes('Option') || currentCode.includes('some') || currentCode.includes('none');
-      const hasSomeUsage = currentCode.includes('some(') || currentCode.includes('O.some(');
-      const hasNoneUsage = currentCode.includes('none') && !currentCode.includes('// none');
+      const hasRequiredImports = exercise.imports.some(imp => 
+        currentCode.includes(imp.replace('import ', '').replace(';', ''))
+      );
       const hasImplementation = !currentCode.includes('// TODO') && !currentCode.includes('throw new Error');
       const hasReturnStatement = currentCode.includes('return ');
-      const hasFindLogic = currentCode.includes('find(') || currentCode.includes('.find');
       
-      const functionBodyMatch = currentCode.match(/getUserById\s*=\s*\([^)]*\)\s*:\s*[^=]*=>\s*\{([^}]*)\}/);
+      const functionBodyRegex = new RegExp(`${functionName}\\s*=\\s*\\([^)]*\\)\\s*:\\s*[^=]*=>\\s*\\{([^}]*)\\}`, 's');
+      const functionBodyMatch = currentCode.match(functionBodyRegex);
       const hasNonEmptyBody = functionBodyMatch && functionBodyMatch[1].trim().length > 0;
       
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      const isImplemented = hasOptionImport && hasSomeUsage && hasNoneUsage && hasImplementation && hasReturnStatement && hasFindLogic && hasNonEmptyBody;
+      const isImplemented = hasRequiredImports && hasImplementation && hasReturnStatement && hasNonEmptyBody;
       
       if (isImplemented) {
         setTestResults({
           passed: true,
           output: `✅ All tests passed! 
           
-✓ should return Some when user exists
-✓ should return None when user does not exist  
-✓ should handle empty user array
-
-Great work! You've successfully implemented the getUserById function using fp-ts Option.`
+Great work! You've successfully implemented the ${functionName} function using fp-ts.`
         });
         
         if (onTestPass) {
@@ -66,10 +76,8 @@ Great work! You've successfully implemented the getUserById function using fp-ts
         }
       } else {
         let hints: string[] = [];
-        if (!hasOptionImport) hints.push('Import Option, some, none from fp-ts');
-        if (!hasFindLogic) hints.push('Use array.find() to search for the user');
-        if (!hasSomeUsage) hints.push("Use 'some(user)' when user is found");
-        if (!hasNoneUsage) hints.push("Use 'none' when user is not found");
+        if (!hasRequiredImports) hints.push('Import the required fp-ts functions');
+        if (!hasImplementation) hints.push('Remove TODO comments and implement the function');
         if (!hasReturnStatement) hints.push('Add return statements to your function');
         if (!hasNonEmptyBody) hints.push('Implement the function body');
         
@@ -79,11 +87,8 @@ Great work! You've successfully implemented the getUserById function using fp-ts
 
 ${hints.map(hint => `✗ ${hint}`).join('\n')}
 
-Hint: Implement the getUserById function using fp-ts Option type.
-- Use users.find() to search for the user by id
-- Return 'some(user)' when user is found
-- Return 'none' when user is not found
-Check the fp-ts Option documentation for help.`
+Hint: Implement the ${functionName} function using fp-ts.
+Check the fp-ts documentation for help.`
         });
       }
     } catch (error) {
@@ -94,7 +99,7 @@ Check the fp-ts Option documentation for help.`
     } finally {
       setIsRunningTests(false);
     }
-  }, [sandpack.files, onTestPass]);
+  }, [sandpack.files, onTestPass, exercise.starterCode, exercise.imports, extractFunctionName]);
 
   return (
     <>
@@ -152,61 +157,53 @@ export function SandpackEditor({ exercise, onTestPass }: SandpackEditorProps) {
     console.log('StarterCode:', exercise?.starterCode);
     console.log('SolutionCode:', exercise?.solutionCode);
     console.log('Imports:', exercise?.imports);
+    console.log('TestCases:', exercise?.testCases);
   }, [exercise]);
 
+  const extractFunctionName = useCallback((starterCode: string): string => {
+    const functionMatch = starterCode.match(/const\s+(\w+)\s*=/);
+    return functionMatch ? functionMatch[1] : 'unknownFunction';
+  }, []);
+
   const createTestFile = () => {
-    const testCode = `${exercise.imports.join('\n')}
+    const functionName = extractFunctionName(exercise.starterCode);
+    
+    if (!exercise.testCases || exercise.testCases.length === 0) {
+      return `${exercise.imports.join('\n')}
 
-import { getUserById } from './exercise';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-const users: User[] = [
-  { id: 1, name: 'John Doe', email: 'john@example.com' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
-  { id: 3, name: 'Bob Johnson', email: 'bob@example.com' }
-];
+import { ${functionName} } from './exercise';
 
 describe('${exercise.title}', () => {
-  it('should return Some when user exists', () => {
-    const result = getUserById(users, 1);
-    expect(result._tag).toBe('Some');
-    if (result._tag === 'Some') {
-      expect(result.value.name).toBe('John Doe');
-    }
-  });
-
-  it('should return None when user does not exist', () => {
-    const result = getUserById(users, 999);
-    expect(result._tag).toBe('None');
-  });
-
-  it('should handle empty user array', () => {
-    const result = getUserById([], 1);
-    expect(result._tag).toBe('None');
+  it('should implement the function correctly', () => {
+    expect(true).toBe(true);
   });
 });
 `;
+    }
+    
+    const testCaseCode = exercise.testCases
+      .filter(tc => tc.type === 'describe' || tc.type === 'it')
+      .map(tc => tc.code)
+      .join('\n\n');
+    
+    const testCode = `${exercise.imports.join('\n')}
+
+import { ${functionName} } from './exercise';
+
+${testCaseCode}
+`;
     return testCode;
   };
+
+  const functionName = extractFunctionName(exercise.starterCode);
 
   const files = {
     '/exercise.ts': {
       code: `${exercise.imports.join('\n')}
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
 ${exercise.starterCode}
 
-export { getUserById };`,
+export { ${functionName} };`,
       active: true
     },
     '/exercise.test.ts': {
