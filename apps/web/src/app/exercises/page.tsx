@@ -1,131 +1,92 @@
-'use client';
+import Link from 'next/link';
+import { getCategories } from '@fp-ts-exercises/exercises';
 
-import Link from "next/link";
-import { useRouter } from 'next/navigation';
-import { useQuery } from '@apollo/client';
-import { GET_CATEGORIES } from '@/lib/graphql/queries';
-import { useProgress } from '@/contexts/progress-context';
+export default async function ExercisesPage() {
+  const categories = await getCategories();
 
-interface Category {
-  name: string;
-  slug: string;
-  description: string;
-  totalCount: number;
-}
+  const getCategoryEmoji = (category: string) => {
+    const emojiMap: Record<string, string> = {
+      option: '🎯',
+      either: '🔀',
+      array: '📚',
+      string: '📝',
+      pipe: '🔗',
+      reader: '🗝️',
+      io: '⚡',
+      validation: '✅',
+      task: '🚀',
+      taskeither: '🛡️',
+      readertaskeither: '🏰',
+      optics: '🔍',
+    };
+    return emojiMap[category.toLowerCase()] || '📖';
+  };
 
-export default function ExercisesPage() {
-  const router = useRouter();
-  const { completedExercises, isOffline } = useProgress();
-  const { data, loading, error } = useQuery<{ getCategories: Category[] }>(GET_CATEGORIES);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300">Loading exercise categories...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-red-500 text-xl mb-4">⚠️ Error loading categories</div>
-          <p className="text-gray-600 dark:text-gray-300 mb-4">{error.message}</p>
-          <button 
-            onClick={() => {
-              router.refresh();
-            }}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const categories = data?.getCategories || [];
+  const getCategoryTitle = (category: string) => {
+    const titleMap: Record<string, string> = {
+      option: 'Option Types',
+      either: 'Either Types',
+      array: 'Array Operations',
+      string: 'String Manipulation',
+      pipe: 'Function Composition',
+      reader: 'Dependency Injection',
+      io: 'Side Effects',
+      validation: 'Input Validation',
+      task: 'Async Operations',
+      taskeither: 'Async Error Handling',
+      readertaskeither: 'Advanced Patterns',
+      optics: 'Data Manipulation',
+    };
+    return titleMap[category.toLowerCase()] || category;
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <Link href="/" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-            ← Back to Home
-          </Link>
-          <div className="flex items-center gap-4 mt-4">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-              Exercise Categories
-            </h1>
-            {isOffline && (
-              <span className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full text-sm font-medium">
-                ⚠️ Offline Mode
-              </span>
-            )}
-          </div>
-          <p className="text-gray-600 dark:text-gray-300">
-            Choose a category to start learning fp-ts concepts
+    <main className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50">
+      <div className="container mx-auto px-4 py-12">
+        <div className="text-center mb-12 animate-fade-in">
+          <h1 className="text-5xl font-bold mb-6 text-gray-900">Exercise Categories</h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Choose a category to start learning functional programming concepts through engaging, hands-on exercises
           </p>
         </div>
 
-        <div className="grid gap-6">
-          {categories.map((category) => {
-            const categoryCompletedCount = Array.from(completedExercises).filter(slug => 
-              slug.startsWith(category.slug)
-            ).length;
-            const progressPercentage = category.totalCount > 0 ? 
-              Math.round((categoryCompletedCount / category.totalCount) * 100) : 0;
-
-            return (
-              <div key={category.slug} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                      {category.name}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-3">
-                      {category.description}
-                    </p>
-                    {progressPercentage > 0 && (
-                      <div className="mb-3">
-                        <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-1">
-                          <span>Progress</span>
-                          <span>{categoryCompletedCount}/{category.totalCount} ({progressPercentage}%)</span>
-                        </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                          <div 
-                            className="bg-green-600 h-2 rounded-full transition-all duration-300" 
-                            style={{ width: `${progressPercentage}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <span className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-1 rounded text-sm font-medium">
-                    Available
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+          {categories.map((category, index) => (
+            <Link
+              key={category.slug}
+              href={`/exercises/${category.slug}`}
+              className="block bg-white rounded-lg p-8 card-hover border border-gray-100 shadow-md animate-slide-up"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <div className="text-center">
+                <div className="text-5xl mb-4">
+                  {getCategoryEmoji(category.slug)}
+                </div>
+                <h3 className="text-2xl font-bold mb-3 text-gray-900">
+                  {getCategoryTitle(category.slug)}
+                </h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  {category.description}
+                </p>
+                <div className="flex items-center justify-center gap-2 text-sm">
+                  <span className="bg-primary-100 text-primary-800 px-3 py-1 rounded-full font-medium">
+                    {category.totalCount} exercise{category.totalCount !== 1 ? 's' : ''}
                   </span>
                 </div>
-              
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {category.totalCount} exercises
-                </span>
-                <Link
-                  href={`/exercises/${category.slug}`}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
-                >
-                  Start Exercises
-                </Link>
               </div>
-            </div>
-            );
-          })}
+            </Link>
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <Link 
+            href="/" 
+            className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-medium transition-colors"
+          >
+            ← Back to Dashboard
+          </Link>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

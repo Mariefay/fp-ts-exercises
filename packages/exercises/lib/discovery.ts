@@ -83,14 +83,28 @@ export class ExerciseDiscovery {
       }
     }
 
-    for (const [number, group] of exerciseGroups) {
+    for (const [number, group] of Array.from(exerciseGroups.entries())) {
       if (group.exercise && group.solution) {
         const exerciseFile = path.join(categoryPath, group.exercise);
         const solutionFile = path.join(categoryPath, group.solution);
         
         try {
           const exercise = this.parser.parseExercise(categoryName, exerciseFile, solutionFile);
-          exercises.push(exercise);
+          const enhancedExercise = {
+            ...exercise,
+            slug: exercise.metadata.slug,
+            title: exercise.metadata.title,
+            description: exercise.metadata.description,
+            difficulty: exercise.metadata.difficulty,
+            tags: exercise.metadata.tags,
+            conceptTitle: exercise.metadata.conceptTitle,
+            goalStatement: exercise.metadata.goalStatement,
+            conceptExplanation: exercise.metadata.conceptExplanation,
+            hints: exercise.metadata.hints,
+            successCriteria: exercise.metadata.successCriteria,
+            estimatedTime: exercise.metadata.estimatedTime,
+          };
+          exercises.push(enhancedExercise);
         } catch (error) {
           console.warn(`Failed to parse exercise ${categoryName}/${number}:`, error);
         }

@@ -15,7 +15,7 @@ interface ProgressContextType {
   completedExercises: Set<string>;
   isLoading: boolean;
   error: string | null;
-  markExerciseComplete: (exerciseSlug: string) => Promise<boolean>;
+  markExerciseComplete: (exerciseSlug: string, timeSpent?: number) => Promise<boolean>;
   refreshProgress: () => void;
   isOffline: boolean;
 }
@@ -84,7 +84,7 @@ export function ProgressProvider({ children }: ProgressProviderProps) {
         
         if (currentSessionId) {
           try {
-            const response = await fetch('http://localhost:4000/graphql', {
+            const response = await fetch('http://localhost:3001/graphql', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ export function ProgressProvider({ children }: ProgressProviderProps) {
     }
   }, [progressData, saveProgressToCache]);
 
-  const markExerciseComplete = useCallback(async (exerciseSlug: string): Promise<boolean> => {
+  const markExerciseComplete = useCallback(async (exerciseSlug: string, timeSpent?: number): Promise<boolean> => {
     if (!sessionId) return false;
 
     setCompletedExercises(prev => {
@@ -151,7 +151,7 @@ export function ProgressProvider({ children }: ProgressProviderProps) {
 
     try {
       await markCompleteMutation({
-        variables: { sessionId, exerciseSlug },
+        variables: { sessionId, exerciseSlug, timeSpent },
         optimisticResponse: {
           markExerciseComplete: true
         }

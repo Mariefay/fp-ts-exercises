@@ -37,11 +37,18 @@ export class ExerciseResolver {
       number: exercise.metadata.number,
       title: exercise.metadata.title,
       description: exercise.metadata.description,
-      difficulty: exercise.metadata.difficulty || 'beginner',
+      difficulty: exercise.metadata.difficulty || 'easy',
       tags: exercise.metadata.tags,
       starterCode: exercise.starterCode,
       solutionCode: exercise.solutionCode,
       imports: exercise.imports,
+      conceptTitle: exercise.metadata.conceptTitle,
+      goalStatement: exercise.metadata.goalStatement,
+      conceptExplanation: exercise.metadata.conceptExplanation,
+      hints: exercise.metadata.hints,
+      successCriteria: exercise.metadata.successCriteria,
+      estimatedTime: exercise.metadata.estimatedTime,
+      theme: exercise.metadata.theme,
     };
   }
 

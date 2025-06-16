@@ -4,8 +4,15 @@ export interface ExerciseMetadata {
   number: string;
   title: string;
   description: string;
-  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: 'easy' | 'medium' | 'hard';
   tags: string[];
+  conceptTitle?: string;
+  goalStatement?: string;
+  conceptExplanation?: string;
+  hints?: string[];
+  successCriteria?: string[];
+  estimatedTime?: number;
+  theme?: string;
 }
 
 export interface Exercise {
@@ -14,6 +21,17 @@ export interface Exercise {
   solutionCode: string;
   testCases: TestCase[];
   imports: string[];
+  slug: string;
+  title: string;
+  description: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  tags: string[];
+  conceptTitle?: string;
+  goalStatement?: string;
+  conceptExplanation?: string;
+  hints?: string[];
+  successCriteria?: string[];
+  estimatedTime?: number;
 }
 
 export interface TestCase {
