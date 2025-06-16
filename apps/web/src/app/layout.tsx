@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ApolloProviderWrapper } from "@/components/providers/apollo-provider";
+import { ProgressProvider } from "@/contexts/progress-context";
+import { ErrorBoundary } from "@/components/error-boundary";
 
 export const metadata: Metadata = {
   title: "fp-ts Exercises",
@@ -15,9 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <ApolloProviderWrapper>
-          {children}
-        </ApolloProviderWrapper>
+        <ErrorBoundary>
+          <ApolloProviderWrapper>
+            <ProgressProvider>
+              {children}
+            </ProgressProvider>
+          </ApolloProviderWrapper>
+        </ErrorBoundary>
       </body>
     </html>
   );

@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useQuery, useMutation } from '@apollo/client';
-import { GET_EXERCISE_BY_SLUG, MARK_EXERCISE_COMPLETE } from '@/lib/graphql/queries';
+import { useQuery } from '@apollo/client';
+import { GET_EXERCISE_BY_SLUG } from '@/lib/graphql/queries';
 import { SandpackEditor } from '@/components/exercise/sandpack-editor';
-import { getSessionId } from '@/lib/session';
+import { useProgress } from '@/contexts/progress-context';
 import { useEffect, useState } from 'react';
 
 interface Exercise {
@@ -30,35 +30,26 @@ interface PageProps {
 
 export default function ExercisePage({ params }: PageProps) {
   const { category, slug } = params;
-  const [sessionId, setSessionId] = useState<string>('');
+  const { markExerciseComplete, completedExercises, isOffline } = useProgress();
   const [isCompleted, setIsCompleted] = useState(false);
   
   const exerciseSlug = `${category}-${slug.padStart(2, '0')}`;
 
   useEffect(() => {
-    setSessionId(getSessionId());
-  }, []);
+    setIsCompleted(completedExercises.has(exerciseSlug));
+  }, [completedExercises, exerciseSlug]);
 
   const { data, loading, error } = useQuery<{ getExerciseBySlug: Exercise }>(
     GET_EXERCISE_BY_SLUG,
     { variables: { slug: exerciseSlug } }
   );
 
-  const [markComplete] = useMutation(MARK_EXERCISE_COMPLETE);
-
   const handleTestPass = async () => {
-    if (!sessionId || isCompleted) return;
+    if (isCompleted) return;
     
-    try {
-      await markComplete({
-        variables: {
-          sessionId,
-          exerciseSlug
-        }
-      });
+    const success = await markExerciseComplete(exerciseSlug);
+    if (success) {
       setIsCompleted(true);
-    } catch (error) {
-      console.error('Failed to mark exercise complete:', error);
     }
   };
 
@@ -93,6 +84,11 @@ export default function ExercisePage({ params }: PageProps) {
             {isCompleted && (
               <span className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-3 py-1 rounded-full text-sm font-medium">
                 ✓ Completed
+              </span>
+            )}
+            {isOffline && (
+              <span className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-3 py-1 rounded-full text-sm font-medium">
+                ⚠️ Offline Mode
               </span>
             )}
           </div>
