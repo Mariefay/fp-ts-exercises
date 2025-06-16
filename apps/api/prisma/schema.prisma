@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  completedExercises CompletedExercise[]
+  
+  @@map("sessions")
+}
+
+model CompletedExercise {
+  id          String   @id @default(uuid())
+  sessionId   String   @map("session_id")
+  exerciseSlug String  @map("exercise_slug")
+  completedAt DateTime @default(now()) @map("completed_at")
+  
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  @@unique([sessionId, exerciseSlug])
+  @@map("completed_exercises")
+}
