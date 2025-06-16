@@ -2,6 +2,7 @@
   "name": "@fp-ts-exercises/exercises",
   "version": "1.0.0",
   "type": "module",
+  "main": "dist/index.js",
   "dependencies": {
     "chokidar": "^3.5.3",
     "cross-env": "^7.0.3",
@@ -14,6 +15,7 @@
     "vitest": "^3.2.2"
   },
   "scripts": {
+    "build": "tsc",
     "exercise": "node scripts/exercise.js",
     "solution": "cross-env SOLUTION=true node scripts/exercise.js",
     "test": "vitest",

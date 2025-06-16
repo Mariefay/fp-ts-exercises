@@ -13,7 +13,7 @@ export class ExerciseDiscovery {
   private catalog: ExerciseCatalog | null = null;
 
   constructor() {
-    this.srcPath = path.resolve(__dirname, '../src');
+    this.srcPath = path.resolve(__dirname, '../../src');
     this.parser = new ExerciseParser(this.srcPath);
   }
 
