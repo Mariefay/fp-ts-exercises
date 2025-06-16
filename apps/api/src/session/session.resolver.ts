@@ -1,5 +1,5 @@
 import { Resolver, Mutation, Query, Args } from '@nestjs/graphql';
-import { SessionService } from './session.service';
+import { SessionService } from './session.service.js';
 
 @Resolver()
 export class SessionResolver {

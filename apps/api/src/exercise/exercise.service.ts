@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ExerciseDiscoveryWrapper } from './exercise-discovery.wrapper';
+import { ExerciseDiscoveryWrapper } from './exercise-discovery.wrapper.js';
 
 @Injectable()
 export class ExerciseService {

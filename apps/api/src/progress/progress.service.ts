@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { SessionService } from '../session/session.service';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { SessionService } from '../session/session.service.js';
 
 export interface CompletedExercise {
   exerciseSlug: string;

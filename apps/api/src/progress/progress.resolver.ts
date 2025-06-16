@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { ProgressService } from './progress.service';
-import { CompletedExerciseType } from './progress.types';
+import { ProgressService } from './progress.service.js';
+import { CompletedExerciseType } from './progress.types.js';
 
 @Resolver()
 export class ProgressResolver {

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ProgressResolver } from './progress.resolver';
-import { ProgressService } from './progress.service';
-import { PrismaModule } from '../prisma/prisma.module';
-import { SessionModule } from '../session/session.module';
+import { ProgressResolver } from './progress.resolver.js';
+import { ProgressService } from './progress.service.js';
+import { PrismaModule } from '../prisma/prisma.module.js';
+import { SessionModule } from '../session/session.module.js';
 
 @Module({
   imports: [PrismaModule, SessionModule],

@@ -1,6 +1,6 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
-import { ExerciseService } from './exercise.service';
-import { ExerciseType, ExerciseCategoryType } from './exercise.types';
+import { ExerciseService } from './exercise.service.js';
+import { ExerciseType, ExerciseCategoryType } from './exercise.types.js';
 
 @Resolver()
 export class ExerciseResolver {
