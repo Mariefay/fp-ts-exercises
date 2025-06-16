@@ -13,6 +13,6 @@
     "skipLibCheck": true,
     "noImplicitReturns": false
   },
-  "include": ["src/**/*.solution.ts", "scripts/**/*.js"],
+  "include": ["src/**/*.solution.ts", "scripts/**/*.js", "lib/**/*.ts", "index.ts"],
   "exclude": ["node_modules", "src/**/*.exercise.ts"]
 }
