@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ApolloProviderWrapper } from "@/components/providers/apollo-provider";
 
 export const metadata: Metadata = {
   title: "fp-ts Exercises",
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        {children}
+        <ApolloProviderWrapper>
+          {children}
+        </ApolloProviderWrapper>
       </body>
     </html>
   );
