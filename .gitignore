@@ -1,1 +1,10 @@
 node_modules/
+apps/api/dist/
+apps/api/node_modules/
+apps/web/dist/
+apps/web/node_modules/
+apps/web/.next/
+apps/web/.next/cache/
+apps/web/.next/server/
+apps/web/.next/static/
+apps/api/.env
