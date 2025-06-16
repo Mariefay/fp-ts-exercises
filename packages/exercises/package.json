@@ -1,0 +1,24 @@
+{
+  "name": "@fp-ts-exercises/exercises",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "cross-env": "^7.0.3",
+    "fp-ts": "^2.16.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@vitest/ui": "^3.2.2",
+    "vitest": "^3.2.2"
+  },
+  "scripts": {
+    "exercise": "node scripts/exercise.js",
+    "solution": "cross-env SOLUTION=true node scripts/exercise.js",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "typecheck": "tsc --noEmit",
+    "typecheck:exercises": "tsc --noEmit --noImplicitReturns false src/**/*.exercise.ts"
+  }
+}

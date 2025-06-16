@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "lib": [
+      "es2022"
+    ],
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "noImplicitReturns": false
+  },
+  "include": ["src/**/*.solution.ts", "scripts/**/*.js"],
+  "exclude": ["node_modules", "src/**/*.exercise.ts"]
+}
