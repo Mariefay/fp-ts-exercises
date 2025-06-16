@@ -21,7 +21,7 @@ interface Exercise {
   starterCode: string;
   solutionCode: string;
   imports: string[];
-  testCases: TestCase[];
+  testCases?: TestCase[];
 }
 
 interface SandpackEditorProps {
