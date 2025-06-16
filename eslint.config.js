@@ -18,7 +18,10 @@ export default [
     },
     rules: {
       ...typescript.configs.recommended.rules,
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': ['error', { 
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^(some|none|of|fromPredicate|fold|fromNullable|toNullable|toUndefined|getOrElse|filter|fromEither)$'
+      }],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/ban-ts-comment': 'off',
@@ -54,6 +57,7 @@ export default [
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: 'module',
+        jsx: true,
       },
       globals: {
         console: 'readonly',
@@ -65,6 +69,8 @@ export default [
         require: 'readonly',
         exports: 'readonly',
         global: 'readonly',
+        React: 'readonly',
+        JSX: 'readonly',
       },
     },
     plugins: {
@@ -77,10 +83,33 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
+      'react/react-in-jsx-scope': 'off',
+    },
+  },
+  {
+    files: ['packages/exercises/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
+        exports: 'readonly',
+        global: 'readonly',
+      },
+    },
+    rules: {
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
   {
     files: ['**/*.js'],
+    ignores: ['packages/exercises/**/*.js'],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'commonjs',

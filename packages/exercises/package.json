@@ -18,6 +18,7 @@
     "solution": "cross-env SOLUTION=true node scripts/exercise.js",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "typecheck:exercises": "tsc --noEmit --noImplicitReturns false src/**/*.exercise.ts"
   }
 }

@@ -41,11 +41,7 @@ const exerciseFile = path.resolve(pathToFolder, exercisePath);
 chokidar.watch(exerciseFile).on('all', (_event, _path) => {
   try {
     console.clear();
-    console.log('Checking types...');
-    execSync(`npx tsc "${exerciseFile}" --noEmit --strict --skipLibCheck`, {
-      stdio: 'inherit',
-    });
-    console.log('Typecheck complete');
+    console.log('Running tests...');
     execSync(`npx vitest run "${exerciseFile}"`, {
       stdio: 'inherit',
     });

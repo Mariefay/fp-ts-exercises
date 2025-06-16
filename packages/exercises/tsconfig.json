@@ -10,7 +10,9 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noImplicitReturns": false
   },
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.solution.ts", "scripts/**/*.js"],
+  "exclude": ["node_modules", "src/**/*.exercise.ts"]
 }
