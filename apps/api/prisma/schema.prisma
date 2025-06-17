@@ -12,7 +12,14 @@ model Session {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
+  currentStreak    Int      @default(0) @map("current_streak")
+  longestStreak    Int      @default(0) @map("longest_streak")
+  lastActiveDate   DateTime? @map("last_active_date")
+  totalTimeSpent   Int      @default(0) @map("total_time_spent")
+  
   completedExercises CompletedExercise[]
+  achievements      Achievement[]
+  sessionMetrics    SessionMetric[]
   
   @@map("sessions")
 }
@@ -22,9 +29,36 @@ model CompletedExercise {
   sessionId   String   @map("session_id")
   exerciseSlug String  @map("exercise_slug")
   completedAt DateTime @default(now()) @map("completed_at")
+  timeSpent   Int      @default(0) @map("time_spent")
   
   session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   
   @@unique([sessionId, exerciseSlug])
   @@map("completed_exercises")
+}
+
+model Achievement {
+  id          String   @id @default(uuid())
+  sessionId   String   @map("session_id")
+  type        String
+  title       String
+  description String
+  unlockedAt  DateTime @default(now()) @map("unlocked_at")
+  
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  @@map("achievements")
+}
+
+model SessionMetric {
+  id        String   @id @default(uuid())
+  sessionId String   @map("session_id")
+  date      DateTime @default(now())
+  exercisesCompleted Int @default(0) @map("exercises_completed")
+  timeSpent Int      @default(0) @map("time_spent")
+  
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  @@unique([sessionId, date])
+  @@map("session_metrics")
 }

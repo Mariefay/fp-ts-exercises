@@ -1,9 +1,9 @@
 import { ObjectType, Field, registerEnumType } from '@nestjs/graphql';
 
 export enum DifficultyLevel {
-  BEGINNER = 'beginner',
-  INTERMEDIATE = 'intermediate',
-  ADVANCED = 'advanced',
+  EASY = 'easy',
+  MEDIUM = 'medium',
+  HARD = 'hard',
 }
 
 registerEnumType(DifficultyLevel, {
@@ -41,6 +41,27 @@ export class ExerciseType {
 
   @Field(() => [String])
   imports: string[];
+
+  @Field({ nullable: true })
+  conceptTitle?: string;
+
+  @Field({ nullable: true })
+  goalStatement?: string;
+
+  @Field({ nullable: true })
+  conceptExplanation?: string;
+
+  @Field(() => [String], { nullable: true })
+  hints?: string[];
+
+  @Field(() => [String], { nullable: true })
+  successCriteria?: string[];
+
+  @Field({ nullable: true })
+  estimatedTime?: number;
+
+  @Field({ nullable: true })
+  theme?: string;
 }
 
 @ObjectType()
