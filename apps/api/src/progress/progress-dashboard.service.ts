@@ -49,8 +49,14 @@ export class ProgressDashboardService {
       totalTimeSpent: session.totalTimeSpent,
       exercisesCompleted: session.completedExercises.length,
       totalExercises: 12,
-      achievements: session.achievements,
-      weeklyProgress: session.sessionMetrics.slice(-7),
+      achievements: session.achievements.map(achievement => ({
+        ...achievement,
+        unlockedAt: achievement.unlockedAt.toISOString()
+      })),
+      weeklyProgress: session.sessionMetrics.slice(-7).map(metric => ({
+        ...metric,
+        date: metric.date.toISOString()
+      })),
       categoryProgress: await this.getCategoryProgress(sessionId),
       nextRecommendedExercise: await this.getNextRecommendedExercise(sessionId)
     };
