@@ -69,8 +69,8 @@ export const GET_PROGRESS = gql`
 `;
 
 export const MARK_EXERCISE_COMPLETE = gql`
-  mutation MarkExerciseComplete($sessionId: String!, $exerciseSlug: String!, $timeSpent: Int) {
-    markExerciseComplete(sessionId: $sessionId, exerciseSlug: $exerciseSlug, timeSpent: $timeSpent)
+  mutation MarkExerciseComplete($sessionId: String!, $exerciseSlug: String!) {
+    markExerciseComplete(sessionId: $sessionId, exerciseSlug: $exerciseSlug)
   }
 `;
 
