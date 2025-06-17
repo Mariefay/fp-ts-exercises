@@ -15,13 +15,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category } = params;
   
   try {
-    console.log('CategoryPage: Loading category:', category);
     const exercises = await getExercisesByCategory(category);
-    console.log('CategoryPage: Exercises loaded:', exercises?.length || 0, exercises);
     const categories = await getCategories();
-    console.log('CategoryPage: Categories loaded:', categories?.length || 0);
     const categoryInfo = categories.find(c => c.slug === category);
-    console.log('CategoryPage: Category info:', categoryInfo);
     
     if (!categoryInfo) {
       notFound();

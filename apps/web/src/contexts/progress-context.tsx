@@ -151,7 +151,7 @@ export function ProgressProvider({ children }: ProgressProviderProps) {
 
     try {
       await markCompleteMutation({
-        variables: { sessionId, exerciseSlug, timeSpent },
+        variables: { sessionId, exerciseSlug },
         optimisticResponse: {
           markExerciseComplete: true
         }

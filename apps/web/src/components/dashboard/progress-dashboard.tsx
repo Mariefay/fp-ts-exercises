@@ -31,7 +31,7 @@ export function ProgressDashboard() {
         <div className="text-center p-8">
           <div className="text-6xl mb-4">🔧</div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Dashboard Unavailable</h2>
-          <p className="text-gray-600">We're working on getting your progress data ready.</p>
+          <p className="text-gray-600">We&apos;re working on getting your progress data ready.</p>
         </div>
       </div>
     );
