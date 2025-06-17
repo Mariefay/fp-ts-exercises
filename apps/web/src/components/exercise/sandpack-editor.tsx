@@ -46,9 +46,6 @@ function TestRunner({ exercise, onTestPass }: { exercise: Exercise; onTestPass?:
       const currentCode = sandpack.files['/exercise.ts']?.code || '';
       const functionName = extractFunctionName(exercise.starterCode);
       
-      console.log('Current code for testing:', currentCode);
-      console.log('Function name:', functionName);
-      
       const hasRequiredImports = exercise.imports.some(imp => 
         currentCode.includes(imp.replace('import ', '').replace(';', ''))
       );
@@ -152,13 +149,6 @@ Check the fp-ts documentation for help.`
 }
 
 export function SandpackEditor({ exercise, onTestPass }: SandpackEditorProps) {
-  useEffect(() => {
-    console.log('SandpackEditor received exercise data:', exercise);
-    console.log('StarterCode:', exercise?.starterCode);
-    console.log('SolutionCode:', exercise?.solutionCode);
-    console.log('Imports:', exercise?.imports);
-    console.log('TestCases:', exercise?.testCases);
-  }, [exercise]);
 
   const extractFunctionName = useCallback((starterCode: string): string => {
     const functionMatch = starterCode.match(/const\s+(\w+)\s*=/);
