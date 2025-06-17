@@ -38,7 +38,7 @@ export function NextExerciseCard({ exercise }: NextExerciseCardProps) {
           <div className="text-4xl mb-3">🎉</div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">All Caught Up!</h3>
           <p className="text-sm text-gray-600">
-            You've completed all available exercises. More coming soon!
+            You&apos;'ve completed all available exercises. More coming soon!
           </p>
         </div>
       </div>
