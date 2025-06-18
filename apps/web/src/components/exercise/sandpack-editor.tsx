@@ -120,52 +120,51 @@ function TestRunner({ exercise, onTestPass }: { exercise: Exercise; onTestPass?:
   }, [sandpack, dispatch, listen, onTestPass, exercise.starterCode, extractFunctionName]);
 
   return (
-    <>
-      <div className="border-b border-gray-200 dark:border-gray-700 p-4">
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Code Editor
-          </h3>
-          <button
-            onClick={runTests}
-            disabled={isRunningTests}
-            className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-lg transition-colors duration-200"
-          >
-            {isRunningTests ? 'Running Tests...' : 'Run Tests'}
-          </button>
-        </div>
+    <div className="relative">
+      <div className="absolute top-4 right-4 z-10">
+        <button
+          onClick={runTests}
+          disabled={isRunningTests}
+          className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-lg shadow-lg transition-colors duration-200"
+        >
+          {isRunningTests ? 'Running Tests...' : 'Run Tests'}
+        </button>
       </div>
 
-      {testResults && (
-        <div className={`p-4 rounded-lg ${
-          testResults.passed 
-            ? 'bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800' 
-            : 'bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800'
-        }`}>
-          <div className={`font-semibold mb-2 ${
-            testResults.passed 
-              ? 'text-green-800 dark:text-green-200' 
-              : 'text-red-800 dark:text-red-200'
-          }`}>
-            Test Results
-          </div>
-          <div className={`text-sm whitespace-pre-line ${
-            testResults.passed 
-              ? 'text-green-700 dark:text-green-300' 
-              : 'text-red-700 dark:text-red-300'
-          }`}>
-            {testResults.output}
+      {isRunningTests && (
+        <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center z-20 rounded-lg">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg flex items-center gap-3">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600"></div>
+            <span className="text-gray-700 dark:text-gray-300">Running tests...</span>
           </div>
         </div>
       )}
 
-      {isRunningTests && (
-        <div className="flex items-center justify-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mr-3"></div>
-          <span className="text-blue-800 dark:text-blue-200">Running tests...</span>
+      {testResults && (
+        <div className="absolute top-16 right-4 z-10 max-w-md">
+          <div className={`rounded-lg shadow-lg p-3 ${
+            testResults.passed 
+              ? 'bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800' 
+              : 'bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800'
+          }`}>
+            <div className={`text-sm font-medium mb-1 ${
+              testResults.passed 
+                ? 'text-green-800 dark:text-green-200' 
+                : 'text-red-800 dark:text-red-200'
+            }`}>
+              {testResults.passed ? '✅ Tests Passed' : '❌ Tests Failed'}
+            </div>
+            <div className={`text-xs ${
+              testResults.passed 
+                ? 'text-green-700 dark:text-green-300' 
+                : 'text-red-700 dark:text-red-300'
+            }`}>
+              {testResults.output.split('\n')[0]}
+            </div>
+          </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 
@@ -263,8 +262,7 @@ export default defineConfig({
           }}
         >
           <SandpackLayout>
-            <TestRunner exercise={exercise} onTestPass={onTestPass} />
-            <div className="min-h-[500px] h-auto max-h-[70vh]">
+            <div className="relative min-h-[500px] h-auto max-h-[70vh]">
               <SandpackCodeEditor
                 showTabs={true}
                 showLineNumbers={true}
@@ -272,6 +270,7 @@ export default defineConfig({
                 wrapContent={true}
                 closableTabs={false}
               />
+              <TestRunner exercise={exercise} onTestPass={onTestPass} />
             </div>
           </SandpackLayout>
         </SandpackProvider>
