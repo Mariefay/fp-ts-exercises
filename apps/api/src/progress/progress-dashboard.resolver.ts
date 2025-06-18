@@ -1,20 +1,7 @@
 import { Resolver, Query, Mutation, Args, ObjectType, Field, Int } from '@nestjs/graphql';
 import { ProgressDashboardService } from './progress-dashboard.service.js';
 
-@ObjectType()
-export class Achievement {
-  @Field()
-  type: string;
 
-  @Field()
-  title: string;
-
-  @Field()
-  description: string;
-
-  @Field()
-  unlockedAt: string;
-}
 
 @ObjectType()
 export class WeeklyProgress {
@@ -75,8 +62,7 @@ export class ProgressDashboard {
   @Field(() => Int)
   totalExercises: number;
 
-  @Field(() => [Achievement])
-  achievements: Achievement[];
+
 
   @Field(() => [WeeklyProgress])
   weeklyProgress: WeeklyProgress[];

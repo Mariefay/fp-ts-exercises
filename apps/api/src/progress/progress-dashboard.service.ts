@@ -13,7 +13,7 @@ export class ProgressDashboardService {
         totalTimeSpent: 0,
         exercisesCompleted: 0,
         totalExercises: 12,
-        achievements: [],
+
         weeklyProgress: [],
         categoryProgress: [],
         nextRecommendedExercise: null
@@ -24,7 +24,6 @@ export class ProgressDashboardService {
       where: { id: sessionId },
       include: {
         completedExercises: true,
-        achievements: true,
         sessionMetrics: true
       }
     });
@@ -36,7 +35,7 @@ export class ProgressDashboardService {
         totalTimeSpent: 0,
         exercisesCompleted: 0,
         totalExercises: 12,
-        achievements: [],
+
         weeklyProgress: [],
         categoryProgress: [],
         nextRecommendedExercise: null
@@ -49,10 +48,7 @@ export class ProgressDashboardService {
       totalTimeSpent: session.totalTimeSpent,
       exercisesCompleted: session.completedExercises.length,
       totalExercises: 12,
-      achievements: session.achievements.map(achievement => ({
-        ...achievement,
-        unlockedAt: achievement.unlockedAt.toISOString()
-      })),
+
       weeklyProgress: session.sessionMetrics.slice(-7).map(metric => ({
         ...metric,
         date: metric.date.toISOString()

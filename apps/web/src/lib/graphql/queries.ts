@@ -82,12 +82,7 @@ export const GET_PROGRESS_DASHBOARD = gql`
       totalTimeSpent
       exercisesCompleted
       totalExercises
-      achievements {
-        type
-        title
-        description
-        unlockedAt
-      }
+
       weeklyProgress {
         date
         exercisesCompleted
