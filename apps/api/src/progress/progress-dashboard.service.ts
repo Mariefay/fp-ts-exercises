@@ -1,18 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
+import { ExerciseService } from '../exercise/exercise.service.js';
 
 @Injectable()
 export class ProgressDashboardService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly exerciseService: ExerciseService
+  ) {}
 
   async getDashboardData(sessionId: string) {
+    const allExercises = await this.exerciseService.getExercises();
+    const totalExercises = allExercises.length;
+
     if (!sessionId) {
       return {
         currentStreak: 0,
         longestStreak: 0,
         totalTimeSpent: 0,
         exercisesCompleted: 0,
-        totalExercises: 12,
+        totalExercises,
         achievements: [],
         weeklyProgress: [],
         categoryProgress: [],
@@ -35,7 +42,7 @@ export class ProgressDashboardService {
         longestStreak: 0,
         totalTimeSpent: 0,
         exercisesCompleted: 0,
-        totalExercises: 12,
+        totalExercises,
         achievements: [],
         weeklyProgress: [],
         categoryProgress: [],
@@ -48,7 +55,7 @@ export class ProgressDashboardService {
       longestStreak: session.longestStreak,
       totalTimeSpent: session.totalTimeSpent,
       exercisesCompleted: session.completedExercises.length,
-      totalExercises: 12,
+      totalExercises,
       achievements: session.achievements.map(achievement => ({
         ...achievement,
         unlockedAt: achievement.unlockedAt.toISOString()
@@ -92,7 +99,8 @@ export class ProgressDashboardService {
         }
       });
 
-      const total = 2;
+      const categoryExercises = await this.exerciseService.getExercisesByCategory(category);
+      const total = categoryExercises.length;
       progress.push({
         category,
         completed,
@@ -111,16 +119,14 @@ export class ProgressDashboardService {
     });
 
     const completed = completedSlugs.map(c => c.exerciseSlug);
-    const allExercises = [
-      { slug: 'option-01', title: 'None and Some', category: 'option', difficulty: 'easy' },
-      { slug: 'pipe-01', title: 'Piping Hot', category: 'pipe', difficulty: 'easy' },
-      { slug: 'array-01', title: 'Collection Quest', category: 'array', difficulty: 'easy' },
-      { slug: 'string-01', title: 'Text Adventures', category: 'string', difficulty: 'easy' },
-      { slug: 'either-01', title: 'Fork in the Road', category: 'either', difficulty: 'medium' },
-      { slug: 'reader-01', title: 'Secret Map Reader', category: 'reader', difficulty: 'medium' }
-    ];
+    const allExercises = await this.exerciseService.getExercises();
 
-    const nextExercise = allExercises.find(ex => !completed.includes(ex.slug));
-    return nextExercise || null;
+    const nextExercise = allExercises.find(ex => !completed.includes(ex.metadata.slug));
+    return nextExercise ? {
+      slug: nextExercise.metadata.slug,
+      title: nextExercise.metadata.title,
+      category: nextExercise.metadata.category,
+      difficulty: nextExercise.metadata.difficulty
+    } : null;
   }
 }
