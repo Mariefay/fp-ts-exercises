@@ -1,18 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
+import { ExerciseValidationService } from '../exercise/exercise-validation.service.js';
+import { ExerciseDiscoveryWrapper } from '../exercise/exercise-discovery.wrapper.js';
 
 @Injectable()
 export class ProgressDashboardService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly validationService: ExerciseValidationService,
+    private readonly exerciseWrapper: ExerciseDiscoveryWrapper
+  ) {}
 
   async getDashboardData(sessionId: string) {
+    const validation = await this.validationService.validateExerciseSystem();
+    
     if (!sessionId) {
       return {
         currentStreak: 0,
         longestStreak: 0,
         totalTimeSpent: 0,
         exercisesCompleted: 0,
-        totalExercises: 12,
+        totalExercises: validation.totalExercises,
 
         weeklyProgress: [],
         categoryProgress: [],
@@ -34,7 +42,7 @@ export class ProgressDashboardService {
         longestStreak: 0,
         totalTimeSpent: 0,
         exercisesCompleted: 0,
-        totalExercises: 12,
+        totalExercises: validation.totalExercises,
 
         weeklyProgress: [],
         categoryProgress: [],
@@ -47,7 +55,7 @@ export class ProgressDashboardService {
       longestStreak: session.longestStreak,
       totalTimeSpent: session.totalTimeSpent,
       exercisesCompleted: session.completedExercises.length,
-      totalExercises: 12,
+      totalExercises: validation.totalExercises,
 
       weeklyProgress: session.sessionMetrics.slice(-7).map(metric => ({
         ...metric,
@@ -70,7 +78,7 @@ export class ProgressDashboardService {
   }
 
   private async getCategoryProgress(sessionId: string) {
-    const categories = ['option', 'either', 'array', 'string', 'pipe', 'reader'];
+    const categories = await this.exerciseWrapper.getCategories();
     const progress: Array<{
       category: string;
       completed: number;
@@ -83,17 +91,16 @@ export class ProgressDashboardService {
         where: {
           sessionId,
           exerciseSlug: {
-            startsWith: category
+            startsWith: category.slug
           }
         }
       });
 
-      const total = 2;
       progress.push({
-        category,
+        category: category.slug,
         completed,
-        total,
-        percentage: Math.round((completed / total) * 100)
+        total: category.totalCount,
+        percentage: Math.round((completed / category.totalCount) * 100)
       });
     }
 
@@ -107,16 +114,27 @@ export class ProgressDashboardService {
     });
 
     const completed = completedSlugs.map(c => c.exerciseSlug);
-    const allExercises = [
-      { slug: 'option-01', title: 'None and Some', category: 'option', difficulty: 'easy' },
-      { slug: 'pipe-01', title: 'Piping Hot', category: 'pipe', difficulty: 'easy' },
-      { slug: 'array-01', title: 'Collection Quest', category: 'array', difficulty: 'easy' },
-      { slug: 'string-01', title: 'Text Adventures', category: 'string', difficulty: 'easy' },
-      { slug: 'either-01', title: 'Fork in the Road', category: 'either', difficulty: 'medium' },
-      { slug: 'reader-01', title: 'Secret Map Reader', category: 'reader', difficulty: 'medium' }
-    ];
+    const allExercises = await this.exerciseWrapper.getExercises();
+    
+    const sortedExercises = allExercises
+      .filter(ex => !completed.includes(ex.metadata.slug))
+      .sort((a, b) => {
+        const difficultyOrder = { easy: 1, medium: 2, hard: 3 };
+        return difficultyOrder[a.metadata.difficulty || 'easy'] - difficultyOrder[b.metadata.difficulty || 'easy'];
+      });
+    
+    const nextExercise = sortedExercises[0];
+    if (nextExercise) {
+      const result = {
+        slug: nextExercise.metadata.slug,
+        title: nextExercise.metadata.title,
+        category: nextExercise.metadata.category,
+        difficulty: nextExercise.metadata.difficulty || 'easy'
+      };
+      return result;
+    }
+    
 
-    const nextExercise = allExercises.find(ex => !completed.includes(ex.slug));
-    return nextExercise || null;
+    return null;
   }
 }
