@@ -120,15 +120,21 @@ export class ProgressDashboardService {
       .filter(ex => !completed.includes(ex.metadata.slug))
       .sort((a, b) => {
         const difficultyOrder = { easy: 1, medium: 2, hard: 3 };
-        return difficultyOrder[a.metadata.difficulty] - difficultyOrder[b.metadata.difficulty];
+        return difficultyOrder[a.metadata.difficulty || 'easy'] - difficultyOrder[b.metadata.difficulty || 'easy'];
       });
-
+    
     const nextExercise = sortedExercises[0];
-    return nextExercise ? {
-      slug: nextExercise.metadata.slug,
-      title: nextExercise.metadata.title,
-      category: nextExercise.metadata.category,
-      difficulty: nextExercise.metadata.difficulty
-    } : null;
+    if (nextExercise) {
+      const result = {
+        slug: nextExercise.metadata.slug,
+        title: nextExercise.metadata.title,
+        category: nextExercise.metadata.category,
+        difficulty: nextExercise.metadata.difficulty || 'easy'
+      };
+      return result;
+    }
+    
+
+    return null;
   }
 }
