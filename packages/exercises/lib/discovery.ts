@@ -106,7 +106,11 @@ export class ExerciseDiscovery {
           };
           exercises.push(enhancedExercise);
         } catch (error) {
-          console.warn(`Failed to parse exercise ${categoryName}/${number}:`, error);
+          console.warn(`Failed to parse exercise ${categoryName}/${number}:`, {
+            error: error instanceof Error ? error.message : String(error),
+            exerciseFile: group.exercise,
+            solutionFile: group.solution
+          });
         }
       }
     }
