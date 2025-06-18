@@ -4,6 +4,7 @@ import { getExercisesByCategory, getCategories } from '@fp-ts-exercises/exercise
 import { DifficultyBadge } from '@/components/exercise/difficulty-badge';
 import { EstimatedTime } from '@/components/exercise/estimated-time';
 import { CollapsibleHints } from '@/components/exercise/collapsible-hints';
+import { CompletionIndicator } from '@/components/exercise/completion-indicator';
 
 interface CategoryPageProps {
   params: {
@@ -103,7 +104,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                             Success Criteria
                           </h4>
                           <ul className="text-success-700 space-y-2">
-                            {metadata.successCriteria.map((criteria, idx) => (
+                            {metadata.successCriteria.map((criteria: string, idx: number) => (
                               <li key={idx} className="flex items-start gap-2">
                                 <span className="text-success-500 mt-1">•</span>
                                 <span>{criteria}</span>
@@ -116,7 +117,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                   </div>
                   
                   <div className="flex items-center justify-between pt-6 border-t border-gray-100">
-                    <div className="flex gap-2 flex-wrap">
+                    <div className="flex gap-2 flex-wrap items-center">
+                      <CompletionIndicator exerciseSlug={metadata.slug} />
                       {(metadata.tags || []).map((tag) => (
                         <span 
                           key={tag} 
