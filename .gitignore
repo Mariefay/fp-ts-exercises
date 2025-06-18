@@ -8,3 +8,4 @@ apps/web/.next/cache/
 apps/web/.next/server/
 apps/web/.next/static/
 apps/api/.env
+.env
