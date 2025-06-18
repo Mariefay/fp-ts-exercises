@@ -262,7 +262,7 @@ export default defineConfig({
           }}
         >
           <SandpackLayout className="flex-1 flex flex-col">
-            <div className="relative flex-1 min-h-0">
+            <div className="relative flex-1 min-h-[600px] max-h-[80vh]">
               <SandpackCodeEditor
                 showTabs={true}
                 showLineNumbers={true}
