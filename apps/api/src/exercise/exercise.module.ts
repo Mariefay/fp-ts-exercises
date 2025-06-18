@@ -5,5 +5,6 @@ import { ExerciseDiscoveryWrapper } from './exercise-discovery.wrapper.js';
 
 @Module({
   providers: [ExerciseResolver, ExerciseService, ExerciseDiscoveryWrapper],
+  exports: [ExerciseService],
 })
 export class ExerciseModule {}
