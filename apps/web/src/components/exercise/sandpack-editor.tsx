@@ -243,8 +243,8 @@ export default defineConfig({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+    <div className="h-full flex flex-col">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden flex-1 flex flex-col">
         <SandpackProvider
           template="static"
           theme={githubLight}
@@ -261,14 +261,15 @@ export default defineConfig({
             }
           }}
         >
-          <SandpackLayout>
-            <div className="relative min-h-[500px] h-auto max-h-[70vh]">
+          <SandpackLayout className="flex-1 flex flex-col">
+            <div className="relative flex-1 min-h-0">
               <SandpackCodeEditor
                 showTabs={true}
                 showLineNumbers={true}
                 showInlineErrors={true}
                 wrapContent={true}
                 closableTabs={false}
+                className="h-full"
               />
               <TestRunner exercise={exercise} onTestPass={onTestPass} />
             </div>
