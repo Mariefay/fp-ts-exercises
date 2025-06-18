@@ -7,7 +7,7 @@ import { useProgress } from '@/contexts/progress-context';
 import { ProgressRing } from './progress-ring';
 import { StreakCounter } from './streak-counter';
 import { WeeklyChart } from './weekly-chart';
-import { AchievementBadges } from './achievement-badges';
+
 import { CategoryProgress } from './category-progress';
 import { TimeSpentCard } from './time-spent-card';
 import { NextExerciseCard } from './next-exercise-card';
@@ -68,7 +68,7 @@ export function ProgressDashboard() {
 
         <WeeklyChart data={dashboard?.weeklyProgress || []} />
 
-        <AchievementBadges achievements={dashboard?.achievements || []} />
+
       </div>
     </div>
   );
