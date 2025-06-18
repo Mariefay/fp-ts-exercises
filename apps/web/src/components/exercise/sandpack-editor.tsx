@@ -30,7 +30,7 @@ interface SandpackEditorProps {
 }
 
 function TestRunner({ exercise, onTestPass }: { exercise: Exercise; onTestPass?: () => void }) {
-  const { sandpack } = useSandpack();
+  const { sandpack, dispatch, listen } = useSandpack();
   const [testResults, setTestResults] = useState<{ passed: boolean; output: string } | null>(null);
   const [isRunningTests, setIsRunningTests] = useState(false);
 
@@ -41,62 +41,83 @@ function TestRunner({ exercise, onTestPass }: { exercise: Exercise; onTestPass?:
 
   const runTests = useCallback(async () => {
     setIsRunningTests(true);
+    setTestResults(null);
     
     try {
-      const currentCode = sandpack.files['/exercise.ts']?.code || '';
-      const functionName = extractFunctionName(exercise.starterCode);
+      let testOutput = '';
+      let hasTestResults = false;
       
-      const hasRequiredImports = exercise.imports.some(imp => 
-        currentCode.includes(imp.replace('import ', '').replace(';', ''))
-      );
-      const hasImplementation = !currentCode.includes('// TODO') && !currentCode.includes('throw new Error');
-      const hasReturnStatement = currentCode.includes('return ');
-      
-      const functionBodyRegex = new RegExp(`${functionName}\\s*=\\s*\\([^)]*\\)\\s*:\\s*[^=]*=>\\s*\\{([^}]*)\\}`, 's');
-      const functionBodyMatch = currentCode.match(functionBodyRegex);
-      const hasNonEmptyBody = functionBodyMatch && functionBodyMatch[1].trim().length > 0;
-      
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const isImplemented = hasRequiredImports && hasImplementation && hasReturnStatement && hasNonEmptyBody;
-      
-      if (isImplemented) {
-        setTestResults({
-          passed: true,
-          output: `✅ All tests passed! 
+      const unsubscribe = listen((msg) => {
+        if (msg.type === 'console') {
+          const consoleOutput = msg.log.map(item => 
+            typeof item === 'string' ? item : JSON.stringify(item)
+          ).join(' ');
           
-Great work! You've successfully implemented the ${functionName} function using fp-ts.`
-        });
-        
-        if (onTestPass) {
-          onTestPass();
+          testOutput += consoleOutput + '\n';
+          
+          if (consoleOutput.includes('✓') || consoleOutput.includes('PASS') || 
+              consoleOutput.includes('passing') || consoleOutput.includes('passed')) {
+            hasTestResults = true;
+            setTestResults({
+              passed: true,
+              output: `✅ All tests passed!\n\n${testOutput}`
+            });
+            if (onTestPass) {
+              onTestPass();
+            }
+          } else if (consoleOutput.includes('✗') || consoleOutput.includes('FAIL') || 
+                     consoleOutput.includes('failing') || consoleOutput.includes('failed') ||
+                     consoleOutput.includes('AssertionError') || consoleOutput.includes('expected')) {
+            hasTestResults = true;
+            setTestResults({
+              passed: false,
+              output: `❌ Tests failed:\n\n${testOutput}`
+            });
+          }
+        } else if (msg.type === 'action' && msg.action === 'show-error') {
+          hasTestResults = true;
+          setTestResults({
+            passed: false,
+            output: `❌ Compilation error:\n\n${msg.message}`
+          });
         }
-      } else {
-        let hints: string[] = [];
-        if (!hasRequiredImports) hints.push('Import the required fp-ts functions');
-        if (!hasImplementation) hints.push('Remove TODO comments and implement the function');
-        if (!hasReturnStatement) hints.push('Add return statements to your function');
-        if (!hasNonEmptyBody) hints.push('Implement the function body');
+      });
+
+      dispatch({ type: 'refresh' });
+
+      setTimeout(() => {
+        unsubscribe();
+        setIsRunningTests(false);
         
-        setTestResults({
-          passed: false,
-          output: `❌ Tests failed:
+        if (!hasTestResults && testOutput.trim()) {
+          const functionName = extractFunctionName(exercise.starterCode);
+          if (testOutput.includes('ReferenceError') || testOutput.includes('TypeError')) {
+            setTestResults({
+              passed: false,
+              output: `❌ Implementation error:\n\n${testOutput}\n\nHint: Make sure to implement the ${functionName} function correctly.`
+            });
+          } else {
+            setTestResults({
+              passed: false,
+              output: `❌ Test execution completed but results unclear:\n\n${testOutput}`
+            });
+          }
+        } else if (!hasTestResults) {
+          setTestResults({
+            passed: false,
+            output: `❌ No test output received. Please check your implementation and try again.`
+          });
+        }
+      }, 8000);
 
-${hints.map(hint => `✗ ${hint}`).join('\n')}
-
-Hint: Implement the ${functionName} function using fp-ts.
-Check the fp-ts documentation for help.`
-        });
-      }
     } catch (error) {
       setTestResults({
         passed: false,
         output: `❌ Test execution error: ${error instanceof Error ? error.message : 'Unknown error'}`
       });
-    } finally {
       setIsRunningTests(false);
     }
-  }, [sandpack.files, onTestPass, exercise.starterCode, exercise.imports, extractFunctionName]);
+  }, [sandpack, dispatch, listen, onTestPass, exercise.starterCode, extractFunctionName]);
 
   return (
     <>
@@ -158,31 +179,31 @@ export function SandpackEditor({ exercise, onTestPass }: SandpackEditorProps) {
   const createTestFile = () => {
     const functionName = extractFunctionName(exercise.starterCode);
     
-    if (!exercise.testCases || exercise.testCases.length === 0) {
-      return `${exercise.imports.join('\n')}
-
-import { ${functionName} } from './exercise';
-
-describe('${exercise.title}', () => {
-  it('should implement the function correctly', () => {
-    expect(true).toBe(true);
-  });
-});
-`;
-    }
-    
-    const testCaseCode = exercise.testCases
-      .filter(tc => tc.type === 'describe' || tc.type === 'it')
-      .map(tc => tc.code)
-      .join('\n\n');
-    
-    const testCode = `${exercise.imports.join('\n')}
+    if (exercise.testCases && exercise.testCases.length > 0) {
+      const testCaseCode = exercise.testCases
+        .filter(tc => tc.type === 'describe' || tc.type === 'it')
+        .map(tc => tc.code)
+        .join('\n\n');
+      
+      const testCode = `${exercise.imports.join('\n')}
 
 import { ${functionName} } from './exercise';
 
 ${testCaseCode}
 `;
-    return testCode;
+      return testCode;
+    }
+    
+    return `${exercise.imports.join('\n')}
+
+import { ${functionName} } from './exercise';
+
+describe('${exercise.title}', () => {
+  it('should implement the function correctly', () => {
+    expect(typeof ${functionName}).toBe('function');
+  });
+});
+`;
   };
 
   const functionName = extractFunctionName(exercise.starterCode);
@@ -207,7 +228,7 @@ export { ${functionName} };`,
           '@vitest/browser': '^1.6.0'
         },
         scripts: {
-          test: 'vitest run'
+          test: 'vitest run --reporter=verbose'
         }
       }, null, 2)
     },
@@ -243,7 +264,7 @@ export default defineConfig({
         >
           <SandpackLayout>
             <TestRunner exercise={exercise} onTestPass={onTestPass} />
-            <div className="h-96">
+            <div className="min-h-[500px] h-auto max-h-[70vh]">
               <SandpackCodeEditor
                 showTabs={true}
                 showLineNumbers={true}
