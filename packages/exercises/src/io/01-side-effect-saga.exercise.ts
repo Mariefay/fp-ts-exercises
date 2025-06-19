@@ -1,6 +1,6 @@
 import { IO } from 'fp-ts/IO';
 import { pipe } from 'fp-ts/function';
-import { expect, describe, it, beforeEach } from 'vitest';
+import { test, expect, describe, it, beforeEach } from '@jest/globals';
 
 let gameState = {
   score: 0,

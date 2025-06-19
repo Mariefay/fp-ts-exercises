@@ -1,5 +1,5 @@
 import { Option, some, none } from 'fp-ts/Option';
-import { expect, describe, it } from 'vitest';
+import { test, expect, describe, it } from '@jest/globals';
 
 interface User {
   id: number;
@@ -17,11 +17,11 @@ describe('getUserById', () => {
 
   it('returns an option with user if it exists', () => {
     const user = getUserById(users, 2);
-    expect(user).to.deep.equal({ _tag: 'Some', value: { id: 2, name: 'Bob' } });
+    expect(user).toEqual({ _tag: 'Some', value: { id: 2, name: 'Bob' } });
   });
 
   it('returns none if user does not exist', () => {
     const user = getUserById(users, 4);
-    expect(user).to.deep.equal({ _tag: 'None' });
+    expect(user).toEqual({ _tag: 'None' });
   });
 });

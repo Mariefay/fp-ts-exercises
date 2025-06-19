@@ -14,7 +14,7 @@
 
 import { Either, left, right, map, mapLeft, fold } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { expect, describe, it } from 'vitest';
+import { test, expect, describe, it } from '@jest/globals';
 
 interface AdventureError {
   type: 'BLOCKED_PATH' | 'INSUFFICIENT_GOLD' | 'MONSTER_ENCOUNTER';

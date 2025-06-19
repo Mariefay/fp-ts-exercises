@@ -1,5 +1,5 @@
 import { Option, some, none, fold } from 'fp-ts/Option';
-import { expect, describe, it } from 'vitest';
+import { test, expect, describe, it } from '@jest/globals';
 import { pipe } from 'fp-ts/lib/function';
 
 interface User {
@@ -14,12 +14,12 @@ describe('getUserEmail', () => {
   it('returns user email if user exists and has email', () => {
     const user = some({ id: 1, name: 'Alice', email: 'alice@example.com' });
     const result = getUserEmail(user);
-    expect(result).to.equal('alice@example.com');
+    expect(result).toBe('alice@example.com');
   });
 
   it('returns default message if user does not exist', () => {
     const user = none;
     const result = getUserEmail(user);
-    expect(result).to.equal('User email not available');
+    expect(result).toBe('User email not available');
   });
 });

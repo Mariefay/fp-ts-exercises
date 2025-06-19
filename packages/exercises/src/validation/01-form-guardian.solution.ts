@@ -1,5 +1,5 @@
 import { Either, left, right } from 'fp-ts/Either';
-import { expect, describe, it } from 'vitest';
+import { test, expect, describe, it } from '@jest/globals';
 
 interface ValidationError {
   field: string;

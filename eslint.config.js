@@ -20,7 +20,7 @@ export default [
       ...typescript.configs.recommended.rules,
       '@typescript-eslint/no-unused-vars': ['error', { 
         argsIgnorePattern: '^_',
-        varsIgnorePattern: '^(some|none|of|fromPredicate|fold|fromNullable|toNullable|toUndefined|getOrElse|filter|fromEither)$'
+        varsIgnorePattern: '^(some|none|of|fromPredicate|fold|fromNullable|toNullable|toUndefined|getOrElse|filter|fromEither|test|describe|it|expect|beforeEach)$'
       }],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',

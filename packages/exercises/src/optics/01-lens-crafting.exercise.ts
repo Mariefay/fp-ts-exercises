@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function';
-import { expect, describe, it } from 'vitest';
+import { test, expect, describe, it } from '@jest/globals';
 
 interface Player {
   name: string;

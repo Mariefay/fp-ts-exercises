@@ -1,6 +1,6 @@
 import { split, join, map } from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
-import { expect, describe, it } from 'vitest';
+import { test, expect, describe, it } from '@jest/globals';
 
 const formatAdventureMessage = (message: string): string => {};
 
