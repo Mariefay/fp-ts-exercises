@@ -90,9 +90,10 @@ jobs:
           npm run format
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git checkout ${{ github.head_ref || github.ref_name }}
           git add .
           git diff --staged --quiet || git commit -m "Auto-fix: Format code with Prettier"
-          git push
+          git push origin ${{ github.head_ref || github.ref_name }}
 
   testing:
     runs-on: ubuntu-latest
