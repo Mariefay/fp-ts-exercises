@@ -1,5 +1,5 @@
 import { Option, fromNullable } from 'fp-ts/Option';
-import { expect, describe, it } from 'vitest';
+import { test, expect, describe, it } from '@jest/globals';
 
 interface User {
   id: number;
@@ -19,16 +19,16 @@ describe('getUserAddress', () => {
 
   it('returns none if user has no address', () => {
     const result = getUserAddress(user1);
-    expect(result).to.deep.equal({ _tag: 'None' });
+    expect(result).toEqual({ _tag: 'None' });
   });
 
   it('returns some with the address if user has an address', () => {
     const result = getUserAddress(user2);
-    expect(result).to.deep.equal({ _tag: 'Some', value: '123 Main St' });
+    expect(result).toEqual({ _tag: 'Some', value: '123 Main St' });
   });
 
   it('returns none if user has a null address', () => {
     const result = getUserAddress(user3);
-    expect(result).to.deep.equal({ _tag: 'None' });
+    expect(result).toEqual({ _tag: 'None' });
   });
 });

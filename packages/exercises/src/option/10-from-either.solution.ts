@@ -1,6 +1,6 @@
 import { Option, some, none, fromEither } from 'fp-ts/Option';
 import { Either, left, right } from 'fp-ts/Either';
-import { expect, describe, it } from 'vitest';
+import { test, expect, describe, it } from '@jest/globals';
 
 interface User {
   id: number;
@@ -21,11 +21,11 @@ const getUserOptionById = (id: number): Option<User> =>
 describe('getUserOptionById', () => {
   it('returns none if user ID is less than 1', () => {
     const result = getUserOptionById(0);
-    expect(result).to.equal(none);
+    expect(result).toBe(none);
   });
 
   it('returns a some object with the user if user ID is valid', () => {
     const result = getUserOptionById(2);
-    expect(result).to.eql(some({ id: 2, name: 'User 2', age: 20 }));
+    expect(result).toEqual(some({ id: 2, name: 'User 2', age: 20 }));
   });
 });

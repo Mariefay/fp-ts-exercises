@@ -50,6 +50,7 @@ export function SandpackEditor({ exercise, onTestPass }: SandpackEditorProps) {
         .join('\n\n');
 
       const testCode = `${exercise.imports.join('\n')}
+import { test, expect, describe, it } from '@jest/globals';
 
 import { ${functionName} } from './exercise';
 
@@ -59,6 +60,7 @@ ${testCaseCode}
     }
 
     return `${exercise.imports.join('\n')}
+import { test, expect, describe, it } from '@jest/globals';
 
 import { ${functionName} } from './exercise';
 
@@ -89,34 +91,25 @@ export { ${functionName} };`,
         {
           dependencies: {
             'fp-ts': '^2.16.9',
-            vitest: '^1.6.0',
-            '@vitest/browser': '^1.6.0',
+            '@jest/globals': '^29.0.0',
+            jest: '^29.0.0',
           },
           scripts: {
-            test: 'vitest run --reporter=verbose --no-coverage',
+            test: 'jest --verbose',
           },
         },
         null,
         2
       ),
     },
-    '/vitest.config.ts': {
-      code: `import { defineConfig } from 'vitest/config';
 
-export default defineConfig({
-  test: {
-    environment: 'node',
-    globals: true,
-  },
-});`,
-    },
   };
 
   return (
     <div className="h-full flex flex-col">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden flex-1 flex flex-col">
         <SandpackProvider
-          template="react"
+          template="vanilla-ts"
           theme={githubLight}
           files={files}
           options={{
@@ -125,8 +118,8 @@ export default defineConfig({
           customSetup={{
             dependencies: {
               'fp-ts': '^2.16.9',
-              vitest: '^1.6.0',
-              '@vitest/browser': '^1.6.0',
+              '@jest/globals': '^29.0.0',
+              jest: '^29.0.0',
               typescript: '^5.0.0',
             },
           }}

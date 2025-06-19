@@ -1,6 +1,6 @@
 import { IO, map } from 'fp-ts/IO';
 import { pipe } from 'fp-ts/function';
-import { expect, describe, it } from 'vitest';
+import { test, expect, describe, it } from '@jest/globals';
 
 export const getCurrentTime: IO<Date> = () => new Date();
 
