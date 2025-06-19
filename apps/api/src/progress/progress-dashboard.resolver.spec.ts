@@ -15,14 +15,14 @@ describe('ProgressDashboardResolver', () => {
     weeklyProgress: [
       {
         id: '1',
-        sessionId: 'session-123',
+        userId: 'user-123',
         date: '2025-06-18T00:00:00.000Z',
         exercisesCompleted: 3,
         timeSpent: 900,
       },
       {
         id: '2',
-        sessionId: 'session-123',
+        userId: 'user-123',
         date: '2025-06-17T00:00:00.000Z',
         exercisesCompleted: 2,
         timeSpent: 600,
@@ -76,20 +76,22 @@ describe('ProgressDashboardResolver', () => {
   });
 
   describe('getProgressDashboard', () => {
-    it('should return dashboard data for valid session ID', async () => {
+    it('should return dashboard data for valid user', async () => {
+      const mockContext = { req: { user: { id: 'user-123' } } };
       progressDashboardService.getDashboardData.mockResolvedValue(
         mockDashboardData
       );
 
-      const result = await resolver.getProgressDashboard('session-123');
+      const result = await resolver.getProgressDashboard(mockContext);
 
       expect(result).toEqual(mockDashboardData);
       expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
-        'session-123'
+        'user-123'
       );
     });
 
-    it('should handle empty session ID', async () => {
+    it('should handle empty user ID', async () => {
+      const mockContext = { req: { user: { id: '' } } };
       const emptyDashboardData = {
         currentStreak: 0,
         longestStreak: 0,
@@ -104,7 +106,7 @@ describe('ProgressDashboardResolver', () => {
         emptyDashboardData
       );
 
-      const result = await resolver.getProgressDashboard('');
+      const result = await resolver.getProgressDashboard(mockContext);
 
       expect(result).toEqual(emptyDashboardData);
       expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
@@ -112,7 +114,8 @@ describe('ProgressDashboardResolver', () => {
       );
     });
 
-    it('should handle null session ID', async () => {
+    it('should handle null user ID', async () => {
+      const mockContext = { req: { user: { id: null } } };
       const emptyDashboardData = {
         currentStreak: 0,
         longestStreak: 0,
@@ -127,7 +130,7 @@ describe('ProgressDashboardResolver', () => {
         emptyDashboardData
       );
 
-      const result = await resolver.getProgressDashboard(null as any);
+      const result = await resolver.getProgressDashboard(mockContext as any);
 
       expect(result).toEqual(emptyDashboardData);
       expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
@@ -136,19 +139,21 @@ describe('ProgressDashboardResolver', () => {
     });
 
     it('should handle service errors', async () => {
+      const mockContext = { req: { user: { id: 'user-123' } } };
       progressDashboardService.getDashboardData.mockRejectedValue(
         new Error('Service error')
       );
 
       await expect(
-        resolver.getProgressDashboard('session-123')
+        resolver.getProgressDashboard(mockContext)
       ).rejects.toThrow('Service error');
       expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
-        'session-123'
+        'user-123'
       );
     });
 
-    it('should handle non-existent session ID', async () => {
+    it('should handle non-existent user ID', async () => {
+      const mockContext = { req: { user: { id: 'non-existent-user' } } };
       const emptyDashboardData = {
         currentStreak: 0,
         longestStreak: 0,
@@ -163,17 +168,16 @@ describe('ProgressDashboardResolver', () => {
         emptyDashboardData
       );
 
-      const result = await resolver.getProgressDashboard(
-        'non-existent-session'
-      );
+      const result = await resolver.getProgressDashboard(mockContext);
 
       expect(result).toEqual(emptyDashboardData);
       expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
-        'non-existent-session'
+        'non-existent-user'
       );
     });
 
     it('should return dashboard data with null next recommended exercise', async () => {
+      const mockContext = { req: { user: { id: 'user-123' } } };
       const dashboardDataWithoutRecommendation = {
         ...mockDashboardData,
         nextRecommendedExercise: null,
@@ -182,82 +186,88 @@ describe('ProgressDashboardResolver', () => {
         dashboardDataWithoutRecommendation
       );
 
-      const result = await resolver.getProgressDashboard('session-123');
+      const result = await resolver.getProgressDashboard(mockContext);
 
       expect(result.nextRecommendedExercise).toBeNull();
       expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
-        'session-123'
+        'user-123'
       );
     });
   });
 
   describe('trackSessionTime', () => {
     it('should track session time and return true', async () => {
+      const mockContext = { req: { user: { id: 'user-123' } } };
       progressDashboardService.trackSessionTime.mockResolvedValue(undefined);
 
-      const result = await resolver.trackSessionTime('session-123', 300);
+      const result = await resolver.trackSessionTime(300, mockContext);
 
       expect(result).toBe(true);
       expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
-        'session-123',
+        'user-123',
         300
       );
     });
 
     it('should handle zero time spent', async () => {
+      const mockContext = { req: { user: { id: 'user-123' } } };
       progressDashboardService.trackSessionTime.mockResolvedValue(undefined);
 
-      const result = await resolver.trackSessionTime('session-123', 0);
+      const result = await resolver.trackSessionTime(0, mockContext);
 
       expect(result).toBe(true);
       expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
-        'session-123',
+        'user-123',
         0
       );
     });
 
     it('should handle negative time spent', async () => {
+      const mockContext = { req: { user: { id: 'user-123' } } };
       progressDashboardService.trackSessionTime.mockResolvedValue(undefined);
 
-      const result = await resolver.trackSessionTime('session-123', -100);
+      const result = await resolver.trackSessionTime(-100, mockContext);
 
       expect(result).toBe(true);
       expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
-        'session-123',
+        'user-123',
         -100
       );
     });
 
     it('should handle large time values', async () => {
+      const mockContext = { req: { user: { id: 'user-123' } } };
       progressDashboardService.trackSessionTime.mockResolvedValue(undefined);
 
-      const result = await resolver.trackSessionTime('session-123', 999999);
+      const result = await resolver.trackSessionTime(999999, mockContext);
 
       expect(result).toBe(true);
       expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
-        'session-123',
+        'user-123',
         999999
       );
     });
 
     it('should handle service errors', async () => {
+      const mockContext = { req: { user: { id: 'user-123' } } };
       progressDashboardService.trackSessionTime.mockRejectedValue(
         new Error('Database error')
       );
 
       await expect(
-        resolver.trackSessionTime('session-123', 300)
+        resolver.trackSessionTime(300, mockContext)
       ).rejects.toThrow('Database error');
       expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
-        'session-123',
+        'user-123',
         300
       );
     });
 
-    it('should handle empty session ID', async () => {
+    it('should handle empty user ID', async () => {
+      const mockContext = { req: { user: { id: '' } } };
       progressDashboardService.trackSessionTime.mockResolvedValue(undefined);
 
-      const result = await resolver.trackSessionTime('', 300);
+      const result = await resolver.trackSessionTime(300, mockContext);
 
       expect(result).toBe(true);
       expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
@@ -266,10 +276,11 @@ describe('ProgressDashboardResolver', () => {
       );
     });
 
-    it('should handle null session ID', async () => {
+    it('should handle null user ID', async () => {
+      const mockContext = { req: { user: { id: null } } };
       progressDashboardService.trackSessionTime.mockResolvedValue(undefined);
 
-      const result = await resolver.trackSessionTime(null as any, 300);
+      const result = await resolver.trackSessionTime(300, mockContext as any);
 
       expect(result).toBe(true);
       expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(

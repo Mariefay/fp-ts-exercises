@@ -10,8 +10,8 @@ describe('ProgressDashboardService', () => {
   let validationService: jest.Mocked<ExerciseValidationService>;
   let exerciseWrapper: jest.Mocked<ExerciseDiscoveryWrapper>;
 
-  const mockSession = {
-    id: 'session-123',
+  const mockUser = {
+    id: 'user-123',
     currentStreak: 5,
     longestStreak: 10,
     totalTimeSpent: 3600,
@@ -19,14 +19,14 @@ describe('ProgressDashboardService', () => {
       {
         id: '1',
         exerciseSlug: 'option/01',
-        sessionId: 'session-123',
+        userId: 'user-123',
         completedAt: new Date(),
         timeSpent: 300,
       },
       {
         id: '2',
         exerciseSlug: 'option/02',
-        sessionId: 'session-123',
+        userId: 'user-123',
         completedAt: new Date(),
         timeSpent: 450,
       },
@@ -34,14 +34,14 @@ describe('ProgressDashboardService', () => {
     sessionMetrics: [
       {
         id: '1',
-        sessionId: 'session-123',
+        userId: 'user-123',
         date: new Date('2025-06-18'),
         exercisesCompleted: 2,
         timeSpent: 750,
       },
       {
         id: '2',
-        sessionId: 'session-123',
+        userId: 'user-123',
         date: new Date('2025-06-17'),
         exercisesCompleted: 1,
         timeSpent: 300,
@@ -53,14 +53,14 @@ describe('ProgressDashboardService', () => {
     {
       id: '1',
       exerciseSlug: 'option/01',
-      sessionId: 'session-123',
+      userId: 'user-123',
       completedAt: new Date(),
       timeSpent: 300,
     },
     {
       id: '2',
       exerciseSlug: 'option/02',
-      sessionId: 'session-123',
+      userId: 'user-123',
       completedAt: new Date(),
       timeSpent: 450,
     },
@@ -111,7 +111,7 @@ describe('ProgressDashboardService', () => {
 
   beforeEach(async () => {
     const mockPrismaService = {
-      session: {
+      user: {
         findUnique: jest.fn(),
         update: jest.fn(),
       },
@@ -158,7 +158,7 @@ describe('ProgressDashboardService', () => {
       exerciseWrapper.getExercises.mockResolvedValue(mockExercises);
     });
 
-    it('should return default data when sessionId is empty', async () => {
+    it('should return default data when userId is empty', async () => {
       const result = await service.getDashboardData('');
 
       expect(result).toEqual({
@@ -172,10 +172,10 @@ describe('ProgressDashboardService', () => {
         nextRecommendedExercise: null,
       });
       expect(validationService.validateExerciseSystem).toHaveBeenCalled();
-      expect(prismaService.session.findUnique).not.toHaveBeenCalled();
+      expect(prismaService.user.findUnique).not.toHaveBeenCalled();
     });
 
-    it('should return default data when sessionId is null', async () => {
+    it('should return default data when userId is null', async () => {
       const result = await service.getDashboardData(null as any);
 
       expect(result).toEqual({
@@ -190,10 +190,10 @@ describe('ProgressDashboardService', () => {
       });
     });
 
-    it('should return default data when session is not found', async () => {
-      prismaService.session.findUnique.mockResolvedValue(null);
+    it('should return default data when user is not found', async () => {
+      prismaService.user.findUnique.mockResolvedValue(null);
 
-      const result = await service.getDashboardData('non-existent-session');
+      const result = await service.getDashboardData('non-existent-user');
 
       expect(result).toEqual({
         currentStreak: 0,
@@ -205,8 +205,8 @@ describe('ProgressDashboardService', () => {
         categoryProgress: [],
         nextRecommendedExercise: null,
       });
-      expect(prismaService.session.findUnique).toHaveBeenCalledWith({
-        where: { id: 'non-existent-session' },
+      expect(prismaService.user.findUnique).toHaveBeenCalledWith({
+        where: { id: 'non-existent-user' },
         include: {
           completedExercises: true,
           sessionMetrics: true,
@@ -214,8 +214,8 @@ describe('ProgressDashboardService', () => {
       });
     });
 
-    it('should return complete dashboard data for valid session', async () => {
-      prismaService.session.findUnique.mockResolvedValue(mockSession);
+    it('should return complete dashboard data for valid user', async () => {
+      prismaService.user.findUnique.mockResolvedValue(mockUser);
       prismaService.completedExercise.count
         .mockResolvedValueOnce(2)
         .mockResolvedValueOnce(0);
@@ -223,7 +223,7 @@ describe('ProgressDashboardService', () => {
         mockedCompletedExercises
       );
 
-      const result = await service.getDashboardData('session-123');
+      const result = await service.getDashboardData('user-123');
 
       expect(result).toEqual({
         currentStreak: 5,
@@ -234,14 +234,14 @@ describe('ProgressDashboardService', () => {
         weeklyProgress: [
           {
             id: '1',
-            sessionId: 'session-123',
+            userId: 'user-123',
             date: '2025-06-18T00:00:00.000Z',
             exercisesCompleted: 2,
             timeSpent: 750,
           },
           {
             id: '2',
-            sessionId: 'session-123',
+            userId: 'user-123',
             date: '2025-06-17T00:00:00.000Z',
             exercisesCompleted: 1,
             timeSpent: 300,
@@ -265,29 +265,29 @@ describe('ProgressDashboardService', () => {
         new Error('Validation failed')
       );
 
-      await expect(service.getDashboardData('session-123')).rejects.toThrow(
+      await expect(service.getDashboardData('user-123')).rejects.toThrow(
         'Validation failed'
       );
     });
 
     it('should handle database errors', async () => {
-      prismaService.session.findUnique.mockRejectedValue(
+      prismaService.user.findUnique.mockRejectedValue(
         new Error('Database error')
       );
 
-      await expect(service.getDashboardData('session-123')).rejects.toThrow(
+      await expect(service.getDashboardData('user-123')).rejects.toThrow(
         'Database error'
       );
     });
 
     it('should return null for next recommended exercise when all exercises are completed', async () => {
-      prismaService.session.findUnique.mockResolvedValue(mockSession);
+      prismaService.user.findUnique.mockResolvedValue(mockUser);
       prismaService.completedExercise.count.mockResolvedValue(2);
       prismaService.completedExercise.findMany.mockResolvedValue(
         mockedCompletedExercises
       );
 
-      const result = await service.getDashboardData('session-123');
+      const result = await service.getDashboardData('user-123');
 
       expect(result.nextRecommendedExercise).toBeNull();
     });
@@ -323,12 +323,12 @@ describe('ProgressDashboardService', () => {
         },
       ];
 
-      prismaService.session.findUnique.mockResolvedValue(mockSession);
+      prismaService.user.findUnique.mockResolvedValue(mockUser);
       prismaService.completedExercise.count.mockResolvedValue(0);
       prismaService.completedExercise.findMany.mockResolvedValue([]);
       exerciseWrapper.getExercises.mockResolvedValue(exercisesWithDifficulty);
 
-      const result = await service.getDashboardData('session-123');
+      const result = await service.getDashboardData('user-123');
 
       expect(result.nextRecommendedExercise?.difficulty).toBe('easy');
       expect(result.nextRecommendedExercise?.slug).toBe('option/easy');
@@ -336,13 +336,13 @@ describe('ProgressDashboardService', () => {
   });
 
   describe('trackSessionTime', () => {
-    it('should update session time spent', async () => {
-      prismaService.session.update.mockResolvedValue(mockSession);
+    it('should update user time spent', async () => {
+      prismaService.user.update.mockResolvedValue(mockUser);
 
-      await service.trackSessionTime('session-123', 300);
+      await service.trackSessionTime('user-123', 300);
 
-      expect(prismaService.session.update).toHaveBeenCalledWith({
-        where: { id: 'session-123' },
+      expect(prismaService.user.update).toHaveBeenCalledWith({
+        where: { id: 'user-123' },
         data: {
           totalTimeSpent: {
             increment: 300,
@@ -352,22 +352,22 @@ describe('ProgressDashboardService', () => {
     });
 
     it('should handle database errors when tracking time', async () => {
-      prismaService.session.update.mockRejectedValue(
+      prismaService.user.update.mockRejectedValue(
         new Error('Database error')
       );
 
       await expect(
-        service.trackSessionTime('session-123', 300)
+        service.trackSessionTime('user-123', 300)
       ).rejects.toThrow('Database error');
     });
 
     it('should handle negative time values', async () => {
-      prismaService.session.update.mockResolvedValue(mockSession);
+      prismaService.user.update.mockResolvedValue(mockUser);
 
-      await service.trackSessionTime('session-123', -100);
+      await service.trackSessionTime('user-123', -100);
 
-      expect(prismaService.session.update).toHaveBeenCalledWith({
-        where: { id: 'session-123' },
+      expect(prismaService.user.update).toHaveBeenCalledWith({
+        where: { id: 'user-123' },
         data: {
           totalTimeSpent: {
             increment: -100,
@@ -377,12 +377,12 @@ describe('ProgressDashboardService', () => {
     });
 
     it('should handle zero time values', async () => {
-      prismaService.session.update.mockResolvedValue(mockSession);
+      prismaService.user.update.mockResolvedValue(mockUser);
 
-      await service.trackSessionTime('session-123', 0);
+      await service.trackSessionTime('user-123', 0);
 
-      expect(prismaService.session.update).toHaveBeenCalledWith({
-        where: { id: 'session-123' },
+      expect(prismaService.user.update).toHaveBeenCalledWith({
+        where: { id: 'user-123' },
         data: {
           totalTimeSpent: {
             increment: 0,
