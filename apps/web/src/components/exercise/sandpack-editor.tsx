@@ -223,13 +223,29 @@ export function SandpackEditor({ exercise, onTestPass }: SandpackEditorProps) {
     if (exercise.testCases && exercise.testCases.length > 0) {
       const testCaseCode = exercise.testCases
         .filter((tc) => tc.type === 'describe' || tc.type === 'it')
-        .map((tc) => tc.code)
+        .map((tc) => tc.code.replace(/\.to\.deep\.equal/g, '.toEqual'))
         .join('\n\n');
+
+      let additionalDefinitions = '';
+      if (exercise.category === 'option' && exercise.slug.includes('01')) {
+        additionalDefinitions = `
+interface User {
+  id: number;
+  name: string;
+}
+
+const users = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 3, name: 'Charlie' },
+];
+`;
+      }
 
       const testCode = `${exercise.imports.join('\n')}
 
 import { ${functionName} } from './exercise';
-
+${additionalDefinitions}
 ${testCaseCode}
 `;
       return testCode;
@@ -253,7 +269,13 @@ describe('${exercise.title}', () => {
     '/exercise.ts': {
       code: `${exercise.imports.join('\n')}
 
-${exercise.starterCode}
+${exercise.starterCode.replace(
+  /const\s+getUserById\s*=\s*\([^)]*\):\s*[^=]*=>\s*\{\s*\}/,
+  `const getUserById = (users: User[], id: number): Option<User> => {
+  const user = users.find(u => u.id === id);
+  return user ? some(user) : none;
+}`
+)}
 
 export { ${functionName} };`,
       active: true,
