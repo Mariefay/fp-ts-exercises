@@ -2,8 +2,7 @@ import { Option, some, none, getOrElse } from 'fp-ts/Option';
 import { expect, describe, it } from 'vitest';
 import { pipe } from 'fp-ts/lib/function';
 
-const getAddressString = (addressOption: Option<string>): string => {
-};
+const getAddressString = (addressOption: Option<string>): string => {};
 
 describe('getAddressString', () => {
   it('returns the address if option is some', () => {

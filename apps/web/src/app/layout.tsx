@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { ApolloProviderWrapper } from "@/components/providers/apollo-provider";
-import { ProgressProvider } from "@/contexts/progress-context";
-import { ErrorBoundary } from "@/components/error-boundary";
+import type { Metadata } from 'next';
+import './globals.css';
+import { ApolloProviderWrapper } from '@/components/providers/apollo-provider';
+import { ProgressProvider } from '@/contexts/progress-context';
+import { ErrorBoundary } from '@/components/error-boundary';
 
 export const metadata: Metadata = {
-  title: "fp-ts Exercises",
-  description: "Interactive learning platform for fp-ts functional programming concepts",
+  title: 'fp-ts Exercises',
+  description:
+    'Interactive learning platform for fp-ts functional programming concepts',
 };
 
 export default function RootLayout({
@@ -19,9 +20,7 @@ export default function RootLayout({
       <body className="antialiased">
         <ErrorBoundary>
           <ApolloProviderWrapper>
-            <ProgressProvider>
-              {children}
-            </ProgressProvider>
+            <ProgressProvider>{children}</ProgressProvider>
           </ApolloProviderWrapper>
         </ErrorBoundary>
       </body>

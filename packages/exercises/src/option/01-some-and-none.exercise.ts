@@ -6,8 +6,7 @@ interface User {
   name: string;
 }
 
-const getUserById = (users: User[], id: number): Option<User> => {
-};
+const getUserById = (users: User[], id: number): Option<User> => {};
 
 describe('getUserById', () => {
   const users = [

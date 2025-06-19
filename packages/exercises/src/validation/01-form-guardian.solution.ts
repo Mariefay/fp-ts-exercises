@@ -12,20 +12,33 @@ interface UserForm {
   age: number;
 }
 
-export const validateUsername = (username: string): Either<ValidationError, string> => {
+export const validateUsername = (
+  username: string
+): Either<ValidationError, string> => {
   if (username.length < 3) {
-    return left({ field: 'username', message: 'Username must be at least 3 characters long' });
+    return left({
+      field: 'username',
+      message: 'Username must be at least 3 characters long',
+    });
   }
   if (!/^[a-zA-Z0-9]+$/.test(username)) {
-    return left({ field: 'username', message: 'Username can only contain letters and numbers' });
+    return left({
+      field: 'username',
+      message: 'Username can only contain letters and numbers',
+    });
   }
   return right(username);
 };
 
-export const validateEmail = (email: string): Either<ValidationError, string> => {
+export const validateEmail = (
+  email: string
+): Either<ValidationError, string> => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
-    return left({ field: 'email', message: 'Please enter a valid email address' });
+    return left({
+      field: 'email',
+      message: 'Please enter a valid email address',
+    });
   }
   return right(email);
 };
@@ -40,21 +53,23 @@ export const validateAge = (age: number): Either<ValidationError, number> => {
   return right(age);
 };
 
-export const validateForm = (form: UserForm): Either<ValidationError[], UserForm> => {
+export const validateForm = (
+  form: UserForm
+): Either<ValidationError[], UserForm> => {
   const usernameResult = validateUsername(form.username);
   const emailResult = validateEmail(form.email);
   const ageResult = validateAge(form.age);
-  
+
   const errors: ValidationError[] = [];
-  
+
   if (usernameResult._tag === 'Left') errors.push(usernameResult.left);
   if (emailResult._tag === 'Left') errors.push(emailResult.left);
   if (ageResult._tag === 'Left') errors.push(ageResult.left);
-  
+
   if (errors.length > 0) {
     return left(errors);
   }
-  
+
   return right(form);
 };
 
@@ -63,9 +78,9 @@ describe('Form validation', () => {
     const form: UserForm = {
       username: 'hero123',
       email: 'hero@example.com',
-      age: 25
+      age: 25,
     };
-    
+
     const result = validateForm(form);
     expect(result).toEqual(right(form));
   });
@@ -74,9 +89,9 @@ describe('Form validation', () => {
     const form: UserForm = {
       username: 'ab',
       email: 'invalid-email',
-      age: 10
+      age: 10,
     };
-    
+
     const result = validateForm(form);
     expect(result._tag).toBe('Left');
     if (result._tag === 'Left') {
@@ -86,13 +101,19 @@ describe('Form validation', () => {
 
   it('validates username correctly', () => {
     expect(validateUsername('ab')).toEqual(
-      left({ field: 'username', message: 'Username must be at least 3 characters long' })
+      left({
+        field: 'username',
+        message: 'Username must be at least 3 characters long',
+      })
     );
-    
+
     expect(validateUsername('user@123')).toEqual(
-      left({ field: 'username', message: 'Username can only contain letters and numbers' })
+      left({
+        field: 'username',
+        message: 'Username can only contain letters and numbers',
+      })
     );
-    
+
     expect(validateUsername('hero123')).toEqual(right('hero123'));
   });
 });

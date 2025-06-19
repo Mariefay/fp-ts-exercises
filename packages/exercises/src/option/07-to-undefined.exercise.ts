@@ -6,8 +6,7 @@ interface User {
   name: string;
 }
 
-const getUserAsUndefined = (userOption: Option<User>): User | undefined => {
-};
+const getUserAsUndefined = (userOption: Option<User>): User | undefined => {};
 
 describe('getUserAsUndefined', () => {
   it('returns undefined if user option is none', () => {

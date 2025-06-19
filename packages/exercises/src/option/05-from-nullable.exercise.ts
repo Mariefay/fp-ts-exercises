@@ -8,8 +8,7 @@ interface User {
   address?: string | null;
 }
 
-const getUserAddress = (user: User): Option<string> => {
-};
+const getUserAddress = (user: User): Option<string> => {};
 
 describe('getUserAddress', () => {
   const user1: User = { id: 1, name: 'Alice', age: 25 };

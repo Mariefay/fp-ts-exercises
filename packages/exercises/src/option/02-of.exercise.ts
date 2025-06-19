@@ -6,8 +6,7 @@ interface User {
   name: string;
 }
 
-const createUserOption = (user: User): Option<User> => {
-};
+const createUserOption = (user: User): Option<User> => {};
 
 describe('createUserOption', () => {
   it('returns an option with the user', () => {

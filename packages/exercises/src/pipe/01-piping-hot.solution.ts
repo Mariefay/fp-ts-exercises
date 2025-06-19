@@ -10,26 +10,23 @@ interface Recipe {
 
 const addSpices = (recipe: Recipe): Recipe => ({
   ...recipe,
-  ingredients: [...recipe.ingredients, 'salt', 'pepper', 'herbs']
+  ingredients: [...recipe.ingredients, 'salt', 'pepper', 'herbs'],
 });
 
 const preheatOven = (recipe: Recipe): Recipe => ({
   ...recipe,
-  temperature: 350
+  temperature: 350,
 });
 
-const setCookingTime = (minutes: number) => (recipe: Recipe): Recipe => ({
-  ...recipe,
-  cookingTime: minutes
-});
+const setCookingTime =
+  (minutes: number) =>
+  (recipe: Recipe): Recipe => ({
+    ...recipe,
+    cookingTime: minutes,
+  });
 
 export const cookRecipe = (recipe: Recipe): Recipe => {
-  return pipe(
-    recipe,
-    addSpices,
-    preheatOven,
-    setCookingTime(45)
-  );
+  return pipe(recipe, addSpices, preheatOven, setCookingTime(45));
 };
 
 describe('cookRecipe', () => {
@@ -37,17 +34,17 @@ describe('cookRecipe', () => {
     name: 'Roasted Vegetables',
     ingredients: ['carrots', 'potatoes', 'onions'],
     temperature: 0,
-    cookingTime: 0
+    cookingTime: 0,
   };
 
   it('transforms recipe through all cooking steps', () => {
     const result = cookRecipe(baseRecipe);
-    
+
     expect(result).toEqual({
       name: 'Roasted Vegetables',
       ingredients: ['carrots', 'potatoes', 'onions', 'salt', 'pepper', 'herbs'],
       temperature: 350,
-      cookingTime: 45
+      cookingTime: 45,
     });
   });
 

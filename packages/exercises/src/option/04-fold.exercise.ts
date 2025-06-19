@@ -8,8 +8,7 @@ interface User {
   email?: string;
 }
 
-const getUserEmail = (user: Option<User>): string => {
-};
+const getUserEmail = (user: Option<User>): string => {};
 
 describe('getUserEmail', () => {
   it('returns user email if user exists and has email', () => {

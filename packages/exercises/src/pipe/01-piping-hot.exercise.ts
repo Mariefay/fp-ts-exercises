@@ -1,7 +1,6 @@
 import { pipe } from 'fp-ts/function';
 import { expect, describe, it } from 'vitest';
 
-
 interface Recipe {
   name: string;
   ingredients: string[];
@@ -11,38 +10,39 @@ interface Recipe {
 
 const addSpices = (recipe: Recipe): Recipe => ({
   ...recipe,
-  ingredients: [...recipe.ingredients, 'salt', 'pepper', 'herbs']
+  ingredients: [...recipe.ingredients, 'salt', 'pepper', 'herbs'],
 });
 
 const preheatOven = (recipe: Recipe): Recipe => ({
   ...recipe,
-  temperature: 350
+  temperature: 350,
 });
 
-const setCookingTime = (minutes: number) => (recipe: Recipe): Recipe => ({
-  ...recipe,
-  cookingTime: minutes
-});
+const setCookingTime =
+  (minutes: number) =>
+  (recipe: Recipe): Recipe => ({
+    ...recipe,
+    cookingTime: minutes,
+  });
 
-const cookRecipe = (recipe: Recipe): Recipe => {
-};
+const cookRecipe = (recipe: Recipe): Recipe => {};
 
 describe('cookRecipe', () => {
   const baseRecipe: Recipe = {
     name: 'Roasted Vegetables',
     ingredients: ['carrots', 'potatoes', 'onions'],
     temperature: 0,
-    cookingTime: 0
+    cookingTime: 0,
   };
 
   it('transforms recipe through all cooking steps', () => {
     const result = cookRecipe(baseRecipe);
-    
+
     expect(result).toEqual({
       name: 'Roasted Vegetables',
       ingredients: ['carrots', 'potatoes', 'onions', 'salt', 'pepper', 'herbs'],
       temperature: 350,
-      cookingTime: 45
+      cookingTime: 45,
     });
   });
 

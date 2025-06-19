@@ -7,8 +7,9 @@ interface User {
   address?: string;
 }
 
-const getUserAddressAsNullable = (userOption: Option<User>): string | null => {
-};
+const getUserAddressAsNullable = (
+  userOption: Option<User>
+): string | null => {};
 
 describe('getUserAddressAsNullable', () => {
   it('returns null if user option is none', () => {

@@ -8,8 +8,7 @@ interface User {
   age: number;
 }
 
-const getAdultUser = (userOption: Option<User>): Option<User> => {
-};
+const getAdultUser = (userOption: Option<User>): Option<User> => {};
 
 describe('getAdultUser', () => {
   it('returns some if user is 18 or older', () => {

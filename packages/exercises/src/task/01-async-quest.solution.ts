@@ -37,7 +37,7 @@ describe('Task exercises', () => {
     const result = await completeQuest()();
     expect(result).toEqual({
       treasures: ['Gold Coin', 'Magic Gem', 'Ancient Scroll'],
-      experience: 300
+      experience: 300,
     });
   });
 });
