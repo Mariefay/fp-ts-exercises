@@ -14,11 +14,15 @@ import { NextExerciseCard } from './next-exercise-card';
 import { DashboardSkeleton } from './dashboard-skeleton';
 
 export function ProgressDashboard() {
-  const { sessionId } = useProgress();
+  const { isAuthenticated, token, logout } = useProgress();
   const { data, loading, error } = useQuery(GET_PROGRESS_DASHBOARD, {
-    variables: { sessionId },
-    skip: !sessionId,
+    skip: !isAuthenticated,
     pollInterval: 30000,
+    context: {
+      headers: {
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    },
   });
 
   if (loading) {
@@ -43,8 +47,19 @@ export function ProgressDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50">
       <div className="container mx-auto px-4 py-8 space-y-8">
         <div className="text-center animate-fade-in">
-          <h1 className="text-5xl font-bold text-gray-900 mb-3">Your Learning Journey</h1>
-          <p className="text-xl text-gray-600">Master functional programming with fp-ts</p>
+          <div className="flex justify-between items-center mb-6">
+            <div></div>
+            <div>
+              <h1 className="text-5xl font-bold text-gray-900 mb-3">Your Learning Journey</h1>
+              <p className="text-xl text-gray-600">Master functional programming with fp-ts</p>
+            </div>
+            <button
+              onClick={logout}
+              className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              Sign Out
+            </button>
+          </div>
         </div>
 
         <div className="flex justify-center animate-slide-up">

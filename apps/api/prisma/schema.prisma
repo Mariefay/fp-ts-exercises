@@ -3,14 +3,17 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-model Session {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  name         String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
   
   currentStreak    Int      @default(0) @map("current_streak")
   longestStreak    Int      @default(0) @map("longest_streak")
@@ -20,19 +23,19 @@ model Session {
   completedExercises CompletedExercise[]
   sessionMetrics    SessionMetric[]
   
-  @@map("sessions")
+  @@map("users")
 }
 
 model CompletedExercise {
   id          String   @id @default(uuid())
-  sessionId   String   @map("session_id")
+  userId      String   @map("user_id")
   exerciseSlug String  @map("exercise_slug")
   completedAt DateTime @default(now()) @map("completed_at")
   timeSpent   Int      @default(0) @map("time_spent")
   
-  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   
-  @@unique([sessionId, exerciseSlug])
+  @@unique([userId, exerciseSlug])
   @@map("completed_exercises")
 }
 
@@ -40,13 +43,13 @@ model CompletedExercise {
 
 model SessionMetric {
   id        String   @id @default(uuid())
-  sessionId String   @map("session_id")
+  userId    String   @map("user_id")
   date      DateTime @default(now())
   exercisesCompleted Int @default(0) @map("exercises_completed")
   timeSpent Int      @default(0) @map("time_spent")
   
-  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   
-  @@unique([sessionId, date])
+  @@unique([userId, date])
   @@map("session_metrics")
 }
