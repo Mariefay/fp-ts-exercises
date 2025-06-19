@@ -1,5 +1,4 @@
 import { pipe } from 'fp-ts/function';
-import { test, expect, describe, it } from '@jest/globals';
 
 interface Recipe {
   name: string;
@@ -25,29 +24,6 @@ const setCookingTime =
     cookingTime: minutes,
   });
 
-const cookRecipe = (recipe: Recipe): Recipe => {};
-
-describe('cookRecipe', () => {
-  const baseRecipe: Recipe = {
-    name: 'Roasted Vegetables',
-    ingredients: ['carrots', 'potatoes', 'onions'],
-    temperature: 0,
-    cookingTime: 0,
-  };
-
-  it('transforms recipe through all cooking steps', () => {
-    const result = cookRecipe(baseRecipe);
-
-    expect(result).toEqual({
-      name: 'Roasted Vegetables',
-      ingredients: ['carrots', 'potatoes', 'onions', 'salt', 'pepper', 'herbs'],
-      temperature: 350,
-      cookingTime: 45,
-    });
-  });
-
-  it('preserves original recipe name', () => {
-    const result = cookRecipe(baseRecipe);
-    expect(result.name).toBe('Roasted Vegetables');
-  });
-});
+export const processNumbers = (numbers: number[]): number[] => {
+  throw new Error('Not implemented');
+};

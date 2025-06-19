@@ -1,5 +1,4 @@
 import { Task } from 'fp-ts/Task';
-import { test, expect, describe, it } from '@jest/globals';
 
 interface QuestData {
   treasures: string[];
@@ -21,23 +20,3 @@ export const completeQuest = (): Task<QuestData> => {
     return { treasures, experience };
   };
 };
-
-describe('Task exercises', () => {
-  it('fetches treasures', async () => {
-    const treasures = await fetchTreasures()();
-    expect(treasures).toEqual(['Gold Coin', 'Magic Gem', 'Ancient Scroll']);
-  });
-
-  it('calculates experience', async () => {
-    const experience = await calculateExperience(['item1', 'item2'])();
-    expect(experience).toBe(200);
-  });
-
-  it('completes quest', async () => {
-    const result = await completeQuest()();
-    expect(result).toEqual({
-      treasures: ['Gold Coin', 'Magic Gem', 'Ancient Scroll'],
-      experience: 300,
-    });
-  });
-});

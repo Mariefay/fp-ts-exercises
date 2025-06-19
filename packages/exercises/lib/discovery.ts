@@ -64,7 +64,7 @@ export class ExerciseDiscovery {
     
     const allFiles = fs.readdirSync(categoryPath);
     
-    const exerciseGroups = new Map<string, { exercise?: string; solution?: string }>();
+    const exerciseGroups = new Map<string, { exercise?: string; solution?: string; test?: string }>();
     
     for (const file of allFiles) {
       const numberMatch = file.match(/^(\d+)/);
@@ -80,16 +80,19 @@ export class ExerciseDiscovery {
         group.exercise = file;
       } else if (file.includes('.solution.')) {
         group.solution = file;
+      } else if (file.includes('.test.')) {
+        group.test = file;
       }
     }
 
     for (const [number, group] of Array.from(exerciseGroups.entries())) {
-      if (group.exercise && group.solution) {
+      if (group.exercise && group.solution && group.test) {
         const exerciseFile = path.join(categoryPath, group.exercise);
         const solutionFile = path.join(categoryPath, group.solution);
+        const testFile = path.join(categoryPath, group.test);
         
         try {
-          const exercise = this.parser.parseExercise(categoryName, exerciseFile, solutionFile);
+          const exercise = this.parser.parseExercise(categoryName, exerciseFile, solutionFile, testFile);
           const enhancedExercise = {
             ...exercise,
             slug: exercise.metadata.slug,
@@ -109,7 +112,8 @@ export class ExerciseDiscovery {
           console.warn(`Failed to parse exercise ${categoryName}/${number}:`, {
             error: error instanceof Error ? error.message : String(error),
             exerciseFile: group.exercise,
-            solutionFile: group.solution
+            solutionFile: group.solution,
+            testFile: group.test
           });
         }
       }

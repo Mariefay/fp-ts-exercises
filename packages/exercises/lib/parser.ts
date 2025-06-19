@@ -12,9 +12,10 @@ export class ExerciseParser {
   /**
    * Parse a single exercise file and extract metadata
    */
-  parseExercise(category: string, exerciseFile: string, solutionFile: string): Exercise {
+  parseExercise(category: string, exerciseFile: string, solutionFile: string, testFile: string): Exercise {
     const exerciseContent = fs.readFileSync(exerciseFile, 'utf-8');
     const solutionContent = fs.readFileSync(solutionFile, 'utf-8');
+    const testContent = fs.readFileSync(testFile, 'utf-8');
     
     const number = this.extractNumber(path.basename(exerciseFile));
     const filename = path.basename(exerciseFile);
@@ -55,7 +56,7 @@ export class ExerciseParser {
       metadata,
       starterCode: this.extractStarterCode(exerciseContent),
       solutionCode: this.extractSolutionCode(solutionContent),
-      testCases: this.extractTestCases(exerciseContent),
+      testCases: this.extractTestCases(testContent),
       imports: this.extractImports(exerciseContent),
       slug: metadata.slug,
       title: metadata.title,

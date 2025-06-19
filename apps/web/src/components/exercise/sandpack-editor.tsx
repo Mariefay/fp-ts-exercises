@@ -45,12 +45,10 @@ export function SandpackEditor({ exercise, onTestPass }: SandpackEditorProps) {
 
     if (exercise.testCases && exercise.testCases.length > 0) {
       const testCaseCode = exercise.testCases
-        .filter((tc) => tc.type === 'describe' || tc.type === 'it')
         .map((tc) => tc.code)
         .join('\n\n');
 
       const testCode = `${exercise.imports.join('\n')}
-import { test, expect, describe, it } from '@jest/globals';
 
 import { ${functionName} } from './exercise';
 
@@ -60,7 +58,6 @@ ${testCaseCode}
     }
 
     return `${exercise.imports.join('\n')}
-import { test, expect, describe, it } from '@jest/globals';
 
 import { ${functionName} } from './exercise';
 
@@ -91,7 +88,6 @@ export { ${functionName} };`,
         {
           dependencies: {
             'fp-ts': '^2.16.9',
-            '@jest/globals': '^29.0.0',
             jest: '^29.0.0',
           },
           scripts: {
@@ -118,7 +114,6 @@ export { ${functionName} };`,
           customSetup={{
             dependencies: {
               'fp-ts': '^2.16.9',
-              '@jest/globals': '^29.0.0',
               jest: '^29.0.0',
               typescript: '^5.0.0',
             },
