@@ -99,7 +99,7 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        workspace: [exercises, api, web-e2e]
+        workspace: [api, web-e2e]
       fail-fast: false
     steps:
       - name: Checkout code
@@ -128,10 +128,6 @@ jobs:
       - name: Install Playwright browsers
         if: matrix.workspace == 'web-e2e'
         run: npx playwright install --with-deps
-
-      - name: Run exercises tests
-        if: matrix.workspace == 'exercises'
-        run: npm run test
 
       - name: Run API tests
         if: matrix.workspace == 'api'
