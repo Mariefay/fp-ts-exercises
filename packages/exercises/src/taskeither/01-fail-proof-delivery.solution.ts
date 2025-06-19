@@ -1,7 +1,6 @@
 import { TaskEither, left, right, chain } from 'fp-ts/TaskEither';
 import { left as eitherLeft, right as eitherRight } from 'fp-ts/Either';
 import { pipe } from 'fp-ts/function';
-import { test, expect, describe, it } from '@jest/globals';
 
 interface DeliveryError {
   type: 'NETWORK_ERROR' | 'INVALID_ADDRESS' | 'PACKAGE_LOST';
@@ -60,32 +59,3 @@ export const processDelivery = (
     chain(() => deliverPackage(pkg))
   );
 };
-
-describe('TaskEither exercises', () => {
-  it('validates address successfully', async () => {
-    const result = await validateAddress('123 Main Street')();
-    expect(result).toEqual(right('123 Main Street'));
-  });
-
-  it('rejects invalid address', async () => {
-    const result = await validateAddress('123')();
-    expect(result).toEqual(
-      left({ type: 'INVALID_ADDRESS', message: 'Address too short' })
-    );
-  });
-
-  it('processes delivery successfully', async () => {
-    const pkg: Package = {
-      id: 'PKG001',
-      destination: '123 Main Street',
-      contents: 'Books',
-    };
-
-    const result = await processDelivery(pkg)();
-
-    if (result._tag === 'Right') {
-      expect(result.right.packageId).toBe('PKG001');
-      expect(result.right.signature).toBe('Customer Signature');
-    }
-  });
-});

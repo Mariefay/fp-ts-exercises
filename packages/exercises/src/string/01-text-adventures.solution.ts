@@ -1,6 +1,5 @@
 import { map } from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
-import { test, expect, describe, it } from '@jest/globals';
 
 const capitalizeWord = (word: string): string => {
   if (word.length === 0) return word;
@@ -13,26 +12,3 @@ export const formatAdventureMessage = (message: string): string => {
   const formatted = capitalizedWords.join(' ');
   return `🗡️ ${formatted} ⚔️`;
 };
-
-describe('formatAdventureMessage', () => {
-  it('formats adventure message correctly', () => {
-    const message = 'the brave knight defeated the dragon';
-    const result = formatAdventureMessage(message);
-
-    expect(result).toBe('🗡️ The Brave Knight Defeated The Dragon ⚔️');
-  });
-
-  it('handles single word', () => {
-    const message = 'victory';
-    const result = formatAdventureMessage(message);
-
-    expect(result).toBe('🗡️ Victory ⚔️');
-  });
-
-  it('handles empty string', () => {
-    const message = '';
-    const result = formatAdventureMessage(message);
-
-    expect(result).toBe('🗡️  ⚔️');
-  });
-});

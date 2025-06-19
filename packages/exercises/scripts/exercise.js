@@ -20,34 +20,30 @@ const pathToFolder = srcPath + '/' + dir;
 
 const allExercises = fs.readdirSync(pathToFolder);
 
-let pathIndicator = '.exercise.';
+let pathIndicator = '.test.';
 
-if (process.env.SOLUTION) {
-  pathIndicator = '.solution.';
-}
-
-const exercisePath = allExercises.find(
+const testFile = allExercises.find(
   (exercisePath) =>
     exercisePath.startsWith(exercise) && exercisePath.includes(pathIndicator)
 );
 
-if (!exercisePath) {
-  console.log(`Exercise ${exercise} not found`);
+if (!testFile) {
+  console.error(`Test file for exercise ${exercise} not found in ${pathToFolder}`);
   process.exit(1);
 }
 
-const exerciseFile = path.resolve(pathToFolder, exercisePath);
+console.log(`Running tests: ${testFile}`);
 
-chokidar.watch(exerciseFile).on('all', (_event, _path) => {
-  try {
-    console.clear();
-    console.log('Running tests...');
-    execSync(`npx vitest run "${exerciseFile}"`, {
-      stdio: 'inherit',
-    });
-    console.log('You passed the exercise!');
-    process.exit(0);
-  } catch {
-    console.log('Failed. Try again!');
-  }
+const exerciseFile = testFile.replace('.test.', '.exercise.');
+const watchFiles = [testFile, exerciseFile].map(f => path.join(pathToFolder, f));
+
+chokidar.watch(watchFiles).on('change', () => {
+  console.log(`\n🔄 File changed, re-running tests...\n`);
+  execSync(`npx vitest run "${testFile}"`, {
+    stdio: 'inherit',
+  });
+});
+
+execSync(`npx vitest run "${testFile}"`, {
+  stdio: 'inherit',
 });

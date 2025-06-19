@@ -1,6 +1,5 @@
 import { Reader, ask, map } from 'fp-ts/Reader';
 import { pipe } from 'fp-ts/function';
-import { test, expect, describe, it } from '@jest/globals';
 
 interface GameConfig {
   playerName: string;
@@ -56,29 +55,3 @@ export const completeQuest = (): Reader<GameConfig, QuestResult> => {
     })
   );
 };
-
-describe('Reader exercises', () => {
-  const config: GameConfig = {
-    playerName: 'Hero',
-    difficulty: 'medium',
-    secretKey: 'abc123',
-  };
-
-  it('gets player greeting', () => {
-    const greeting = getPlayerGreeting()(config);
-    expect(greeting).toBe('Welcome, Hero!');
-  });
-
-  it('calculates reward based on difficulty', () => {
-    const reward = calculateReward()(config);
-    expect(reward).toBe(200);
-  });
-
-  it('completes quest with combined result', () => {
-    const result = completeQuest()(config);
-    expect(result).toEqual({
-      message: 'Welcome, Hero!',
-      reward: 200,
-    });
-  });
-});

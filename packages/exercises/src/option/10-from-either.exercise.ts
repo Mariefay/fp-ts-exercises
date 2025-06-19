@@ -1,6 +1,5 @@
 import { Option, some, none, fromEither } from 'fp-ts/Option';
 import { Either, left, right } from 'fp-ts/Either';
-import { test, expect, describe, it } from '@jest/globals';
 
 interface User {
   id: number;
@@ -15,16 +14,6 @@ const getUserById = (id: number): Either<string, User> => {
   return right({ id, name: `User ${id}`, age: id * 10 });
 };
 
-const getUserOptionById = (id: number): Option<User> => {};
-
-describe('getUserOptionById', () => {
-  it('returns none if user ID is less than 1', () => {
-    const result = getUserOptionById(0);
-    expect(result).toBe(none);
-  });
-
-  it('returns a some object with the user if user ID is valid', () => {
-    const result = getUserOptionById(2);
-    expect(result).toEqual(some({ id: 2, name: 'User 2', age: 20 }));
-  });
-});
+export const eitherToOption = (either: Either<string, number>): Option<number> => {
+  throw new Error('Not implemented');
+};
