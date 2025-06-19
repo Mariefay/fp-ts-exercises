@@ -129,4 +129,36 @@ export default [
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
+  {
+    files: ['**/*.spec.ts', '**/*.test.ts'],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module',
+      },
+      globals: {
+        describe: 'readonly',
+        it: 'readonly',
+        test: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        jest: 'readonly',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': typescript,
+    },
+    rules: {
+      ...typescript.configs.recommended.rules,
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
+    },
+  },
 ];

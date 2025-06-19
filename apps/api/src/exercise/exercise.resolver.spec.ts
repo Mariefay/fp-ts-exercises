@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExerciseResolver } from './exercise.resolver.js';
 import { ExerciseService } from './exercise.service.js';
-import { DifficultyLevel } from './exercise.types.js';
 
 describe('ExerciseResolver', () => {
   let resolver: ExerciseResolver;
