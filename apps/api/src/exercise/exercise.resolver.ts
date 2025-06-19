@@ -42,6 +42,7 @@ export class ExerciseResolver {
       starterCode: exercise.starterCode,
       solutionCode: exercise.solutionCode,
       imports: exercise.imports,
+      testCases: exercise.testCases || [],
       conceptTitle: exercise.metadata.conceptTitle,
       goalStatement: exercise.metadata.goalStatement,
       conceptExplanation: exercise.metadata.conceptExplanation,

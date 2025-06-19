@@ -24,6 +24,11 @@ export const GET_EXERCISES_BY_CATEGORY = gql`
       starterCode
       solutionCode
       imports
+      testCases {
+        description
+        code
+        type
+      }
       conceptTitle
       goalStatement
       conceptExplanation
@@ -48,6 +53,11 @@ export const GET_EXERCISE_BY_SLUG = gql`
       starterCode
       solutionCode
       imports
+      testCases {
+        description
+        code
+        type
+      }
       conceptTitle
       goalStatement
       conceptExplanation

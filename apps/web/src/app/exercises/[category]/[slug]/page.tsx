@@ -11,6 +11,12 @@ import { CollapsibleHints } from '@/components/exercise/collapsible-hints';
 import { useProgress } from '@/contexts/progress-context';
 import { useEffect, useState } from 'react';
 
+interface TestCase {
+  description: string;
+  code: string;
+  type: 'it' | 'describe';
+}
+
 interface Exercise {
   slug: string;
   category: string;
@@ -22,6 +28,7 @@ interface Exercise {
   starterCode: string;
   solutionCode: string;
   imports: string[];
+  testCases: TestCase[];
   conceptTitle?: string;
   goalStatement?: string;
   conceptExplanation?: string;
