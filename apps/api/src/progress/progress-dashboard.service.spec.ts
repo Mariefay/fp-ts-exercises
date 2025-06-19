@@ -282,7 +282,7 @@ describe('ProgressDashboardService', () => {
 
     it('should return null for next recommended exercise when all exercises are completed', async () => {
       prismaService.session.findUnique.mockResolvedValue(mockSession);
-      prismaService.completedExercise.count.mockResolvedValue(0);
+      prismaService.completedExercise.count.mockResolvedValue(2);
       prismaService.completedExercise.findMany.mockResolvedValue(
         mockedCompletedExercises
       );
