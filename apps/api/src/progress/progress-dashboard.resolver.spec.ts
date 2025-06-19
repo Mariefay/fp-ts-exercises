@@ -14,48 +14,56 @@ describe('ProgressDashboardResolver', () => {
     totalExercises: 20,
     weeklyProgress: [
       {
+        id: '1',
+        sessionId: 'session-123',
         date: '2025-06-18T00:00:00.000Z',
         exercisesCompleted: 3,
-        timeSpent: 900
+        timeSpent: 900,
       },
       {
+        id: '2',
+        sessionId: 'session-123',
         date: '2025-06-17T00:00:00.000Z',
         exercisesCompleted: 2,
-        timeSpent: 600
-      }
+        timeSpent: 600,
+      },
     ],
+
     categoryProgress: [
       {
         category: 'option',
         completed: 8,
         total: 10,
-        percentage: 80
+        percentage: 80,
       },
       {
         category: 'either',
         completed: 7,
         total: 10,
-        percentage: 70
-      }
+        percentage: 70,
+      },
     ],
     nextRecommendedExercise: {
       slug: 'option/09',
       title: 'Advanced Option Handling',
       category: 'option',
-      difficulty: 'medium'
-    }
+      difficulty: 'medium',
+    },
   };
 
   beforeEach(async () => {
     const mockProgressDashboardService = {
       getDashboardData: jest.fn(),
-      trackSessionTime: jest.fn()
+      trackSessionTime: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProgressDashboardResolver,
-        { provide: ProgressDashboardService, useValue: mockProgressDashboardService }
+        {
+          provide: ProgressDashboardService,
+          useValue: mockProgressDashboardService,
+        },
       ],
     }).compile();
 
@@ -69,12 +77,16 @@ describe('ProgressDashboardResolver', () => {
 
   describe('getProgressDashboard', () => {
     it('should return dashboard data for valid session ID', async () => {
-      progressDashboardService.getDashboardData.mockResolvedValue(mockDashboardData);
+      progressDashboardService.getDashboardData.mockResolvedValue(
+        mockDashboardData
+      );
 
       const result = await resolver.getProgressDashboard('session-123');
 
       expect(result).toEqual(mockDashboardData);
-      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith('session-123');
+      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
+        'session-123'
+      );
     });
 
     it('should handle empty session ID', async () => {
@@ -86,14 +98,18 @@ describe('ProgressDashboardResolver', () => {
         totalExercises: 20,
         weeklyProgress: [],
         categoryProgress: [],
-        nextRecommendedExercise: null
+        nextRecommendedExercise: null,
       };
-      progressDashboardService.getDashboardData.mockResolvedValue(emptyDashboardData);
+      progressDashboardService.getDashboardData.mockResolvedValue(
+        emptyDashboardData
+      );
 
       const result = await resolver.getProgressDashboard('');
 
       expect(result).toEqual(emptyDashboardData);
-      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith('');
+      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
+        ''
+      );
     });
 
     it('should handle null session ID', async () => {
@@ -105,21 +121,31 @@ describe('ProgressDashboardResolver', () => {
         totalExercises: 20,
         weeklyProgress: [],
         categoryProgress: [],
-        nextRecommendedExercise: null
+        nextRecommendedExercise: null,
       };
-      progressDashboardService.getDashboardData.mockResolvedValue(emptyDashboardData);
+      progressDashboardService.getDashboardData.mockResolvedValue(
+        emptyDashboardData
+      );
 
       const result = await resolver.getProgressDashboard(null as any);
 
       expect(result).toEqual(emptyDashboardData);
-      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(null);
+      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
+        null
+      );
     });
 
     it('should handle service errors', async () => {
-      progressDashboardService.getDashboardData.mockRejectedValue(new Error('Service error'));
+      progressDashboardService.getDashboardData.mockRejectedValue(
+        new Error('Service error')
+      );
 
-      await expect(resolver.getProgressDashboard('session-123')).rejects.toThrow('Service error');
-      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith('session-123');
+      await expect(
+        resolver.getProgressDashboard('session-123')
+      ).rejects.toThrow('Service error');
+      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
+        'session-123'
+      );
     });
 
     it('should handle non-existent session ID', async () => {
@@ -131,27 +157,37 @@ describe('ProgressDashboardResolver', () => {
         totalExercises: 20,
         weeklyProgress: [],
         categoryProgress: [],
-        nextRecommendedExercise: null
+        nextRecommendedExercise: null,
       };
-      progressDashboardService.getDashboardData.mockResolvedValue(emptyDashboardData);
+      progressDashboardService.getDashboardData.mockResolvedValue(
+        emptyDashboardData
+      );
 
-      const result = await resolver.getProgressDashboard('non-existent-session');
+      const result = await resolver.getProgressDashboard(
+        'non-existent-session'
+      );
 
       expect(result).toEqual(emptyDashboardData);
-      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith('non-existent-session');
+      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
+        'non-existent-session'
+      );
     });
 
     it('should return dashboard data with null next recommended exercise', async () => {
       const dashboardDataWithoutRecommendation = {
         ...mockDashboardData,
-        nextRecommendedExercise: null
+        nextRecommendedExercise: null,
       };
-      progressDashboardService.getDashboardData.mockResolvedValue(dashboardDataWithoutRecommendation);
+      progressDashboardService.getDashboardData.mockResolvedValue(
+        dashboardDataWithoutRecommendation
+      );
 
       const result = await resolver.getProgressDashboard('session-123');
 
       expect(result.nextRecommendedExercise).toBeNull();
-      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith('session-123');
+      expect(progressDashboardService.getDashboardData).toHaveBeenCalledWith(
+        'session-123'
+      );
     });
   });
 
@@ -162,7 +198,10 @@ describe('ProgressDashboardResolver', () => {
       const result = await resolver.trackSessionTime('session-123', 300);
 
       expect(result).toBe(true);
-      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith('session-123', 300);
+      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
+        'session-123',
+        300
+      );
     });
 
     it('should handle zero time spent', async () => {
@@ -171,7 +210,10 @@ describe('ProgressDashboardResolver', () => {
       const result = await resolver.trackSessionTime('session-123', 0);
 
       expect(result).toBe(true);
-      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith('session-123', 0);
+      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
+        'session-123',
+        0
+      );
     });
 
     it('should handle negative time spent', async () => {
@@ -180,7 +222,10 @@ describe('ProgressDashboardResolver', () => {
       const result = await resolver.trackSessionTime('session-123', -100);
 
       expect(result).toBe(true);
-      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith('session-123', -100);
+      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
+        'session-123',
+        -100
+      );
     });
 
     it('should handle large time values', async () => {
@@ -189,14 +234,24 @@ describe('ProgressDashboardResolver', () => {
       const result = await resolver.trackSessionTime('session-123', 999999);
 
       expect(result).toBe(true);
-      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith('session-123', 999999);
+      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
+        'session-123',
+        999999
+      );
     });
 
     it('should handle service errors', async () => {
-      progressDashboardService.trackSessionTime.mockRejectedValue(new Error('Database error'));
+      progressDashboardService.trackSessionTime.mockRejectedValue(
+        new Error('Database error')
+      );
 
-      await expect(resolver.trackSessionTime('session-123', 300)).rejects.toThrow('Database error');
-      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith('session-123', 300);
+      await expect(
+        resolver.trackSessionTime('session-123', 300)
+      ).rejects.toThrow('Database error');
+      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
+        'session-123',
+        300
+      );
     });
 
     it('should handle empty session ID', async () => {
@@ -205,7 +260,10 @@ describe('ProgressDashboardResolver', () => {
       const result = await resolver.trackSessionTime('', 300);
 
       expect(result).toBe(true);
-      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith('', 300);
+      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
+        '',
+        300
+      );
     });
 
     it('should handle null session ID', async () => {
@@ -214,7 +272,10 @@ describe('ProgressDashboardResolver', () => {
       const result = await resolver.trackSessionTime(null as any, 300);
 
       expect(result).toBe(true);
-      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(null, 300);
+      expect(progressDashboardService.trackSessionTime).toHaveBeenCalledWith(
+        null,
+        300
+      );
     });
   });
 });

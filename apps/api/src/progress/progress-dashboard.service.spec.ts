@@ -6,7 +6,7 @@ import { ExerciseDiscoveryWrapper } from '../exercise/exercise-discovery.wrapper
 
 describe('ProgressDashboardService', () => {
   let service: ProgressDashboardService;
-  let prismaService: jest.Mocked<PrismaService>;
+  let prismaService: jest.MockedObjectDeep<PrismaService>;
   let validationService: jest.Mocked<ExerciseValidationService>;
   let exerciseWrapper: jest.Mocked<ExerciseDiscoveryWrapper>;
 
@@ -16,25 +16,76 @@ describe('ProgressDashboardService', () => {
     longestStreak: 10,
     totalTimeSpent: 3600,
     completedExercises: [
-      { id: '1', exerciseSlug: 'option/01', sessionId: 'session-123', completedAt: new Date(), timeSpent: 300 },
-      { id: '2', exerciseSlug: 'option/02', sessionId: 'session-123', completedAt: new Date(), timeSpent: 450 }
+      {
+        id: '1',
+        exerciseSlug: 'option/01',
+        sessionId: 'session-123',
+        completedAt: new Date(),
+        timeSpent: 300,
+      },
+      {
+        id: '2',
+        exerciseSlug: 'option/02',
+        sessionId: 'session-123',
+        completedAt: new Date(),
+        timeSpent: 450,
+      },
     ],
     sessionMetrics: [
-      { id: '1', sessionId: 'session-123', date: new Date('2025-06-18'), exercisesCompleted: 2, timeSpent: 750 },
-      { id: '2', sessionId: 'session-123', date: new Date('2025-06-17'), exercisesCompleted: 1, timeSpent: 300 }
-    ]
-  };
+      {
+        id: '1',
+        sessionId: 'session-123',
+        date: new Date('2025-06-18'),
+        exercisesCompleted: 2,
+        timeSpent: 750,
+      },
+      {
+        id: '2',
+        sessionId: 'session-123',
+        date: new Date('2025-06-17'),
+        exercisesCompleted: 1,
+        timeSpent: 300,
+      },
+    ],
+  } as any;
+
+  const mockedCompletedExercises = [
+    {
+      id: '1',
+      exerciseSlug: 'option/01',
+      sessionId: 'session-123',
+      completedAt: new Date(),
+      timeSpent: 300,
+    },
+    {
+      id: '2',
+      exerciseSlug: 'option/02',
+      sessionId: 'session-123',
+      completedAt: new Date(),
+      timeSpent: 450,
+    },
+  ];
 
   const mockValidationResult = {
     isValid: true,
     totalExercises: 20,
     categoryValidation: [],
-    issues: []
+    issues: [],
   };
 
   const mockCategories = [
-    { name: 'Option', slug: 'option', description: 'Option exercises', totalCount: 10 },
-    { name: 'Either', slug: 'either', description: 'Either exercises', totalCount: 8 }
+    {
+      name: 'Option',
+      slug: 'option',
+      description: 'Option exercises',
+      totalCount: 10,
+    },
+    {
+      name: 'Either',
+      slug: 'either',
+      description: 'Either exercises',
+      totalCount: 8,
+    },
   ];
 
   const mockExercises = [
@@ -44,8 +95,8 @@ describe('ProgressDashboardService', () => {
         title: 'Working with Option',
         category: 'option',
         difficulty: 'easy',
-        number: '03'
-      }
+        number: '03',
+      },
     },
     {
       metadata: {
@@ -53,30 +104,30 @@ describe('ProgressDashboardService', () => {
         title: 'Working with Either',
         category: 'either',
         difficulty: 'medium',
-        number: '01'
-      }
-    }
+        number: '01',
+      },
+    },
   ];
 
   beforeEach(async () => {
     const mockPrismaService = {
       session: {
         findUnique: jest.fn(),
-        update: jest.fn()
+        update: jest.fn(),
       },
       completedExercise: {
         count: jest.fn(),
-        findMany: jest.fn()
-      }
+        findMany: jest.fn(),
+      },
     };
 
     const mockValidationService = {
-      validateExerciseSystem: jest.fn()
+      validateExerciseSystem: jest.fn(),
     };
 
     const mockExerciseWrapper = {
       getCategories: jest.fn(),
-      getExercises: jest.fn()
+      getExercises: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -84,7 +135,7 @@ describe('ProgressDashboardService', () => {
         ProgressDashboardService,
         { provide: PrismaService, useValue: mockPrismaService },
         { provide: ExerciseValidationService, useValue: mockValidationService },
-        { provide: ExerciseDiscoveryWrapper, useValue: mockExerciseWrapper }
+        { provide: ExerciseDiscoveryWrapper, useValue: mockExerciseWrapper },
       ],
     }).compile();
 
@@ -100,7 +151,9 @@ describe('ProgressDashboardService', () => {
 
   describe('getDashboardData', () => {
     beforeEach(() => {
-      validationService.validateExerciseSystem.mockResolvedValue(mockValidationResult);
+      validationService.validateExerciseSystem.mockResolvedValue(
+        mockValidationResult
+      );
       exerciseWrapper.getCategories.mockResolvedValue(mockCategories);
       exerciseWrapper.getExercises.mockResolvedValue(mockExercises);
     });
@@ -116,7 +169,7 @@ describe('ProgressDashboardService', () => {
         totalExercises: 20,
         weeklyProgress: [],
         categoryProgress: [],
-        nextRecommendedExercise: null
+        nextRecommendedExercise: null,
       });
       expect(validationService.validateExerciseSystem).toHaveBeenCalled();
       expect(prismaService.session.findUnique).not.toHaveBeenCalled();
@@ -133,7 +186,7 @@ describe('ProgressDashboardService', () => {
         totalExercises: 20,
         weeklyProgress: [],
         categoryProgress: [],
-        nextRecommendedExercise: null
+        nextRecommendedExercise: null,
       });
     });
 
@@ -150,14 +203,14 @@ describe('ProgressDashboardService', () => {
         totalExercises: 20,
         weeklyProgress: [],
         categoryProgress: [],
-        nextRecommendedExercise: null
+        nextRecommendedExercise: null,
       });
       expect(prismaService.session.findUnique).toHaveBeenCalledWith({
         where: { id: 'non-existent-session' },
         include: {
           completedExercises: true,
-          sessionMetrics: true
-        }
+          sessionMetrics: true,
+        },
       });
     });
 
@@ -166,10 +219,9 @@ describe('ProgressDashboardService', () => {
       prismaService.completedExercise.count
         .mockResolvedValueOnce(2)
         .mockResolvedValueOnce(0);
-      prismaService.completedExercise.findMany.mockResolvedValue([
-        { exerciseSlug: 'option/01' },
-        { exerciseSlug: 'option/02' }
-      ]);
+      prismaService.completedExercise.findMany.mockResolvedValue(
+        mockedCompletedExercises
+      );
 
       const result = await service.getDashboardData('session-123');
 
@@ -185,48 +237,55 @@ describe('ProgressDashboardService', () => {
             sessionId: 'session-123',
             date: '2025-06-18T00:00:00.000Z',
             exercisesCompleted: 2,
-            timeSpent: 750
+            timeSpent: 750,
           },
           {
             id: '2',
             sessionId: 'session-123',
             date: '2025-06-17T00:00:00.000Z',
             exercisesCompleted: 1,
-            timeSpent: 300
-          }
+            timeSpent: 300,
+          },
         ],
         categoryProgress: [
           { category: 'option', completed: 2, total: 10, percentage: 20 },
-          { category: 'either', completed: 0, total: 8, percentage: 0 }
+          { category: 'either', completed: 0, total: 8, percentage: 0 },
         ],
         nextRecommendedExercise: {
           slug: 'option/03',
           title: 'Working with Option',
           category: 'option',
-          difficulty: 'easy'
-        }
+          difficulty: 'easy',
+        },
       });
     });
 
     it('should handle validation service errors', async () => {
-      validationService.validateExerciseSystem.mockRejectedValue(new Error('Validation failed'));
+      validationService.validateExerciseSystem.mockRejectedValue(
+        new Error('Validation failed')
+      );
 
-      await expect(service.getDashboardData('session-123')).rejects.toThrow('Validation failed');
+      await expect(service.getDashboardData('session-123')).rejects.toThrow(
+        'Validation failed'
+      );
     });
 
     it('should handle database errors', async () => {
-      prismaService.session.findUnique.mockRejectedValue(new Error('Database error'));
+      prismaService.session.findUnique.mockRejectedValue(
+        new Error('Database error')
+      );
 
-      await expect(service.getDashboardData('session-123')).rejects.toThrow('Database error');
+      await expect(service.getDashboardData('session-123')).rejects.toThrow(
+        'Database error'
+      );
     });
 
     it('should return null for next recommended exercise when all exercises are completed', async () => {
       prismaService.session.findUnique.mockResolvedValue(mockSession);
       prismaService.completedExercise.count.mockResolvedValue(0);
-      prismaService.completedExercise.findMany.mockResolvedValue([
-        { exerciseSlug: 'option/03' },
-        { exerciseSlug: 'either/01' }
-      ]);
+      prismaService.completedExercise.findMany.mockResolvedValue(
+        mockedCompletedExercises
+      );
 
       const result = await service.getDashboardData('session-123');
 
@@ -241,8 +300,8 @@ describe('ProgressDashboardService', () => {
             title: 'Hard Option',
             category: 'option',
             difficulty: 'hard',
-            number: '05'
-          }
+            number: '05',
+          },
         },
         {
           metadata: {
@@ -250,8 +309,8 @@ describe('ProgressDashboardService', () => {
             title: 'Easy Option',
             category: 'option',
             difficulty: 'easy',
-            number: '03'
-          }
+            number: '03',
+          },
         },
         {
           metadata: {
@@ -259,9 +318,9 @@ describe('ProgressDashboardService', () => {
             title: 'Medium Option',
             category: 'option',
             difficulty: 'medium',
-            number: '04'
-          }
-        }
+            number: '04',
+          },
+        },
       ];
 
       prismaService.session.findUnique.mockResolvedValue(mockSession);
@@ -286,16 +345,20 @@ describe('ProgressDashboardService', () => {
         where: { id: 'session-123' },
         data: {
           totalTimeSpent: {
-            increment: 300
-          }
-        }
+            increment: 300,
+          },
+        },
       });
     });
 
     it('should handle database errors when tracking time', async () => {
-      prismaService.session.update.mockRejectedValue(new Error('Database error'));
+      prismaService.session.update.mockRejectedValue(
+        new Error('Database error')
+      );
 
-      await expect(service.trackSessionTime('session-123', 300)).rejects.toThrow('Database error');
+      await expect(
+        service.trackSessionTime('session-123', 300)
+      ).rejects.toThrow('Database error');
     });
 
     it('should handle negative time values', async () => {
@@ -307,9 +370,9 @@ describe('ProgressDashboardService', () => {
         where: { id: 'session-123' },
         data: {
           totalTimeSpent: {
-            increment: -100
-          }
-        }
+            increment: -100,
+          },
+        },
       });
     });
 
@@ -322,9 +385,9 @@ describe('ProgressDashboardService', () => {
         where: { id: 'session-123' },
         data: {
           totalTimeSpent: {
-            increment: 0
-          }
-        }
+            increment: 0,
+          },
+        },
       });
     });
   });
