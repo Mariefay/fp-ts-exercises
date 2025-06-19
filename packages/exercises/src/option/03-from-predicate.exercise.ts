@@ -1,5 +1,5 @@
 import { Option, some, none, fromPredicate } from 'fp-ts/Option';
-import { test, expect, describe, it } from '@jest/globals';
+
 import { pipe } from 'fp-ts/lib/function';
 
 interface User {

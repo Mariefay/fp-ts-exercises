@@ -1,6 +1,6 @@
 import { map } from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
-import { test, expect, describe, it } from '@jest/globals';
+
 
 const capitalizeWord = (word: string): string => {
   if (word.length === 0) return word;

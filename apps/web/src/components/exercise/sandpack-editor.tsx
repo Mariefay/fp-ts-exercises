@@ -50,7 +50,6 @@ export function SandpackEditor({ exercise, onTestPass }: SandpackEditorProps) {
         .join('\n\n');
 
       const testCode = `${exercise.imports.join('\n')}
-import { test, expect, describe, it } from '@jest/globals';
 
 import { ${functionName} } from './exercise';
 
@@ -60,12 +59,11 @@ ${testCaseCode}
     }
 
     return `${exercise.imports.join('\n')}
-import { test, expect, describe, it } from '@jest/globals';
 
 import { ${functionName} } from './exercise';
 
 describe('${exercise.title}', () => {
-  it('should implement the function correctly', () => {
+  test('should implement the function correctly', () => {
     expect(typeof ${functionName}).toBe('function');
   });
 });
@@ -91,7 +89,6 @@ export { ${functionName} };`,
         {
           dependencies: {
             'fp-ts': '^2.16.9',
-            '@jest/globals': '^29.0.0',
             jest: '^29.0.0',
           },
           scripts: {
@@ -118,7 +115,6 @@ export { ${functionName} };`,
           customSetup={{
             dependencies: {
               'fp-ts': '^2.16.9',
-              '@jest/globals': '^29.0.0',
               jest: '^29.0.0',
               typescript: '^5.0.0',
             },
