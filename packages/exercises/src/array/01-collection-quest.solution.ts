@@ -1,6 +1,5 @@
 import { map, filter, reduce } from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
-import { test, expect, describe, it } from '@jest/globals';
 
 interface MagicalItem {
   name: string;

@@ -1,5 +1,5 @@
 import { Option, some, none, filter, of } from 'fp-ts/Option';
-import { test, expect, describe, it } from '@jest/globals';
+
 import { pipe } from 'fp-ts/lib/function';
 
 interface User {
