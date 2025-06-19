@@ -11,6 +11,18 @@ registerEnumType(DifficultyLevel, {
 });
 
 @ObjectType()
+export class TestCaseType {
+  @Field()
+  description: string;
+
+  @Field()
+  code: string;
+
+  @Field()
+  type: string;
+}
+
+@ObjectType()
 export class ExerciseType {
   @Field()
   slug: string;
@@ -41,6 +53,9 @@ export class ExerciseType {
 
   @Field(() => [String])
   imports: string[];
+
+  @Field(() => [TestCaseType])
+  testCases: TestCaseType[];
 
   @Field({ nullable: true })
   conceptTitle?: string;
