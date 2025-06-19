@@ -1,0 +1,179 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.key }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Generate cache key
+        id: cache-key
+        run: echo "key=node-modules-${{ hashFiles('**/package-lock.json') }}" >> $GITHUB_OUTPUT
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            packages/*/node_modules
+          key: ${{ steps.cache-key.outputs.key }}
+          restore-keys: |
+            node-modules-
+
+      - name: Install dependencies
+        run: npm install
+
+  quality-checks:
+    runs-on: ubuntu-latest
+    needs: setup
+    strategy:
+      matrix:
+        check: [typecheck, lint, format-check]
+      fail-fast: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Restore node_modules cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            packages/*/node_modules
+          key: ${{ needs.setup.outputs.cache-key }}
+          restore-keys: |
+            node-modules-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run TypeScript compilation check
+        if: matrix.check == 'typecheck'
+        run: npm run typecheck
+
+      - name: Run ESLint
+        if: matrix.check == 'lint'
+        run: npm run lint
+
+      - name: Run Prettier format check
+        if: matrix.check == 'format-check'
+        run: npm run format:check
+
+  testing:
+    runs-on: ubuntu-latest
+    needs: setup
+    strategy:
+      matrix:
+        workspace: [exercises, api]
+      fail-fast: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Restore node_modules cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            packages/*/node_modules
+          key: ${{ needs.setup.outputs.cache-key }}
+          restore-keys: |
+            node-modules-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run exercises tests
+        if: matrix.workspace == 'exercises'
+        run: npm run test
+
+      - name: Run API tests
+        if: matrix.workspace == 'api'
+        run: npm run test --workspace=apps/api
+
+  workspace-validation:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Restore node_modules cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            packages/*/node_modules
+          key: ${{ needs.setup.outputs.cache-key }}
+          restore-keys: |
+            node-modules-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Verify workspace structure
+        run: |
+          echo "Verifying monorepo workspace structure..."
+          npm ls --workspaces --depth=0
+          
+      - name: Verify workspace dependencies
+        run: |
+          echo "Checking workspace dependency resolution..."
+          npm run typecheck --workspace=packages/exercises
+          npm run typecheck --workspace=apps/web
+          npm run typecheck --workspace=apps/api
+
+  summary:
+    runs-on: ubuntu-latest
+    needs: [quality-checks, testing, workspace-validation]
+    if: always()
+    steps:
+      - name: Check all jobs status
+        run: |
+          if [[ "${{ needs.quality-checks.result }}" == "failure" || "${{ needs.testing.result }}" == "failure" || "${{ needs.workspace-validation.result }}" == "failure" ]]; then
+            echo "❌ CI Pipeline Failed"
+            echo "Quality Checks: ${{ needs.quality-checks.result }}"
+            echo "Testing: ${{ needs.testing.result }}"
+            echo "Workspace Validation: ${{ needs.workspace-validation.result }}"
+            exit 1
+          else
+            echo "✅ CI Pipeline Passed"
+            echo "All checks completed successfully!"
+          fi
