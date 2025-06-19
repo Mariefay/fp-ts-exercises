@@ -80,8 +80,10 @@ function TestRunner({
             consoleOutput.includes('passed') ||
             consoleOutput.includes('Test Files') ||
             consoleOutput.includes('Tests') ||
-            /\\d+\\s+passed/.test(consoleOutput) ||
-            /✓.*test/.test(consoleOutput)
+            /\d+\s+passed/.test(consoleOutput) ||
+            /✓.*test/.test(consoleOutput) ||
+            /Tests\s+\d+\s+passed/.test(consoleOutput) ||
+            /Test Files\s+\d+\s+passed/.test(consoleOutput)
           ) {
             hasTestResults = true;
             setTestResults({
@@ -98,8 +100,11 @@ function TestRunner({
             consoleOutput.includes('failed') ||
             consoleOutput.includes('AssertionError') ||
             consoleOutput.includes('expected') ||
-            /\\d+\\s+failed/.test(consoleOutput) ||
-            /✗.*test/.test(consoleOutput)
+            /\d+\s+failed/.test(consoleOutput) ||
+            /✗.*test/.test(consoleOutput) ||
+            /Tests\s+\d+\s+failed/.test(consoleOutput) ||
+            /Test Files\s+\d+\s+failed/.test(consoleOutput) ||
+            consoleOutput.includes('Error:')
           ) {
             hasTestResults = true;
             setTestResults({
@@ -125,18 +130,17 @@ function TestRunner({
         console.log('Debug: Full test output:', testOutput); // Add debugging
 
         if (!hasTestResults && testOutput.trim()) {
-          // Enhanced error handling with actual output shown
           setTestResults({
             passed: false,
-            output: `❌ Test execution completed but results unclear:\\n\\nActual output:\\n${testOutput}\\n\\nExpected patterns: ✓, PASS, passing, passed, ✗, FAIL, failing, failed`,
+            output: `❌ Test execution completed but results unclear:\n\nActual output:\n${testOutput}\n\nExpected patterns: PASS, FAIL, Test Files, Tests, AssertionError`,
           });
         } else if (!hasTestResults) {
           setTestResults({
             passed: false,
-            output: `❌ No test output received. Please check your implementation and try again.\\n\\nThis may indicate:\\n- Syntax errors in your code\\n- Test framework not running properly\\n- Network issues with Sandpack`,
+            output: `❌ No test output received. Please check your implementation and try again.\n\nThis may indicate:\n- Syntax errors in your code\n- Test framework not running properly\n- Network issues with Sandpack\n\nDebug info: Timeout after 12 seconds`,
           });
         }
-      }, 8000);
+      }, 12000);
     } catch (error) {
       setTestResults({
         passed: false,
@@ -270,7 +274,7 @@ export { ${functionName} };`,
             '@vitest/browser': '^1.6.0',
           },
           scripts: {
-            test: 'vitest run --reporter=verbose',
+            test: 'vitest run --reporter=verbose --no-coverage',
           },
         },
         null,
@@ -282,7 +286,8 @@ export { ${functionName} };`,
 
 export default defineConfig({
   test: {
-    environment: 'jsdom',
+    environment: 'node',
+    globals: true,
   },
 });`,
     },
