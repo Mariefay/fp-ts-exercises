@@ -20,27 +20,41 @@ interface DeliveryResult {
   signature: string;
 }
 
-export const validateAddress = (address: string): TaskEither<DeliveryError, string> => {
-  return () => Promise.resolve(
-    address.length < 5 
-      ? eitherLeft({ type: 'INVALID_ADDRESS', message: 'Address too short' } as DeliveryError)
-      : eitherRight(address)
-  );
+export const validateAddress = (
+  address: string
+): TaskEither<DeliveryError, string> => {
+  return () =>
+    Promise.resolve(
+      address.length < 5
+        ? eitherLeft({
+            type: 'INVALID_ADDRESS',
+            message: 'Address too short',
+          } as DeliveryError)
+        : eitherRight(address)
+    );
 };
 
-export const deliverPackage = (pkg: Package): TaskEither<DeliveryError, DeliveryResult> => {
-  return () => Promise.resolve(
-    Math.random() < 0.1
-      ? eitherLeft({ type: 'PACKAGE_LOST', message: 'Package lost during delivery' } as DeliveryError)
-      : eitherRight({
-          packageId: pkg.id,
-          deliveredAt: new Date(),
-          signature: 'Customer Signature'
-        })
-  );
+export const deliverPackage = (
+  pkg: Package
+): TaskEither<DeliveryError, DeliveryResult> => {
+  return () =>
+    Promise.resolve(
+      Math.random() < 0.1
+        ? eitherLeft({
+            type: 'PACKAGE_LOST',
+            message: 'Package lost during delivery',
+          } as DeliveryError)
+        : eitherRight({
+            packageId: pkg.id,
+            deliveredAt: new Date(),
+            signature: 'Customer Signature',
+          })
+    );
 };
 
-export const processDelivery = (pkg: Package): TaskEither<DeliveryError, DeliveryResult> => {
+export const processDelivery = (
+  pkg: Package
+): TaskEither<DeliveryError, DeliveryResult> => {
   return pipe(
     validateAddress(pkg.destination),
     chain(() => deliverPackage(pkg))
@@ -55,18 +69,20 @@ describe('TaskEither exercises', () => {
 
   it('rejects invalid address', async () => {
     const result = await validateAddress('123')();
-    expect(result).toEqual(left({ type: 'INVALID_ADDRESS', message: 'Address too short' }));
+    expect(result).toEqual(
+      left({ type: 'INVALID_ADDRESS', message: 'Address too short' })
+    );
   });
 
   it('processes delivery successfully', async () => {
     const pkg: Package = {
       id: 'PKG001',
       destination: '123 Main Street',
-      contents: 'Books'
+      contents: 'Books',
     };
-    
+
     const result = await processDelivery(pkg)();
-    
+
     if (result._tag === 'Right') {
       expect(result.right.packageId).toBe('PKG001');
       expect(result.right.signature).toBe('Customer Signature');

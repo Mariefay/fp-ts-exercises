@@ -7,7 +7,9 @@ interface User {
   address?: string;
 }
 
-export const getUserAddressAsNullable = (userOption: Option<User>): string | null => {
+export const getUserAddressAsNullable = (
+  userOption: Option<User>
+): string | null => {
   const user = toNullable(userOption);
   return user?.address || null;
 };

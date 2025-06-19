@@ -25,10 +25,14 @@ export const calculateReward = (): Reader<GameConfig, number> => {
     ask<GameConfig>(),
     map((config) => {
       switch (config.difficulty) {
-        case 'easy': return 100;
-        case 'medium': return 200;
-        case 'hard': return 300;
-        default: return 100;
+        case 'easy':
+          return 100;
+        case 'medium':
+          return 200;
+        case 'hard':
+          return 300;
+        default:
+          return 100;
       }
     })
   );
@@ -39,10 +43,15 @@ export const completeQuest = (): Reader<GameConfig, QuestResult> => {
     ask<GameConfig>(),
     map((config) => {
       const greeting = `Welcome, ${config.playerName}!`;
-      const reward = config.difficulty === 'easy' ? 100 : config.difficulty === 'medium' ? 200 : 300;
+      const reward =
+        config.difficulty === 'easy'
+          ? 100
+          : config.difficulty === 'medium'
+            ? 200
+            : 300;
       return {
         message: greeting,
-        reward
+        reward,
       };
     })
   );
@@ -52,7 +61,7 @@ describe('Reader exercises', () => {
   const config: GameConfig = {
     playerName: 'Hero',
     difficulty: 'medium',
-    secretKey: 'abc123'
+    secretKey: 'abc123',
   };
 
   it('gets player greeting', () => {
@@ -69,7 +78,7 @@ describe('Reader exercises', () => {
     const result = completeQuest()(config);
     expect(result).toEqual({
       message: 'Welcome, Hero!',
-      reward: 200
+      reward: 200,
     });
   });
 });

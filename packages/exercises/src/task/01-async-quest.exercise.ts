@@ -2,7 +2,6 @@ import { Task } from 'fp-ts/Task';
 import { pipe } from 'fp-ts/function';
 import { expect, describe, it } from 'vitest';
 
-
 interface QuestData {
   treasures: string[];
   experience: number;
@@ -39,7 +38,7 @@ describe('Task exercises', () => {
     const result = await completeQuest()();
     expect(result).toEqual({
       treasures: ['Gold Coin', 'Magic Gem', 'Ancient Scroll'],
-      experience: 300
+      experience: 300,
     });
   });
 });

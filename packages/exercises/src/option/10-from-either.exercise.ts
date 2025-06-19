@@ -15,8 +15,7 @@ const getUserById = (id: number): Either<string, User> => {
   return right({ id, name: `User ${id}`, age: id * 10 });
 };
 
-const getUserOptionById = (id: number): Option<User> => {
-};
+const getUserOptionById = (id: number): Option<User> => {};
 
 describe('getUserOptionById', () => {
   it('returns none if user ID is less than 1', () => {

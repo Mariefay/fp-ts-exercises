@@ -8,8 +8,7 @@ interface User {
   age: number;
 }
 
-const getValidUserAddress = (user: User): Option<User> => {
-};
+const getValidUserAddress = (user: User): Option<User> => {};
 
 describe('getValidUserAddress', () => {
   it('returns some if user is over 18', () => {

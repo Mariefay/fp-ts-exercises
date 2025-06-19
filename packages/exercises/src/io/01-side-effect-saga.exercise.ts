@@ -2,11 +2,10 @@ import { IO } from 'fp-ts/IO';
 import { pipe } from 'fp-ts/function';
 import { expect, describe, it, beforeEach } from 'vitest';
 
-
 let gameState = {
   score: 0,
   lives: 3,
-  level: 1
+  level: 1,
 };
 
 const addScore = (points: number): IO<void> => {

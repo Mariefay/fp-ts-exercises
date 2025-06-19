@@ -6,7 +6,9 @@ interface User {
   name: string;
 }
 
-export const getUserAsUndefined = (userOption: Option<User>): User | undefined => {
+export const getUserAsUndefined = (
+  userOption: Option<User>
+): User | undefined => {
   return toUndefined(userOption);
 };
 
