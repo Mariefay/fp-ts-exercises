@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 import { Exercise, ExerciseMetadata, TestCase } from './types.js';
 
 export class ExerciseParser {
@@ -112,43 +112,45 @@ export class ExerciseParser {
     const testCases: TestCase[] = [];
     const lines = content.split('\n');
     
+    console.log('=== extractTestCases DEBUG ===');
+    console.log('Total lines:', lines.length);
+    
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
       
       if (line.startsWith('describe(')) {
+        console.log('Found describe at line', i, ':', line);
         const describeMatch = line.match(/describe\(['"`]([^'"`]+)['"`]/);
         if (describeMatch) {
-          testCases.push({
-            description: describeMatch[1],
-            code: line,
-            type: 'describe',
-          });
-        }
-      }
-      
-      if (line.startsWith('it(')) {
-        const itMatch = line.match(/it\(['"`]([^'"`]+)['"`]/);
-        if (itMatch) {
-          let testCode = line;
+          let describeCode = lines[i]; // Use original line with indentation
           let j = i + 1;
           let braceCount = (line.match(/{/g) || []).length - (line.match(/}/g) || []).length;
           
+          console.log('Initial braceCount:', braceCount);
+          
           while (j < lines.length && braceCount > 0) {
             const nextLine = lines[j];
-            testCode += '\n' + nextLine;
+            describeCode += '\n' + nextLine;
             braceCount += (nextLine.match(/{/g) || []).length - (nextLine.match(/}/g) || []).length;
+            console.log('Line', j, 'braceCount:', braceCount, 'content:', nextLine.trim());
             j++;
           }
           
+          console.log('Final describe code:');
+          console.log(describeCode);
+          
           testCases.push({
-            description: itMatch[1],
-            code: testCode,
-            type: 'it',
+            description: describeMatch[1],
+            code: describeCode,
+            type: 'describe',
           });
+          
+          i = j - 1;
         }
       }
     }
     
+    console.log('=== END extractTestCases DEBUG ===');
     return testCases;
   }
 
