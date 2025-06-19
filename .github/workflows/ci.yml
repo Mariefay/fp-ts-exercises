@@ -49,6 +49,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -82,12 +84,22 @@ jobs:
         if: matrix.check == 'format-check'
         run: npm run format:check
 
+      - name: Auto-fix Prettier formatting issues
+        if: matrix.check == 'format-check' && failure()
+        run: |
+          npm run format
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git diff --staged --quiet || git commit -m "Auto-fix: Format code with Prettier"
+          git push
+
   testing:
     runs-on: ubuntu-latest
     needs: setup
     strategy:
       matrix:
-        workspace: [exercises, api]
+        workspace: [exercises, api, web-e2e]
       fail-fast: false
     steps:
       - name: Checkout code
@@ -113,6 +125,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install Playwright browsers
+        if: matrix.workspace == 'web-e2e'
+        run: npx playwright install --with-deps
+
       - name: Run exercises tests
         if: matrix.workspace == 'exercises'
         run: npm run test
@@ -120,6 +136,10 @@ jobs:
       - name: Run API tests
         if: matrix.workspace == 'api'
         run: npm run test --workspace=apps/api
+
+      - name: Run web e2e tests
+        if: matrix.workspace == 'web-e2e'
+        run: npm run test:e2e
 
   workspace-validation:
     runs-on: ubuntu-latest
