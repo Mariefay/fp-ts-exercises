@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { SessionService } from '../session/session.service.js';
 
 export interface CompletedExercise {
   exerciseSlug: string;
@@ -11,17 +10,15 @@ export interface CompletedExercise {
 export class ProgressService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly sessionService: SessionService,
   ) {}
 
-  async getProgress(sessionId: string): Promise<CompletedExercise[]> {
-    const isValidSession = await this.sessionService.validateSession(sessionId);
-    if (!isValidSession) {
+  async getProgress(userId: string): Promise<CompletedExercise[]> {
+    if (!userId) {
       return [];
     }
 
     const completedExercises = await this.prisma.completedExercise.findMany({
-      where: { sessionId },
+      where: { userId },
       orderBy: { completedAt: 'desc' },
     });
 
@@ -31,14 +28,16 @@ export class ProgressService {
     }));
   }
 
-  async markExerciseComplete(sessionId: string, exerciseSlug: string): Promise<boolean> {
+  async markExerciseComplete(userId: string, exerciseSlug: string): Promise<boolean> {
     try {
-      const validSessionId = await this.sessionService.getOrCreateSession(sessionId);
+      if (!userId) {
+        return false;
+      }
 
       await this.prisma.completedExercise.upsert({
         where: {
-          sessionId_exerciseSlug: {
-            sessionId: validSessionId,
+          userId_exerciseSlug: {
+            userId,
             exerciseSlug,
           },
         },
@@ -46,7 +45,7 @@ export class ProgressService {
           completedAt: new Date(),
         },
         create: {
-          sessionId: validSessionId,
+          userId,
           exerciseSlug,
           completedAt: new Date(),
         },

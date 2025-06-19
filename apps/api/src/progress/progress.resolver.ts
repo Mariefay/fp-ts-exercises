@@ -1,25 +1,27 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import { ProgressService } from './progress.service.js';
-import { CompletedExerciseType } from './progress.types.js';
+import { JwtAuthGuard } from '../auth/auth.guard.js';
 
 @Resolver()
 export class ProgressResolver {
   constructor(private readonly progressService: ProgressService) {}
 
-  @Query(() => [CompletedExerciseType])
-  async getProgress(@Args('sessionId') sessionId: string): Promise<CompletedExerciseType[]> {
-    const progress = await this.progressService.getProgress(sessionId);
-    return progress.map(exercise => ({
-      exerciseSlug: exercise.exerciseSlug,
-      completedAt: exercise.completedAt,
-    }));
+  @Query(() => [String])
+  @UseGuards(JwtAuthGuard)
+  async getProgress(@Context() context: { req: { user: { id: string } } }) {
+    const userId = context.req.user.id;
+    const progress = await this.progressService.getProgress(userId);
+    return progress.map(p => JSON.stringify(p));
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard)
   async markExerciseComplete(
-    @Args('sessionId') sessionId: string,
     @Args('exerciseSlug') exerciseSlug: string,
+    @Context() context: { req: { user: { id: string } } },
   ): Promise<boolean> {
-    return await this.progressService.markExerciseComplete(sessionId, exerciseSlug);
+    const userId = context.req.user.id;
+    return await this.progressService.markExerciseComplete(userId, exerciseSlug);
   }
 }

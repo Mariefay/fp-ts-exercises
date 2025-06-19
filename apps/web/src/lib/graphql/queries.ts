@@ -70,29 +70,25 @@ export const GET_EXERCISE_BY_SLUG = gql`
 `;
 
 export const GET_PROGRESS = gql`
-  query GetProgress($sessionId: String!) {
-    getProgress(sessionId: $sessionId) {
-      exerciseSlug
-      completedAt
-    }
+  query GetProgress {
+    getProgress
   }
 `;
 
 export const MARK_EXERCISE_COMPLETE = gql`
-  mutation MarkExerciseComplete($sessionId: String!, $exerciseSlug: String!) {
-    markExerciseComplete(sessionId: $sessionId, exerciseSlug: $exerciseSlug)
+  mutation MarkExerciseComplete($exerciseSlug: String!) {
+    markExerciseComplete(exerciseSlug: $exerciseSlug)
   }
 `;
 
 export const GET_PROGRESS_DASHBOARD = gql`
-  query GetProgressDashboard($sessionId: String!) {
-    getProgressDashboard(sessionId: $sessionId) {
+  query GetProgressDashboard {
+    getProgressDashboard {
       currentStreak
       longestStreak
       totalTimeSpent
       exercisesCompleted
       totalExercises
-
       weeklyProgress {
         date
         exercisesCompleted
@@ -115,19 +111,25 @@ export const GET_PROGRESS_DASHBOARD = gql`
 `;
 
 export const TRACK_SESSION_TIME = gql`
-  mutation TrackSessionTime($sessionId: String!, $timeSpent: Int!) {
-    trackSessionTime(sessionId: $sessionId, timeSpent: $timeSpent)
+  mutation TrackSessionTime($timeSpent: Int!) {
+    trackSessionTime(timeSpent: $timeSpent)
   }
 `;
 
-export const CREATE_SESSION = gql`
-  mutation CreateSession {
-    createSession
+export const REGISTER_USER = gql`
+  mutation RegisterUser($email: String!, $password: String!, $name: String) {
+    registerUser(email: $email, password: $password, name: $name)
   }
 `;
 
-export const VALIDATE_SESSION = gql`
-  query ValidateSession($sessionId: String!) {
-    validateSession(sessionId: $sessionId)
+export const LOGIN_USER = gql`
+  mutation LoginUser($email: String!, $password: String!) {
+    loginUser(email: $email, password: $password)
+  }
+`;
+
+export const LOGOUT_USER = gql`
+  mutation LogoutUser {
+    logoutUser
   }
 `;

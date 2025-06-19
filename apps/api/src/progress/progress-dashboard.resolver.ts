@@ -1,5 +1,7 @@
-import { Resolver, Query, Mutation, Args, ObjectType, Field, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ObjectType, Field, Int, Context } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import { ProgressDashboardService } from './progress-dashboard.service.js';
+import { JwtAuthGuard } from '../auth/auth.guard.js';
 
 
 
@@ -79,16 +81,20 @@ export class ProgressDashboardResolver {
   constructor(private readonly progressDashboardService: ProgressDashboardService) {}
 
   @Query(() => ProgressDashboard)
-  async getProgressDashboard(@Args('sessionId') sessionId: string): Promise<ProgressDashboard> {
-    return await this.progressDashboardService.getDashboardData(sessionId);
+  @UseGuards(JwtAuthGuard)
+  async getProgressDashboard(@Context() context: { req: { user: { id: string } } }): Promise<ProgressDashboard> {
+    const userId = context.req.user.id;
+    return await this.progressDashboardService.getDashboardData(userId);
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(JwtAuthGuard)
   async trackSessionTime(
-    @Args('sessionId') sessionId: string,
-    @Args('timeSpent', { type: () => Int }) timeSpent: number
+    @Args('timeSpent', { type: () => Int }) timeSpent: number,
+    @Context() context: { req: { user: { id: string } } },
   ): Promise<boolean> {
-    await this.progressDashboardService.trackSessionTime(sessionId, timeSpent);
+    const userId = context.req.user.id;
+    await this.progressDashboardService.trackSessionTime(userId, timeSpent);
     return true;
   }
 }

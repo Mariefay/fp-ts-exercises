@@ -11,10 +11,10 @@ export class ProgressDashboardService {
     private readonly exerciseWrapper: ExerciseDiscoveryWrapper
   ) {}
 
-  async getDashboardData(sessionId: string) {
+  async getDashboardData(userId: string) {
     const validation = await this.validationService.validateExerciseSystem();
     
-    if (!sessionId) {
+    if (!userId) {
       return {
         currentStreak: 0,
         longestStreak: 0,
@@ -28,15 +28,15 @@ export class ProgressDashboardService {
       };
     }
 
-    const session = await this.prisma.session.findUnique({
-      where: { id: sessionId },
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
       include: {
         completedExercises: true,
         sessionMetrics: true
       }
     });
 
-    if (!session) {
+    if (!user) {
       return {
         currentStreak: 0,
         longestStreak: 0,
@@ -51,24 +51,24 @@ export class ProgressDashboardService {
     }
 
     return {
-      currentStreak: session.currentStreak,
-      longestStreak: session.longestStreak,
-      totalTimeSpent: session.totalTimeSpent,
-      exercisesCompleted: session.completedExercises.length,
+      currentStreak: user.currentStreak,
+      longestStreak: user.longestStreak,
+      totalTimeSpent: user.totalTimeSpent,
+      exercisesCompleted: user.completedExercises.length,
       totalExercises: validation.totalExercises,
 
-      weeklyProgress: session.sessionMetrics.slice(-7).map(metric => ({
+      weeklyProgress: user.sessionMetrics.slice(-7).map(metric => ({
         ...metric,
         date: metric.date.toISOString()
       })),
-      categoryProgress: await this.getCategoryProgress(sessionId),
-      nextRecommendedExercise: await this.getNextRecommendedExercise(sessionId)
+      categoryProgress: await this.getCategoryProgress(userId),
+      nextRecommendedExercise: await this.getNextRecommendedExercise(userId)
     };
   }
 
-  async trackSessionTime(sessionId: string, timeSpent: number) {
-    await this.prisma.session.update({
-      where: { id: sessionId },
+  async trackSessionTime(userId: string, timeSpent: number) {
+    await this.prisma.user.update({
+      where: { id: userId },
       data: {
         totalTimeSpent: {
           increment: timeSpent
@@ -77,7 +77,7 @@ export class ProgressDashboardService {
     });
   }
 
-  private async getCategoryProgress(sessionId: string) {
+  private async getCategoryProgress(userId: string) {
     const categories = await this.exerciseWrapper.getCategories();
     const progress: Array<{
       category: string;
@@ -89,7 +89,7 @@ export class ProgressDashboardService {
     for (const category of categories) {
       const completed = await this.prisma.completedExercise.count({
         where: {
-          sessionId,
+          userId,
           exerciseSlug: {
             startsWith: category.slug
           }
@@ -107,9 +107,9 @@ export class ProgressDashboardService {
     return progress;
   }
 
-  private async getNextRecommendedExercise(sessionId: string) {
+  private async getNextRecommendedExercise(userId: string) {
     const completedSlugs = await this.prisma.completedExercise.findMany({
-      where: { sessionId },
+      where: { userId },
       select: { exerciseSlug: true }
     });
 
