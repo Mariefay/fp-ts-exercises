@@ -1,7 +1,11 @@
-const { execSync } = require("child_process");
-const fs = require("fs");
-const path = require("path");
-const chokidar = require("chokidar");
+import { execSync } from "child_process";
+import fs from "fs";
+import path from "path";
+import chokidar from "chokidar";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const srcPath = path.resolve(__dirname, "../src");
 
@@ -38,11 +42,11 @@ chokidar.watch(exerciseFile).on("all", (event, path) => {
   try {
     console.clear();
     console.log("Checking types...");
-    execSync(`tsc "${exerciseFile}" --noEmit --strict --skipLibCheck`, {
+    execSync(`tsc "${exerciseFile}" --noEmit --strict --skipLibCheck --module ESNext --moduleResolution bundler --target ES2022`, {
       stdio: "inherit",
     });
     console.log("Typecheck complete");
-    execSync(`mocha --require ts-node/register "${exerciseFile}"`, {
+    execSync(`vitest run "${exerciseFile}"`, {
       stdio: "inherit",
     });
     console.log("You passed the exercise!");
