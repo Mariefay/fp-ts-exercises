@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+  /* Pastel theme colors */
+  --background: #fdfbff;
+  --foreground: #7c3aed;
+  --primary: #a855f7;
+  --primary-light: #c084fc;
+  --secondary: #06b6d4;
+  --secondary-light: #67e8f9;
+  --accent: #f59e0b;
+  --accent-light: #fbbf24;
+  --success: #10b981;
+  --success-light: #34d399;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --error-light: #f87171;
+  --muted: #f8fafc;
+  --border: #e2e8f0;
+  --card: #ffffff;
+  --shadow: rgba(139, 92, 246, 0.1);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f0f23;
+    --foreground: #e2e8f0;
+    --muted: #1e293b;
+    --border: #334155;
+    --card: #1e293b;
+    --shadow: rgba(139, 92, 246, 0.2);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Smooth transitions */
+* {
+  transition: colors 0.2s ease-in-out;
+}
