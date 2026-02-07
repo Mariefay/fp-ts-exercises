@@ -39,6 +39,17 @@ vercel --prod
 
 **Note:** Next.js 16 requires Node.js >= 20.9.0. Vercel automatically uses the correct version during deployment.
 
+### Local Development Node Version
+
+This project uses Node.js 20. The `.nvmrc` file at the project root ensures the correct version is used.
+
+```bash
+# If you have nvm installed, just run:
+nvm use
+
+# This will automatically switch to Node 20
+```
+
 Or use Vercel Dashboard:
 1. Import GitHub repo
 2. Set root directory to `playground/`

@@ -7,71 +7,44 @@ export default function About() {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             About This Project
           </h1>
-          <p className="text-xl text-gray-600 leading-relaxed">
-            Hi! I&apos;m passionate about functional programming and making it
-            accessible to everyone.
-          </p>
         </div>
 
         {/* About Content */}
         <div className="space-y-12">
           {/* Personal Section */}
           <div className="bg-white rounded-lg p-8 border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              About Me
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">About Me</h2>
             <div className="prose prose-lg text-gray-600">
               <p className="mb-4">
-                I&apos;m a developer who fell in love with functional
-                programming and its ability to make code more predictable,
-                testable, and maintainable. After years of working with fp-ts, I
-                wanted to create a better way for developers to learn these
-                powerful concepts.
+                I built this because a few years ago I had to learn fp-ts for
+                work and got completely stuck. Pure functional programming was
+                brand new to me, and most resources either jumped straight into
+                heavy theory or didn’t give me a good way to actually practice.
+                I kept wishing for a space where I could just experiment and
+                learn by doing. This project is basically the tool I wish I’d
+                had back then, with interactive exercises and small experiments
+                so you can build intuition step by step.
               </p>
               <p className="mb-4">
-                Traditional tutorials often jump straight into complex theory,
-                but I believe in learning by doing. This interactive playground
-                lets you experiment with code, see immediate results, and build
-                confidence step by step.
+                I know AI can generate a lot of this code just fine now, and in
+                that sense there’s arguably less “need” to learn these concepts
+                than before. But I got into programming because I genuinely
+                enjoy it, and learning new ways to think about code is part of
+                the fun. Functional programming stretches your brain in a good
+                way, and I think there’s value in understanding what’s going on
+                under the hood.
+              </p>
+              <p className="mb-4">
+                I’m still learning this stuff myself, and the site grows as I
+                do. If it helps make your fp-ts journey a little less confusing
+                (and a bit more fun) than mine was, then it’s doing exactly what
+                it’s meant to do.
               </p>
               <p>
-                When I&apos;m not coding, you&apos;ll find me exploring new
-                programming languages, contributing to open source projects, or
-                teaching others about the beauty of functional programming.
+                If you have feedback, questions, or just want to say hi, you can
+                reach me at mariefay.tech@gmail.com — I’d genuinely love to hear
+                from you.
               </p>
-            </div>
-          </div>
-
-          {/* Project Motivation */}
-          <div className="bg-white rounded-lg p-8 border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Why This Playground?
-            </h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                  The Problem
-                </h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li>
-                    • fp-ts documentation can be overwhelming for beginners
-                  </li>
-                  <li>• Complex type signatures scare away newcomers</li>
-                  <li>• No interactive way to practice concepts</li>
-                  <li>• Hard to see the practical benefits immediately</li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                  The Solution
-                </h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li>• Hands-on exercises with real code</li>
-                  <li>• Immediate feedback and error messages</li>
-                  <li>• Progressive difficulty levels</li>
-                  <li>• Practical examples you can relate to</li>
-                </ul>
-              </div>
             </div>
           </div>
 
@@ -140,7 +113,7 @@ export default function About() {
               </p>
               <div className="flex flex-wrap gap-4 pt-4">
                 <a
-                  href="https://github.com"
+                  href="https://github.com/Mariefay/fp-ts-exercises"
                   className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -149,40 +122,12 @@ export default function About() {
                   View on GitHub
                 </a>
                 <a
-                  href="mailto:contact@example.com"
+                  href="mailto:mariefay.tech@gmail.com"
                   className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                 >
                   <span className="mr-2">📧</span>
                   Get in Touch
                 </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Learning Philosophy */}
-          <div className="bg-blue-600 rounded-lg p-8 text-white">
-            <h2 className="text-2xl font-bold mb-6">Learning Philosophy</h2>
-            <div className="grid md:grid-cols-3 gap-6 text-center">
-              <div>
-                <div className="text-3xl mb-3">🎯</div>
-                <h3 className="font-semibold mb-2">Practice Over Theory</h3>
-                <p className="text-blue-100">
-                  Learn by writing real code, not just reading about it
-                </p>
-              </div>
-              <div>
-                <div className="text-3xl mb-3">🚀</div>
-                <h3 className="font-semibold mb-2">Progressive Learning</h3>
-                <p className="text-blue-100">
-                  Start simple, build complexity step by step
-                </p>
-              </div>
-              <div>
-                <div className="text-3xl mb-3">✨</div>
-                <h3 className="font-semibold mb-2">Immediate Feedback</h3>
-                <p className="text-blue-100">
-                  See results instantly and learn from mistakes
-                </p>
               </div>
             </div>
           </div>

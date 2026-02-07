@@ -8,7 +8,7 @@ Interactive exercises to learn functional programming in TypeScript using the fp
 
 ### Requirements
 
-- Node.js >= 18.0.0
+- Node.js >= 20.9.0 (automatically managed with `.nvmrc` if using nvm)
 - npm >= 8.0.0
 
 ### Installation

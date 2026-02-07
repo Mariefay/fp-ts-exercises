@@ -40,8 +40,6 @@
     "typescript": "^5.9.3"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix"
-    ]
+    "*.{ts,tsx}": "npm run lint"
   }
 }
