@@ -130,6 +130,9 @@ const writeExercisesFile = (exercises) => {
 import { Exercise } from '@/types/exercise'
 
 export const generatedExercises: Exercise[] = ${JSON.stringify(exercises, null, 2)}
+
+// Export alias for convenience
+export const exercises = generatedExercises
 `
 
   // Ensure directory exists

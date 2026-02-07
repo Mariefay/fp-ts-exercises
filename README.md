@@ -82,7 +82,7 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📖 Exercise Modules
 
-This project contains **28 exercises** across 4 core fp-ts modules:
+This project contains **97 exercises** across 14 fp-ts modules:
 
 ### Option (10 exercises)
 Learn to handle nullable values safely without null/undefined.
@@ -105,18 +105,18 @@ Master error handling with functional Either types.
 - `02-from-predicate` - Conditional Either creation
 - `03-fold` - Pattern matching on Either
 - `04-map` - Mapping over Right values
-- `05-from-predicate` - Advanced predicates
-- `06-chain` - Chaining Either operations
-- `07-map-left` - Transforming error values
-- `08-map-left` - Advanced error transformations
+- `05-chain` - Chaining Either operations
+- `06-error-handling` - Practical error handling
+- `07-validation` - Form validation
+- `08-combining-eithers` - Working with multiple Eithers
 
 ### Pipe (5 exercises)
 Learn powerful function composition with pipe.
 
 - `01-basic-pipe` - Introduction to pipe
 - `02-multi-step` - Chaining multiple operations
-- `03-with-option` - Pipe with Option types
-- `04-with-either` - Pipe with Either types
+- `03-with-either` - Pipe with Either types
+- `04-array-operations` - Complex array pipelines
 - `05-real-world` - Practical data transformations
 
 ### Flow (5 exercises)
@@ -124,16 +124,140 @@ Create reusable function pipelines with flow.
 
 - `01-basic-flow` - Introduction to flow
 - `02-composition` - Function composition patterns
-- `03-reusable-pipelines` - Building reusable flows
+- `03-composing-flows` - Building reusable flows
 - `04-with-fp-ts` - Flow with fp-ts types
 - `05-practical-example` - Real-world use cases
 
+### Array (10 exercises)
+Master functional array operations and data transformations.
+
+- `01-map` - Transforming arrays
+- `02-filter` - Filtering arrays
+- `03-reduce` - Reducing arrays
+- `04-find` - Finding elements
+- `05-partition` - Partitioning arrays
+- `06-sort` - Sorting arrays
+- `07-chaining` - Chaining operations
+- `08-flatmap` - Flattening and mapping
+- `09-compact` - Removing None values
+- `10-pipeline` - Complex pipelines
+
+### TaskEither (10 exercises)
+Async operations with error handling for real-world applications.
+
+- `01-basic` - Creating TaskEither values
+- `02-from-promise` - Converting promises
+- `03-chaining` - Chaining async operations
+- `04-map` - Mapping over TaskEither
+- `05-fold` - Pattern matching
+- `06-recovery` - Error recovery
+- `07-sequencing` - Sequential operations
+- `08-parallel` - Parallel execution
+- `09-api` - API calls
+- `10-pipeline` - Complex pipelines
+
+### Record (8 exercises)
+Work with objects and dictionaries functionally.
+
+- `01-map` - Transforming records
+- `02-filter` - Filtering records
+- `03-collect` - Converting to arrays
+- `04-lookup` - Safe property access
+- `05-modify` - Updating records
+- `06-keys-values` - Working with keys/values
+- `07-merge` - Merging records
+- `08-pipeline` - Record pipelines
+
+### Semigroup (4 exercises)
+Combine values systematically with the concat operation.
+
+- `01-basic` - Basic semigroups
+- `02-struct` - Combining structures
+- `03-first-last` - First/last semigroups
+- `04-practical` - Practical examples
+
+### Monoid (4 exercises)
+Semigroup with identity - handle empty cases elegantly.
+
+- `01-basic` - Basic monoids
+- `02-struct` - Combining structures
+- `03-custom` - Custom monoids
+- `04-practical` - Practical examples
+
+### Validation (7 exercises)
+Accumulate all errors instead of failing fast.
+
+- `01-basic` - Basic validation
+- `02-accumulate` - Error accumulation
+- `03-applicative` - Applicative validation
+- `04-form` - Form validation
+- `05-comparison` - vs Either comparison
+- `06-nested` - Nested validation
+- `07-real-world` - Real-world scenarios
+
+### NonEmptyArray (6 exercises)
+Type-safe arrays with guaranteed at least one element.
+
+- `01-basic` - Creating NonEmptyArrays
+- `02-from-array` - Converting from arrays
+- `03-operations` - Basic operations
+- `04-sort` - Sorting
+- `05-group` - Grouping elements
+- `06-practical` - Practical examples
+
+### Task (6 exercises)
+Lazy async computations that always succeed.
+
+- `01-basic` - Creating Tasks
+- `02-map` - Mapping over Tasks
+- `03-chain` - Chaining Tasks
+- `04-parallel` - Parallel execution
+- `05-delay` - Delays and timing
+- `06-practical` - Practical examples
+
+### Ord (6 exercises)
+Custom ordering and comparison for any type.
+
+- `01-basic` - Basic Ord usage
+- `02-contramap` - Deriving orderings
+- `03-reverse` - Reversing order
+- `04-min-max` - Finding extremes
+- `05-sort` - Sorting with Ord
+- `06-practical` - Practical examples
+
+### Reader (8 exercises)
+Dependency injection without global state.
+
+- `01-create-reader` - Creating Readers
+- `02-map` - Mapping over Readers
+- `03-ask` - Accessing context
+- `04-chain` - Chaining Readers
+- `05-dependency-injection` - DI patterns
+- `06-local` - Local context
+- `07-real-world-config` - Configuration management
+- Plus 1 more advanced exercise
+
 ## 🎓 Recommended Learning Path
 
-1. **Start with Option** - Learn safe null handling
-2. **Move to Either** - Master error handling
-3. **Practice Pipe** - Understand function composition
-4. **Master Flow** - Create reusable pipelines
+### Beginner Path
+1. **Option** - Learn safe null handling (10 exercises)
+2. **Array** - Master functional array operations (10 exercises)
+3. **Pipe** - Understand function composition (5 exercises)
+4. **Flow** - Create reusable pipelines (5 exercises)
+
+### Intermediate Path
+5. **Either** - Master error handling (8 exercises)
+6. **Record** - Work with objects functionally (8 exercises)
+7. **TaskEither** - Async operations with error handling (10 exercises)
+8. **NonEmptyArray** - Type-safe non-empty arrays (6 exercises)
+9. **Task** - Lazy async computations (6 exercises)
+10. **Ord** - Custom ordering and comparison (6 exercises)
+
+### Advanced Path
+11. **Semigroup** - Combining values systematically (4 exercises)
+12. **Monoid** - Semigroup with identity (4 exercises)
+13. **Validation** - Error accumulation patterns (7 exercises)
+14. **Reader** - Dependency injection patterns (8 exercises)
 
 ## 💻 Available Scripts
 
@@ -175,10 +299,20 @@ Access the dashboard at [http://localhost:3000/dashboard](http://localhost:3000/
 ```
 fp-ts-exercises/
 ├── src/                      # CLI exercises
-│   ├── option/              # Option exercises
-│   ├── either/              # Either exercises
-│   ├── pipe/                # Pipe exercises
-│   └── flow/                # Flow exercises
+│   ├── option/              # Option exercises (10)
+│   ├── either/              # Either exercises (8)
+│   ├── pipe/                # Pipe exercises (5)
+│   ├── flow/                # Flow exercises (5)
+│   ├── array/               # Array exercises (10)
+│   ├── taskeither/          # TaskEither exercises (10)
+│   ├── record/              # Record exercises (8)
+│   ├── semigroup/           # Semigroup exercises (4)
+│   ├── monoid/              # Monoid exercises (4)
+│   ├── validation/          # Validation exercises (7)
+│   ├── nonemptyarray/       # NonEmptyArray exercises (6)
+│   ├── task/                # Task exercises (6)
+│   ├── ord/                 # Ord exercises (6)
+│   └── reader/              # Reader exercises (8)
 ├── scripts/                  # CLI tools
 │   ├── exercise.js          # Exercise runner
 │   └── generate-playground-data.js  # Sync to playground
