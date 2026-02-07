@@ -1,5 +1,12 @@
 # Deployment Guide
 
+## 🔒 Security Updates
+
+**Latest versions (updated Feb 2026):**
+- Next.js: `16.1.6` (fixes CVE-2025-66478)
+- React: `19.2.4`
+- All vulnerabilities: ✅ **0 found**
+
 ## ✅ Fixed Deployment Issues
 
 ### 1. TypeScript Target
@@ -21,17 +28,16 @@ Installed Husky + lint-staged to automatically lint staged files before commits.
 # From root directory
 cd playground
 
-# Test build locally
-npm run build
-
-# Commit and push
+# Commit and push (Vercel will build with Node 20.9.0+)
 git add .
-git commit -m "Ready for deployment"
+git commit -m "Update to Next.js 16 - security fix"
 git push
 
-# Deploy to Vercel
+# Vercel will auto-deploy, or trigger manually:
 vercel --prod
 ```
+
+**Note:** Next.js 16 requires Node.js >= 20.9.0. Vercel automatically uses the correct version during deployment.
 
 Or use Vercel Dashboard:
 1. Import GitHub repo
