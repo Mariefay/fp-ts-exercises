@@ -2,6 +2,7 @@
 
 import { useProgress } from '@/contexts/ProgressContext'
 import { generatedExercises } from '@/data/generated-exercises'
+import { getExercisesByModule } from '@/utils/progress-helpers'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -100,9 +101,7 @@ export function Dashboard() {
           {progress.modules
             .sort((a, b) => a.moduleName.localeCompare(b.moduleName))
             .map((module) => {
-              const moduleExercises = progress.exercises.filter((ex) =>
-                ex.exerciseId.startsWith(module.moduleName.toLowerCase())
-              )
+              const moduleExercises = getExercisesByModule(progress.exercises, module.moduleName)
               const isExpanded = expandedModules.has(module.moduleName)
 
               return (
@@ -122,6 +121,8 @@ export function Dashboard() {
                       setExpandedModules(newExpanded)
                     }}
                     className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${module.moduleName} exercises`}
+                    aria-expanded={isExpanded}
                   >
                     <div className="flex items-center gap-4">
                       <svg

@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { ExerciseProgress, OverallProgress, ModuleProgress } from '@/types/progress'
 import { Exercise } from '@/types/exercise'
+import { calculatePercentage, recalculateModuleProgress } from '@/utils/progress-helpers'
 
 interface ProgressContextType {
   progress: OverallProgress
@@ -57,6 +58,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         const existing = existingProgress.find(p => p.exerciseId === ex.id)
         return existing || {
           exerciseId: ex.id,
+          category: ex.category,
           completed: false,
           lastAttempt: new Date().toISOString(),
           attempts: 0
@@ -82,7 +84,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         moduleName: name,
         totalExercises: stats.total,
         completedExercises: stats.completed,
-        percentage: stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0
+        percentage: calculatePercentage(stats.completed, stats.total)
       }))
 
       const completedCount = exerciseProgress.filter(p => p.completed).length
@@ -91,7 +93,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       return {
         totalExercises: totalCount,
         completedExercises: completedCount,
-        percentage: totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0,
+        percentage: calculatePercentage(completedCount, totalCount),
         modules,
         exercises: exerciseProgress
       }
@@ -125,27 +127,14 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       const completedCount = exercises.filter(e => e.completed).length
       const totalCount = prev.totalExercises
 
-      // Recalculate module progress
-      const updatedModules = prev.modules.map(module => {
-        const moduleExercises = exercises.filter(ex =>
-          ex.exerciseId.startsWith(module.moduleName.toLowerCase())
-        )
-        const moduleCompleted = moduleExercises.filter(ex => ex.completed).length
-
-        return {
-          ...module,
-          completedExercises: moduleCompleted,
-          percentage: module.totalExercises > 0
-            ? Math.round((moduleCompleted / module.totalExercises) * 100)
-            : 0
-        }
-      })
+      // Recalculate module progress using helper
+      const updatedModules = recalculateModuleProgress(prev.modules, exercises)
 
       return {
         ...prev,
         exercises,
         completedExercises: completedCount,
-        percentage: totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0,
+        percentage: calculatePercentage(completedCount, totalCount),
         modules: updatedModules
       }
     })
@@ -162,27 +151,14 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       const completedCount = exercises.filter(e => e.completed).length
       const totalCount = prev.totalExercises
 
-      // Recalculate module progress
-      const updatedModules = prev.modules.map(module => {
-        const moduleExercises = exercises.filter(ex =>
-          ex.exerciseId.startsWith(module.moduleName.toLowerCase())
-        )
-        const moduleCompleted = moduleExercises.filter(ex => ex.completed).length
-
-        return {
-          ...module,
-          completedExercises: moduleCompleted,
-          percentage: module.totalExercises > 0
-            ? Math.round((moduleCompleted / module.totalExercises) * 100)
-            : 0
-        }
-      })
+      // Recalculate module progress using helper
+      const updatedModules = recalculateModuleProgress(prev.modules, exercises)
 
       return {
         ...prev,
         exercises,
         completedExercises: completedCount,
-        percentage: totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0,
+        percentage: calculatePercentage(completedCount, totalCount),
         modules: updatedModules
       }
     })

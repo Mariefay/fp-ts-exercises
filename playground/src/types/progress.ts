@@ -1,5 +1,6 @@
 export interface ExerciseProgress {
   exerciseId: string
+  category?: string // Module category (e.g., "Array", "Option") - optional for backward compatibility
   completed: boolean
   lastAttempt: string // ISO date string
   attempts: number

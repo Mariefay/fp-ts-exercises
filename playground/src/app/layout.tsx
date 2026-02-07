@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/Navigation";
 import { ProgressProvider } from "@/contexts/ProgressContext";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,12 +30,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white min-h-screen`}
       >
-        <ProgressProvider>
-          <Navigation />
-          <main className="min-h-[calc(100vh-4rem)]">
-            {children}
-          </main>
-        </ProgressProvider>
+        <ErrorBoundary>
+          <ProgressProvider>
+            <Navigation />
+            <main className="min-h-[calc(100vh-4rem)]">
+              {children}
+            </main>
+          </ProgressProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );
