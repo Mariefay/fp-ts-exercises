@@ -60,6 +60,48 @@ const sections = [
 		status: 'Available',
 		topics: ['Composition', 'With Option', 'With Either', 'Reusable flows'],
 	},
+	{
+		id: 'array',
+		title: 'Array',
+		description: 'Master functional array operations and data transformations',
+		difficulty: 'Beginner Friendly',
+		exerciseCount: 10,
+		color: 'from-indigo-400 to-blue-400',
+		bgColor: 'bg-indigo-50',
+		borderColor: 'border-indigo-200',
+		textColor: 'text-indigo-700',
+		icon: '📊',
+		status: 'Available',
+		topics: ['map', 'filter', 'reduce', 'find', 'partition', 'sort'],
+	},
+	{
+		id: 'taskeither',
+		title: 'TaskEither',
+		description: 'Async operations with error handling for real-world apps',
+		difficulty: 'Intermediate',
+		exerciseCount: 10,
+		color: 'from-teal-400 to-green-400',
+		bgColor: 'bg-teal-50',
+		borderColor: 'border-teal-200',
+		textColor: 'text-teal-700',
+		icon: '⚙️',
+		status: 'Available',
+		topics: ['Promises', 'Chaining', 'Parallel', 'Error recovery', 'API calls'],
+	},
+	{
+		id: 'record',
+		title: 'Record',
+		description: 'Work with objects and dictionaries functionally',
+		difficulty: 'Beginner Friendly',
+		exerciseCount: 8,
+		color: 'from-rose-400 to-pink-400',
+		bgColor: 'bg-rose-50',
+		borderColor: 'border-rose-200',
+		textColor: 'text-rose-700',
+		icon: '📝',
+		status: 'Available',
+		topics: ['map', 'filter', 'collect', 'lookup', 'modify', 'merge'],
+	},
 ]
 
 function SectionCard({ section }: { section: typeof sections[0] }) {
@@ -163,7 +205,7 @@ export default function SectionsPage() {
 						))}
 					</div>
 					<p className="text-center text-gray-600 mt-6 text-sm">
-						📚 28 exercises across 4 modules - Start anywhere and learn at your own pace
+						📚 56 exercises across 7 modules - Start anywhere and learn at your own pace
 					</p>
 				</div>
 			</section>

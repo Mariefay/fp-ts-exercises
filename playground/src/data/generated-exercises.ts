@@ -1,10 +1,130 @@
 // Auto-generated exercises from CLI version
-// Generated on: 2026-02-07T17:43:30.762Z
+// Generated on: 2026-02-07T18:41:49.585Z
 // DO NOT EDIT MANUALLY - Run 'npm run generate:exercises' to regenerate
 
 import { Exercise } from '@/types/exercise'
 
 export const generatedExercises: Exercise[] = [
+  {
+    "id": "array-01",
+    "title": "Map",
+    "description": "Learn about map in fp-ts array",
+    "category": "Array",
+    "fileName": "01-map.exercise.ts",
+    "difficulty": "beginner",
+    "order": 1,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst doubleNumbers = (numbers: number[]): number[] => {\n  //TODO: Use Array.map to double each number in the array\n  //HINT: Import * as A from 'fp-ts/Array' and use pipe\n}\n\n// @ts-ignore\nconst extractNames = (users: Array<{ name: string; age: number }>): string[] => {\n  //TODO: Use Array.map to extract just the names from the user objects\n}",
+    "solutionCode": "import * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const doubleNumbers = (numbers: number[]): number[] =>\n  pipe(\n    numbers,\n    A.map((n) => n * 2)\n  )\n\nexport const extractNames = (users: Array<{ name: string; age: number }>): string[] =>\n  pipe(\n    users,\n    A.map((user) => user.name)\n  )",
+    "testCode": "describe('Array map operations', () => {\n  it('doubles all numbers in an array', () => {\n    const result = doubleNumbers([1, 2, 3, 4, 5])\n    expect(result).toEqual([2, 4, 6, 8, 10])\n  })\n\n  it('handles empty array', () => {\n    const result = doubleNumbers([])\n    expect(result).toEqual([])\n  })\n\n  it('extracts names from user objects', () => {\n    const users = [\n      { name: 'Alice', age: 25 },\n      { name: 'Bob', age: 30 },\n      { name: 'Charlie', age: 35 },\n    ]\n    const result = extractNames(users)\n    expect(result).toEqual(['Alice', 'Bob', 'Charlie'])\n  })\n})"
+  },
+  {
+    "id": "array-02",
+    "title": "Filter",
+    "description": "Learn about filter in fp-ts array",
+    "category": "Array",
+    "fileName": "02-filter.exercise.ts",
+    "difficulty": "beginner",
+    "order": 2,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst filterEvenNumbers = (numbers: number[]): number[] => {\n  //TODO: Use Array.filter to keep only even numbers\n  //HINT: A number is even if n % 2 === 0\n}\n\n// @ts-ignore\nconst filterAdults = (users: Array<{ name: string; age: number }>): Array<{ name: string; age: number }> => {\n  //TODO: Use Array.filter to keep only users aged 18 or older\n}",
+    "solutionCode": "import * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const filterEvenNumbers = (numbers: number[]): number[] =>\n  pipe(\n    numbers,\n    A.filter((n) => n % 2 === 0)\n  )\n\nexport const filterAdults = (users: Array<{ name: string; age: number }>): Array<{ name: string; age: number }> =>\n  pipe(\n    users,\n    A.filter((user) => user.age >= 18)\n  )",
+    "testCode": "describe('Array filter operations', () => {\n  it('filters even numbers', () => {\n    const result = filterEvenNumbers([1, 2, 3, 4, 5, 6])\n    expect(result).toEqual([2, 4, 6])\n  })\n\n  it('returns empty array when no matches', () => {\n    const result = filterEvenNumbers([1, 3, 5])\n    expect(result).toEqual([])\n  })\n\n  it('filters adult users', () => {\n    const users = [\n      { name: 'Alice', age: 25 },\n      { name: 'Bob', age: 15 },\n      { name: 'Charlie', age: 30 },\n      { name: 'David', age: 17 },\n    ]\n    const result = filterAdults(users)\n    expect(result).toEqual([\n      { name: 'Alice', age: 25 },\n      { name: 'Charlie', age: 30 },\n    ])\n  })\n})"
+  },
+  {
+    "id": "array-03",
+    "title": "Reduce",
+    "description": "Learn about reduce in fp-ts array",
+    "category": "Array",
+    "fileName": "03-reduce.exercise.ts",
+    "difficulty": "beginner",
+    "order": 3,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst sumNumbers = (numbers: number[]): number => {\n  //TODO: Use Array.reduce to sum all numbers\n  //HINT: Start with 0 as the initial value\n}\n\n// @ts-ignore\nconst concatenateStrings = (strings: string[]): string => {\n  //TODO: Use Array.reduce to concatenate all strings with a space between them\n  //HINT: Start with an empty string and trim the result\n}",
+    "solutionCode": "import * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const sumNumbers = (numbers: number[]): number =>\n  pipe(\n    numbers,\n    A.reduce(0, (acc, n) => acc + n)\n  )\n\nexport const concatenateStrings = (strings: string[]): string =>\n  pipe(\n    strings,\n    A.reduce('', (acc, str) => acc + ' ' + str),\n    (result) => result.trim()\n  )",
+    "testCode": "describe('Array reduce operations', () => {\n  it('sums all numbers', () => {\n    const result = sumNumbers([1, 2, 3, 4, 5])\n    expect(result).toBe(15)\n  })\n\n  it('returns 0 for empty array', () => {\n    const result = sumNumbers([])\n    expect(result).toBe(0)\n  })\n\n  it('concatenates strings with spaces', () => {\n    const result = concatenateStrings(['Hello', 'functional', 'world'])\n    expect(result).toBe('Hello functional world')\n  })\n\n  it('handles single string', () => {\n    const result = concatenateStrings(['Hello'])\n    expect(result).toBe('Hello')\n  })\n})"
+  },
+  {
+    "id": "array-04",
+    "title": "Find",
+    "description": "Learn about find in fp-ts array",
+    "category": "Array",
+    "fileName": "04-find.exercise.ts",
+    "difficulty": "intermediate",
+    "order": 4,
+    "exerciseCode": "import * as O from 'fp-ts/Option'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst findFirstEven = (numbers: number[]): O.Option<number> => {\n  //TODO: Use Array.findFirst to find the first even number\n  //HINT: Returns an Option because the element might not exist\n}\n\n// @ts-ignore\nconst findUserByName = (users: Array<{ name: string; age: number }>, targetName: string): O.Option<{ name: string; age: number }> => {\n  //TODO: Use Array.findFirst to find a user by name\n}",
+    "solutionCode": "import * as A from 'fp-ts/Array'\nimport * as O from 'fp-ts/Option'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const findFirstEven = (numbers: number[]): O.Option<number> =>\n  pipe(\n    numbers,\n    A.findFirst((n) => n % 2 === 0)\n  )\n\nexport const findUserByName = (users: Array<{ name: string; age: number }>, targetName: string): O.Option<{ name: string; age: number }> =>\n  pipe(\n    users,\n    A.findFirst((user) => user.name === targetName)\n  )",
+    "testCode": "describe('Array find operations', () => {\n  it('finds first even number', () => {\n    const result = findFirstEven([1, 3, 4, 5, 6])\n    expect(O.isSome(result)).toBe(true)\n    expect(result).toEqual(O.some(4))\n  })\n\n  it('returns None when no even number found', () => {\n    const result = findFirstEven([1, 3, 5])\n    expect(O.isNone(result)).toBe(true)\n  })\n\n  it('finds user by name', () => {\n    const users = [\n      { name: 'Alice', age: 25 },\n      { name: 'Bob', age: 30 },\n      { name: 'Charlie', age: 35 },\n    ]\n    const result = findUserByName(users, 'Bob')\n    expect(result).toEqual(O.some({ name: 'Bob', age: 30 }))\n  })\n\n  it('returns None when user not found', () => {\n    const users = [{ name: 'Alice', age: 25 }]\n    const result = findUserByName(users, 'Bob')\n    expect(O.isNone(result)).toBe(true)\n  })\n})"
+  },
+  {
+    "id": "array-05",
+    "title": "Partition",
+    "description": "Learn about partition in fp-ts array",
+    "category": "Array",
+    "fileName": "05-partition.exercise.ts",
+    "difficulty": "intermediate",
+    "order": 5,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\ntype Partitioned<T> = {\n  readonly left: T[]\n  readonly right: T[]\n}\n\n// @ts-ignore\nconst partitionByAge = (users: Array<{ name: string; age: number }>): Partitioned<{ name: string; age: number }> => {\n  //TODO: Use Array.partition to separate adults (18+) from minors\n  //HINT: partition returns { left: failing predicate, right: passing predicate }\n}\n\n// @ts-ignore\nconst partitionNumbers = (numbers: number[]): Partitioned<number> => {\n  //TODO: Use Array.partition to separate odd and even numbers\n  //HINT: right array will contain elements passing the predicate (even numbers)\n}",
+    "solutionCode": "import * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\ntype Partitioned<T> = {\n  readonly left: T[]\n  readonly right: T[]\n}\n\nexport const partitionByAge = (users: Array<{ name: string; age: number }>): Partitioned<{ name: string; age: number }> =>\n  pipe(\n    users,\n    A.partition((user) => user.age >= 18)\n  )\n\nexport const partitionNumbers = (numbers: number[]): Partitioned<number> =>\n  pipe(\n    numbers,\n    A.partition((n) => n % 2 === 0)\n  )",
+    "testCode": "describe('Array partition operations', () => {\n  it('partitions users by age', () => {\n    const users = [\n      { name: 'Alice', age: 25 },\n      { name: 'Bob', age: 15 },\n      { name: 'Charlie', age: 30 },\n      { name: 'David', age: 17 },\n    ]\n    const result = partitionByAge(users)\n    expect(result.left).toEqual([\n      { name: 'Bob', age: 15 },\n      { name: 'David', age: 17 },\n    ])\n    expect(result.right).toEqual([\n      { name: 'Alice', age: 25 },\n      { name: 'Charlie', age: 30 },\n    ])\n  })\n\n  it('partitions numbers into odd and even', () => {\n    const result = partitionNumbers([1, 2, 3, 4, 5, 6])\n    expect(result.left).toEqual([1, 3, 5])\n    expect(result.right).toEqual([2, 4, 6])\n  })\n})"
+  },
+  {
+    "id": "array-06",
+    "title": "Sort",
+    "description": "Learn about sort in fp-ts array",
+    "category": "Array",
+    "fileName": "06-sort.exercise.ts",
+    "difficulty": "intermediate",
+    "order": 6,
+    "exerciseCode": "import * as Ord from 'fp-ts/Ord'\nimport * as N from 'fp-ts/number'\nimport * as S from 'fp-ts/string'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst sortNumbersAscending = (numbers: number[]): number[] => {\n  //TODO: Use Array.sort with Ord.fromCompare to sort numbers in ascending order\n  //HINT: Use N.Ord for number ordering\n}\n\n// @ts-ignore\nconst sortUsersByAge = (users: Array<{ name: string; age: number }>): Array<{ name: string; age: number }> => {\n  //TODO: Use Array.sort with a custom Ord to sort users by age\n  //HINT: Use Ord.contramap to create an Ord for user objects based on age\n}",
+    "solutionCode": "import * as A from 'fp-ts/Array'\nimport * as Ord from 'fp-ts/Ord'\nimport * as N from 'fp-ts/number'\nimport * as S from 'fp-ts/string'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const sortNumbersAscending = (numbers: number[]): number[] =>\n  pipe(\n    numbers,\n    A.sort(N.Ord)\n  )\n\nconst userByAge = pipe(\n  N.Ord,\n  Ord.contramap((user: { name: string; age: number }) => user.age)\n)\n\nexport const sortUsersByAge = (users: Array<{ name: string; age: number }>): Array<{ name: string; age: number }> =>\n  pipe(\n    users,\n    A.sort(userByAge)\n  )",
+    "testCode": "describe('Array sort operations', () => {\n  it('sorts numbers in ascending order', () => {\n    const result = sortNumbersAscending([5, 2, 8, 1, 9])\n    expect(result).toEqual([1, 2, 5, 8, 9])\n  })\n\n  it('handles empty array', () => {\n    const result = sortNumbersAscending([])\n    expect(result).toEqual([])\n  })\n\n  it('sorts users by age', () => {\n    const users = [\n      { name: 'Alice', age: 30 },\n      { name: 'Bob', age: 25 },\n      { name: 'Charlie', age: 35 },\n    ]\n    const result = sortUsersByAge(users)\n    expect(result).toEqual([\n      { name: 'Bob', age: 25 },\n      { name: 'Alice', age: 30 },\n      { name: 'Charlie', age: 35 },\n    ])\n  })\n})"
+  },
+  {
+    "id": "array-07",
+    "title": "Chaining",
+    "description": "Learn about chaining in fp-ts array",
+    "category": "Array",
+    "fileName": "07-chaining.exercise.ts",
+    "difficulty": "advanced",
+    "order": 7,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst getAdultNames = (users: Array<{ name: string; age: number }>): string[] => {\n  //TODO: Chain Array.filter and Array.map to get names of users 18 or older\n  //HINT: First filter for adults, then map to get just the names\n}\n\n// @ts-ignore\nconst doubleEvenNumbers = (numbers: number[]): number[] => {\n  //TODO: Chain Array.filter and Array.map to double only the even numbers\n  //HINT: Filter for even numbers, then map to double them\n}",
+    "solutionCode": "import * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const getAdultNames = (users: Array<{ name: string; age: number }>): string[] =>\n  pipe(\n    users,\n    A.filter((user) => user.age >= 18),\n    A.map((user) => user.name)\n  )\n\nexport const doubleEvenNumbers = (numbers: number[]): number[] =>\n  pipe(\n    numbers,\n    A.filter((n) => n % 2 === 0),\n    A.map((n) => n * 2)\n  )",
+    "testCode": "describe('Array chaining operations', () => {\n  it('gets names of adult users', () => {\n    const users = [\n      { name: 'Alice', age: 25 },\n      { name: 'Bob', age: 15 },\n      { name: 'Charlie', age: 30 },\n      { name: 'David', age: 17 },\n    ]\n    const result = getAdultNames(users)\n    expect(result).toEqual(['Alice', 'Charlie'])\n  })\n\n  it('doubles only even numbers', () => {\n    const result = doubleEvenNumbers([1, 2, 3, 4, 5, 6])\n    expect(result).toEqual([4, 8, 12])\n  })\n\n  it('handles empty array', () => {\n    const result = getAdultNames([])\n    expect(result).toEqual([])\n  })\n})"
+  },
+  {
+    "id": "array-08",
+    "title": "Flatmap",
+    "description": "Learn about flatmap in fp-ts array",
+    "category": "Array",
+    "fileName": "08-flatmap.exercise.ts",
+    "difficulty": "advanced",
+    "order": 8,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\ntype User = {\n  name: string\n  hobbies: string[]\n}\n\n// @ts-ignore\nconst getAllHobbies = (users: User[]): string[] => {\n  //TODO: Use Array.flatMap (or chain + flatten) to get all hobbies from all users\n  //HINT: flatMap is like map followed by flatten - it extracts and flattens in one step\n}\n\n// @ts-ignore\nconst explodeNumbers = (numbers: number[]): number[] => {\n  //TODO: Use Array.flatMap to create an array where each number appears twice\n  //HINT: For each number n, return [n, n]\n}",
+    "solutionCode": "import * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\ntype User = {\n  name: string\n  hobbies: string[]\n}\n\nexport const getAllHobbies = (users: User[]): string[] =>\n  pipe(\n    users,\n    A.flatMap((user) => user.hobbies)\n  )\n\nexport const explodeNumbers = (numbers: number[]): number[] =>\n  pipe(\n    numbers,\n    A.flatMap((n) => [n, n])\n  )",
+    "testCode": "describe('Array flatMap operations', () => {\n  it('gets all hobbies from all users', () => {\n    const users: User[] = [\n      { name: 'Alice', hobbies: ['reading', 'gaming'] },\n      { name: 'Bob', hobbies: ['cooking'] },\n      { name: 'Charlie', hobbies: ['running', 'cycling', 'swimming'] },\n    ]\n    const result = getAllHobbies(users)\n    expect(result).toEqual(['reading', 'gaming', 'cooking', 'running', 'cycling', 'swimming'])\n  })\n\n  it('explodes numbers into pairs', () => {\n    const result = explodeNumbers([1, 2, 3])\n    expect(result).toEqual([1, 1, 2, 2, 3, 3])\n  })\n\n  it('handles empty array', () => {\n    const result = getAllHobbies([])\n    expect(result).toEqual([])\n  })\n})"
+  },
+  {
+    "id": "array-09",
+    "title": "Compact",
+    "description": "Learn about compact in fp-ts array",
+    "category": "Array",
+    "fileName": "09-compact.exercise.ts",
+    "difficulty": "advanced",
+    "order": 9,
+    "exerciseCode": "import * as O from 'fp-ts/Option'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst getValidNumbers = (numbers: Array<O.Option<number>>): number[] => {\n  //TODO: Use Array.compact to remove all None values and extract Some values\n  //HINT: compact removes None and unwraps Some values\n}\n\n// @ts-ignore\nconst safeDivide = (numbers: number[]): number[] => {\n  //TODO: Divide 100 by each number, but safely handle division by zero\n  //HINT: First map to Option (Some for valid, None for zero), then compact\n}",
+    "solutionCode": "import * as A from 'fp-ts/Array'\nimport * as O from 'fp-ts/Option'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const getValidNumbers = (numbers: Array<O.Option<number>>): number[] =>\n  pipe(\n    numbers,\n    A.compact\n  )\n\nexport const safeDivide = (numbers: number[]): number[] =>\n  pipe(\n    numbers,\n    A.map((n) => (n === 0 ? O.none : O.some(100 / n))),\n    A.compact\n  )",
+    "testCode": "describe('Array compact operations', () => {\n  it('removes None values and extracts Some values', () => {\n    const numbers = [O.some(1), O.none, O.some(2), O.none, O.some(3)]\n    const result = getValidNumbers(numbers)\n    expect(result).toEqual([1, 2, 3])\n  })\n\n  it('returns empty array when all None', () => {\n    const numbers = [O.none, O.none, O.none]\n    const result = getValidNumbers(numbers)\n    expect(result).toEqual([])\n  })\n\n  it('safely divides numbers, skipping zeros', () => {\n    const result = safeDivide([2, 0, 5, 0, 10])\n    expect(result).toEqual([50, 20, 10])\n  })\n})"
+  },
+  {
+    "id": "array-10",
+    "title": "Pipeline",
+    "description": "Learn about pipeline in fp-ts array",
+    "category": "Array",
+    "fileName": "10-pipeline.exercise.ts",
+    "difficulty": "advanced",
+    "order": 10,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\ntype Product = {\n  id: number\n  name: string\n  price: number\n  category: string\n  inStock: boolean\n}\n\n// @ts-ignore\nconst getAffordableElectronics = (products: Product[], maxPrice: number): string[] => {\n  //TODO: Create a pipeline that:\n  // 1. Filters for electronics category\n  // 2. Filters for in-stock items\n  // 3. Filters for items under maxPrice\n  // 4. Sorts by price (lowest first)\n  // 5. Maps to product names\n}\n\n// @ts-ignore\nconst calculateTotalRevenue = (orders: Array<{ items: Array<{ price: number; quantity: number }> }>): number => {\n  //TODO: Create a pipeline that:\n  // 1. FlatMaps to get all items from all orders\n  // 2. Maps each item to its total (price * quantity)\n  // 3. Reduces to sum all totals\n}",
+    "solutionCode": "import * as A from 'fp-ts/Array'\nimport * as N from 'fp-ts/number'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\ntype Product = {\n  id: number\n  name: string\n  price: number\n  category: string\n  inStock: boolean\n}\n\nexport const getAffordableElectronics = (products: Product[], maxPrice: number): string[] =>\n  pipe(\n    products,\n    A.filter((p) => p.category === 'Electronics'),\n    A.filter((p) => p.inStock),\n    A.filter((p) => p.price <= maxPrice),\n    A.sort(pipe(N.Ord, (ord) => ({ compare: (a: Product, b: Product) => ord.compare(a.price, b.price) }))),\n    A.map((p) => p.name)\n  )\n\nexport const calculateTotalRevenue = (orders: Array<{ items: Array<{ price: number; quantity: number }> }>): number =>\n  pipe(\n    orders,\n    A.flatMap((order) => order.items),\n    A.map((item) => item.price * item.quantity),\n    A.reduce(0, (acc, total) => acc + total)\n  )",
+    "testCode": "describe('Array real-world pipeline', () => {\n  it('gets affordable electronics sorted by price', () => {\n    const products: Product[] = [\n      { id: 1, name: 'Laptop', price: 999, category: 'Electronics', inStock: true },\n      { id: 2, name: 'Mouse', price: 25, category: 'Electronics', inStock: true },\n      { id: 3, name: 'Desk', price: 300, category: 'Furniture', inStock: true },\n      { id: 4, name: 'Keyboard', price: 75, category: 'Electronics', inStock: true },\n      { id: 5, name: 'Monitor', price: 400, category: 'Electronics', inStock: false },\n      { id: 6, name: 'Headphones', price: 150, category: 'Electronics', inStock: true },\n    ]\n    const result = getAffordableElectronics(products, 200)\n    expect(result).toEqual(['Mouse', 'Keyboard', 'Headphones'])\n  })\n\n  it('calculates total revenue from multiple orders', () => {\n    const orders = [\n      { items: [{ price: 10, quantity: 2 }, { price: 5, quantity: 3 }] },\n      { items: [{ price: 20, quantity: 1 }] },\n      { items: [{ price: 15, quantity: 2 }, { price: 8, quantity: 4 }] },\n    ]\n    const result = calculateTotalRevenue(orders)\n    // (10*2 + 5*3) + (20*1) + (15*2 + 8*4) = (20 + 15) + 20 + (30 + 32) = 35 + 20 + 62 = 117\n    expect(result).toBe(117)\n  })\n})"
+  },
   {
     "id": "either-01",
     "title": "Left And Right",
@@ -340,5 +460,221 @@ export const generatedExercises: Exercise[] = [
     "exerciseCode": "import { describe, it, expect } from 'vitest'\nimport * as O from 'fp-ts/Option'\n\ninterface ApiResponse {\n  data?: {\n    user?: {\n      profile?: {\n        name: string\n        age: number\n      }\n    }\n  }\n}\n\n// @ts-ignore\nconst extractUserAge = (response: ApiResponse): O.Option<number> => {\n  //TODO:\n  //Use pipe to safely extract the user's age from the nested API response\n  //1. Start with response.data\n  //2. Use O.fromNullable to handle undefined\n  //3. Chain through user, profile, and age\n  //Return None if any part of the chain is undefined\n  //Import pipe from 'fp-ts/function'\n}",
     "solutionCode": "import { pipe } from 'fp-ts/function'\nimport * as O from 'fp-ts/Option'\nimport { describe, it, expect } from 'vitest'\n\ninterface ApiResponse {\n  data?: {\n    user?: {\n      profile?: {\n        name: string\n        age: number\n      }\n    }\n  }\n}\n\nexport const extractUserAge = (response: ApiResponse): O.Option<number> =>\n  pipe(\n    response.data,\n    O.fromNullable,\n    O.chain(data => O.fromNullable(data.user)),\n    O.chain(user => O.fromNullable(user.profile)),\n    O.map(profile => profile.age)\n  )",
     "testCode": "describe('extractUserAge', () => {\n  it('extracts age from complete response', () => {\n    const response: ApiResponse = {\n      data: {\n        user: {\n          profile: {\n            name: 'Alice',\n            age: 25\n          }\n        }\n      }\n    }\n    const result = extractUserAge(response)\n    expect(result).toEqual({ _tag: 'Some', value: 25 })\n  })\n\n  it('returns None when data is missing', () => {\n    const response: ApiResponse = {}\n    const result = extractUserAge(response)\n    expect(result).toEqual({ _tag: 'None' })\n  })\n\n  it('returns None when user is missing', () => {\n    const response: ApiResponse = {\n      data: {}\n    }\n    const result = extractUserAge(response)\n    expect(result).toEqual({ _tag: 'None' })\n  })\n\n  it('returns None when profile is missing', () => {\n    const response: ApiResponse = {\n      data: {\n        user: {}\n      }\n    }\n    const result = extractUserAge(response)\n    expect(result).toEqual({ _tag: 'None' })\n  })\n})"
+  },
+  {
+    "id": "record-01",
+    "title": "Map",
+    "description": "Learn about map in fp-ts record",
+    "category": "Record",
+    "fileName": "01-map.exercise.ts",
+    "difficulty": "beginner",
+    "order": 1,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst doubleValues = (record: Record<string, number>): Record<string, number> => {\n  //TODO: Use Record.map to double all values in the record\n  //HINT: Import * as R from 'fp-ts/Record'\n}\n\n// @ts-ignore\nconst uppercaseValues = (record: Record<string, string>): Record<string, string> => {\n  //TODO: Use Record.map to uppercase all string values\n}",
+    "solutionCode": "import * as R from 'fp-ts/Record'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const doubleValues = (record: Record<string, number>): Record<string, number> =>\n  pipe(\n    record,\n    R.map((n) => n * 2)\n  )\n\nexport const uppercaseValues = (record: Record<string, string>): Record<string, string> =>\n  pipe(\n    record,\n    R.map((s) => s.toUpperCase())\n  )",
+    "testCode": "describe('Record map operations', () => {\n  it('doubles all values', () => {\n    const input = { a: 1, b: 2, c: 3 }\n    const result = doubleValues(input)\n    expect(result).toEqual({ a: 2, b: 4, c: 6 })\n  })\n\n  it('handles empty record', () => {\n    const result = doubleValues({})\n    expect(result).toEqual({})\n  })\n\n  it('uppercases all values', () => {\n    const input = { name: 'alice', city: 'paris' }\n    const result = uppercaseValues(input)\n    expect(result).toEqual({ name: 'ALICE', city: 'PARIS' })\n  })\n})"
+  },
+  {
+    "id": "record-02",
+    "title": "Filter",
+    "description": "Learn about filter in fp-ts record",
+    "category": "Record",
+    "fileName": "02-filter.exercise.ts",
+    "difficulty": "beginner",
+    "order": 2,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst filterPositive = (record: Record<string, number>): Record<string, number> => {\n  //TODO: Use Record.filter to keep only positive numbers\n}\n\n// @ts-ignore\nconst filterByLength = (record: Record<string, string>, minLength: number): Record<string, string> => {\n  //TODO: Use Record.filter to keep only strings with length >= minLength\n}",
+    "solutionCode": "import * as R from 'fp-ts/Record'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const filterPositive = (record: Record<string, number>): Record<string, number> =>\n  pipe(\n    record,\n    R.filter((n) => n > 0)\n  )\n\nexport const filterByLength = (record: Record<string, string>, minLength: number): Record<string, string> =>\n  pipe(\n    record,\n    R.filter((s) => s.length >= minLength)\n  )",
+    "testCode": "describe('Record filter operations', () => {\n  it('filters positive numbers', () => {\n    const input = { a: 5, b: -2, c: 10, d: -7, e: 3 }\n    const result = filterPositive(input)\n    expect(result).toEqual({ a: 5, c: 10, e: 3 })\n  })\n\n  it('returns empty record when no matches', () => {\n    const input = { a: -1, b: -2 }\n    const result = filterPositive(input)\n    expect(result).toEqual({})\n  })\n\n  it('filters by string length', () => {\n    const input = { a: 'hi', b: 'hello', c: 'hey', d: 'goodbye' }\n    const result = filterByLength(input, 5)\n    expect(result).toEqual({ b: 'hello', d: 'goodbye' })\n  })\n})"
+  },
+  {
+    "id": "record-03",
+    "title": "Collect",
+    "description": "Learn about collect in fp-ts record",
+    "category": "Record",
+    "fileName": "03-collect.exercise.ts",
+    "difficulty": "beginner",
+    "order": 3,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst toArray = (record: Record<string, number>): Array<{ key: string; value: number }> => {\n  //TODO: Use Record.collect to convert record to array of key-value pairs\n  //HINT: collect takes a function (key, value) => result\n}\n\n// @ts-ignore\nconst sumValues = (record: Record<string, number>): number => {\n  //TODO: Use Record.collect to get all values, then sum them\n  //HINT: Collect values into an array, then reduce\n}",
+    "solutionCode": "import * as R from 'fp-ts/Record'\nimport * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const toArray = (record: Record<string, number>): Array<{ key: string; value: number }> =>\n  pipe(\n    record,\n    R.collect((key, value) => ({ key, value }))\n  )\n\nexport const sumValues = (record: Record<string, number>): number =>\n  pipe(\n    record,\n    R.collect((_, value) => value),\n    A.reduce(0, (acc, n) => acc + n)\n  )",
+    "testCode": "describe('Record collect operations', () => {\n  it('converts record to array', () => {\n    const input = { a: 1, b: 2, c: 3 }\n    const result = toArray(input)\n    expect(result).toEqual([\n      { key: 'a', value: 1 },\n      { key: 'b', value: 2 },\n      { key: 'c', value: 3 },\n    ])\n  })\n\n  it('sums all values', () => {\n    const input = { x: 10, y: 20, z: 30 }\n    const result = sumValues(input)\n    expect(result).toBe(60)\n  })\n\n  it('handles empty record', () => {\n    const result = sumValues({})\n    expect(result).toBe(0)\n  })\n})"
+  },
+  {
+    "id": "record-04",
+    "title": "Lookup",
+    "description": "Learn about lookup in fp-ts record",
+    "category": "Record",
+    "fileName": "04-lookup.exercise.ts",
+    "difficulty": "intermediate",
+    "order": 4,
+    "exerciseCode": "import * as O from 'fp-ts/Option'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst getValue = (record: Record<string, number>, key: string): O.Option<number> => {\n  //TODO: Use Record.lookup to safely get a value by key\n  //HINT: Returns Option because key might not exist\n}\n\n// @ts-ignore\nconst getValueWithDefault = (record: Record<string, number>, key: string, defaultValue: number): number => {\n  //TODO: Lookup the key and return the value, or defaultValue if not found\n  //HINT: Use pipe with O.getOrElse\n}",
+    "solutionCode": "import * as R from 'fp-ts/Record'\nimport * as O from 'fp-ts/Option'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const getValue = (record: Record<string, number>, key: string): O.Option<number> =>\n  R.lookup(key)(record)\n\nexport const getValueWithDefault = (record: Record<string, number>, key: string, defaultValue: number): number =>\n  pipe(\n    R.lookup(key)(record),\n    O.getOrElse(() => defaultValue)\n  )",
+    "testCode": "describe('Record lookup operations', () => {\n  it('looks up existing key', () => {\n    const record = { a: 10, b: 20, c: 30 }\n    const result = getValue(record, 'b')\n    expect(O.isSome(result)).toBe(true)\n    expect(result).toEqual(O.some(20))\n  })\n\n  it('returns None for missing key', () => {\n    const record = { a: 10 }\n    const result = getValue(record, 'z')\n    expect(O.isNone(result)).toBe(true)\n  })\n\n  it('gets value with default', () => {\n    const record = { a: 10, b: 20 }\n    expect(getValueWithDefault(record, 'a', 0)).toBe(10)\n    expect(getValueWithDefault(record, 'z', 999)).toBe(999)\n  })\n})"
+  },
+  {
+    "id": "record-05",
+    "title": "Modify",
+    "description": "Learn about modify in fp-ts record",
+    "category": "Record",
+    "fileName": "05-modify.exercise.ts",
+    "difficulty": "intermediate",
+    "order": 5,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst incrementKey = (record: Record<string, number>, key: string): Record<string, number> => {\n  //TODO: Use Record.modifyAt to increment the value at the given key\n  //HINT: Returns Option<Record> because key might not exist\n}\n\n// @ts-ignore\nconst updateAt = (record: Record<string, string>, key: string, newValue: string): Record<string, string> => {\n  //TODO: Use Record.updateAt to set a new value at the key\n  //HINT: Similar to modifyAt but replaces with a fixed value\n}",
+    "solutionCode": "import * as R from 'fp-ts/Record'\nimport * as O from 'fp-ts/Option'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const incrementKey = (record: Record<string, number>, key: string): Record<string, number> =>\n  pipe(\n    record,\n    R.modifyAt(key, (n) => n + 1),\n    O.getOrElse(() => record)\n  )\n\nexport const updateAt = (record: Record<string, string>, key: string, newValue: string): Record<string, string> =>\n  pipe(\n    record,\n    R.updateAt(key, newValue),\n    O.getOrElse(() => record)\n  )",
+    "testCode": "describe('Record modify operations', () => {\n  it('modifies existing key', () => {\n    const record = { a: 10, b: 20, c: 30 }\n    const result = incrementKey(record, 'b')\n    expect(result).toEqual({ a: 10, b: 21, c: 30 })\n  })\n\n  it('handles missing key', () => {\n    const record = { a: 10 }\n    const result = incrementKey(record, 'z')\n    expect(result).toEqual({ a: 10 })\n  })\n\n  it('updates value at key', () => {\n    const record = { name: 'Alice', city: 'Paris' }\n    const result = updateAt(record, 'city', 'London')\n    expect(result).toEqual({ name: 'Alice', city: 'London' })\n  })\n})"
+  },
+  {
+    "id": "record-06",
+    "title": "Keys Values",
+    "description": "Learn about keys values in fp-ts record",
+    "category": "Record",
+    "fileName": "06-keys-values.exercise.ts",
+    "difficulty": "intermediate",
+    "order": 6,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst getKeys = (record: Record<string, any>): string[] => {\n  //TODO: Use Record.keys to get all keys as an array\n}\n\n// @ts-ignore\nconst hasKey = (record: Record<string, any>, key: string): boolean => {\n  //TODO: Use Record.has to check if a key exists\n}\n\n// @ts-ignore\nconst isEmpty = (record: Record<string, any>): boolean => {\n  //TODO: Use Record.isEmpty to check if record has no keys\n}",
+    "solutionCode": "import * as R from 'fp-ts/Record'\nimport { describe, it, expect } from 'vitest'\n\nexport const getKeys = (record: Record<string, any>): string[] =>\n  R.keys(record)\n\nexport const hasKey = (record: Record<string, any>, key: string): boolean =>\n  R.has(key, record)\n\nexport const isEmpty = (record: Record<string, any>): boolean =>\n  R.isEmpty(record)",
+    "testCode": "describe('Record keys and values operations', () => {\n  it('gets all keys', () => {\n    const record = { a: 1, b: 2, c: 3 }\n    const result = getKeys(record)\n    expect(result).toEqual(['a', 'b', 'c'])\n  })\n\n  it('checks if key exists', () => {\n    const record = { name: 'Alice', age: 25 }\n    expect(hasKey(record, 'name')).toBe(true)\n    expect(hasKey(record, 'city')).toBe(false)\n  })\n\n  it('checks if record is empty', () => {\n    expect(isEmpty({})).toBe(true)\n    expect(isEmpty({ a: 1 })).toBe(false)\n  })\n})"
+  },
+  {
+    "id": "record-07",
+    "title": "Merge",
+    "description": "Learn about merge in fp-ts record",
+    "category": "Record",
+    "fileName": "07-merge.exercise.ts",
+    "difficulty": "advanced",
+    "order": 7,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst mergeConfigs = (defaults: Record<string, any>, overrides: Record<string, any>): Record<string, any> => {\n  //TODO: Use Record union to merge two configs (overrides take precedence)\n  //HINT: Second argument to union wins on conflicts\n}\n\n// @ts-ignore\nconst combineScores = (scores1: Record<string, number>, scores2: Record<string, number>): Record<string, number> => {\n  //TODO: Merge two score records, summing values for duplicate keys\n  //HINT: Use Record.union with a Semigroup that adds numbers\n}",
+    "solutionCode": "import * as R from 'fp-ts/Record'\nimport * as N from 'fp-ts/number'\nimport { describe, it, expect } from 'vitest'\n\nexport const mergeConfigs = (defaults: Record<string, any>, overrides: Record<string, any>): Record<string, any> => ({\n  ...defaults,\n  ...overrides,\n})\n\nexport const combineScores = (scores1: Record<string, number>, scores2: Record<string, number>): Record<string, number> =>\n  R.union(N.SemigroupSum)(scores2)(scores1)",
+    "testCode": "describe('Record merge operations', () => {\n  it('merges configs with overrides', () => {\n    const defaults = { theme: 'light', fontSize: 14, debug: false }\n    const overrides = { theme: 'dark', debug: true }\n    const result = mergeConfigs(defaults, overrides)\n    expect(result).toEqual({ theme: 'dark', fontSize: 14, debug: true })\n  })\n\n  it('combines scores by summing', () => {\n    const scores1 = { alice: 10, bob: 20 }\n    const scores2 = { bob: 15, charlie: 25 }\n    const result = combineScores(scores1, scores2)\n    expect(result).toEqual({ alice: 10, bob: 35, charlie: 25 })\n  })\n})"
+  },
+  {
+    "id": "record-08",
+    "title": "Pipeline",
+    "description": "Learn about pipeline in fp-ts record",
+    "category": "Record",
+    "fileName": "08-pipeline.exercise.ts",
+    "difficulty": "advanced",
+    "order": 8,
+    "exerciseCode": "import { describe, it, expect } from 'vitest'\n\ntype UserData = {\n  name: string\n  email: string\n  age: number\n  active: boolean\n}\n\n// @ts-ignore\nconst processUserData = (users: Record<string, UserData>): Record<string, string> => {\n  //TODO: Create a pipeline that:\n  // 1. Filters for active users only\n  // 2. Filters for users 18 or older\n  // 3. Maps to format: \"Name (email)\"\n  //HINT: Chain filter, filter, map operations\n}\n\n// @ts-ignore\nconst aggregateByCategory = (\n  items: Record<string, { category: string; value: number }>\n): Record<string, number> => {\n  //TODO: Group items by category and sum their values\n  // 1. Collect items into array\n  // 2. Group by category (manually create new record)\n  // 3. Sum values for each category\n}",
+    "solutionCode": "import * as R from 'fp-ts/Record'\nimport * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\ntype UserData = {\n  name: string\n  email: string\n  age: number\n  active: boolean\n}\n\nexport const processUserData = (users: Record<string, UserData>): Record<string, string> =>\n  pipe(\n    users,\n    R.filter((user) => user.active),\n    R.filter((user) => user.age >= 18),\n    R.map((user) => `${user.name} (${user.email})`)\n  )\n\nexport const aggregateByCategory = (\n  items: Record<string, { category: string; value: number }>\n): Record<string, number> =>\n  pipe(\n    items,\n    R.collect((_, item) => item),\n    A.reduce({} as Record<string, number>, (acc, item) => ({\n      ...acc,\n      [item.category]: (acc[item.category] || 0) + item.value,\n    }))\n  )",
+    "testCode": "describe('Record real-world pipeline', () => {\n  it('processes user data', () => {\n    const users: Record<string, UserData> = {\n      u1: { name: 'Alice', email: 'alice@example.com', age: 25, active: true },\n      u2: { name: 'Bob', email: 'bob@example.com', age: 17, active: true },\n      u3: { name: 'Charlie', email: 'charlie@example.com', age: 30, active: false },\n      u4: { name: 'David', email: 'david@example.com', age: 22, active: true },\n    }\n\n    const result = processUserData(users)\n    expect(result).toEqual({\n      u1: 'Alice (alice@example.com)',\n      u4: 'David (david@example.com)',\n    })\n  })\n\n  it('aggregates by category', () => {\n    const items = {\n      item1: { category: 'food', value: 10 },\n      item2: { category: 'tech', value: 50 },\n      item3: { category: 'food', value: 15 },\n      item4: { category: 'tech', value: 30 },\n      item5: { category: 'books', value: 20 },\n    }\n\n    const result = aggregateByCategory(items)\n    expect(result).toEqual({\n      food: 25,\n      tech: 80,\n      books: 20,\n    })\n  })\n})"
+  },
+  {
+    "id": "taskeither-01",
+    "title": "Basic",
+    "description": "Learn about basic in fp-ts taskeither",
+    "category": "Taskeither",
+    "fileName": "01-basic.exercise.ts",
+    "difficulty": "beginner",
+    "order": 1,
+    "exerciseCode": "import * as TE from 'fp-ts/TaskEither'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst successfulTask = (): TE.TaskEither<string, number> => {\n  //TODO: Create a TaskEither that successfully returns the number 42\n  //HINT: Use TE.right for successful values\n}\n\n// @ts-ignore\nconst failedTask = (): TE.TaskEither<string, number> => {\n  //TODO: Create a TaskEither that fails with the error \"Something went wrong\"\n  //HINT: Use TE.left for error values\n}",
+    "solutionCode": "import * as TE from 'fp-ts/TaskEither'\nimport { describe, it, expect } from 'vitest'\n\nexport const successfulTask = (): TE.TaskEither<string, number> =>\n  TE.right(42)\n\nexport const failedTask = (): TE.TaskEither<string, number> =>\n  TE.left('Something went wrong')",
+    "testCode": "describe('TaskEither basics', () => {\n  it('creates successful TaskEither', async () => {\n    const result = await successfulTask()()\n    expect(result._tag).toBe('Right')\n    if (result._tag === 'Right') {\n      expect(result.right).toBe(42)\n    }\n  })\n\n  it('creates failed TaskEither', async () => {\n    const result = await failedTask()()\n    expect(result._tag).toBe('Left')\n    if (result._tag === 'Left') {\n      expect(result.left).toBe('Something went wrong')\n    }\n  })\n})"
+  },
+  {
+    "id": "taskeither-02",
+    "title": "From Promise",
+    "description": "Learn about from promise in fp-ts taskeither",
+    "category": "Taskeither",
+    "fileName": "02-from-promise.exercise.ts",
+    "difficulty": "beginner",
+    "order": 2,
+    "exerciseCode": "import * as TE from 'fp-ts/TaskEither'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst wrapPromise = (promise: Promise<number>): TE.TaskEither<Error, number> => {\n  //TODO: Convert a Promise to TaskEither using TE.tryCatch\n  //HINT: TE.tryCatch takes the promise function and an error handler\n}\n\n// @ts-ignore\nconst safeFetch = (url: string): TE.TaskEither<string, string> => {\n  //TODO: Wrap a fetch call in TaskEither\n  //HINT: Use TE.tryCatch and handle errors by converting them to strings\n}",
+    "solutionCode": "import * as TE from 'fp-ts/TaskEither'\nimport { describe, it, expect } from 'vitest'\n\nexport const wrapPromise = (promise: Promise<number>): TE.TaskEither<Error, number> =>\n  TE.tryCatch(\n    () => promise,\n    (error) => error as Error\n  )\n\nexport const safeFetch = (url: string): TE.TaskEither<string, string> =>\n  TE.tryCatch(\n    () => fetch(url).then((res) => res.text()),\n    (error) => String(error)\n  )",
+    "testCode": "describe('TaskEither from Promise', () => {\n  it('converts successful promise', async () => {\n    const promise = Promise.resolve(100)\n    const result = await wrapPromise(promise)()\n    expect(result._tag).toBe('Right')\n    if (result._tag === 'Right') {\n      expect(result.right).toBe(100)\n    }\n  })\n\n  it('converts failed promise', async () => {\n    const promise = Promise.reject(new Error('Failed'))\n    const result = await wrapPromise(promise)()\n    expect(result._tag).toBe('Left')\n    if (result._tag === 'Left') {\n      expect(result.left.message).toBe('Failed')\n    }\n  })\n})"
+  },
+  {
+    "id": "taskeither-03",
+    "title": "Chaining",
+    "description": "Learn about chaining in fp-ts taskeither",
+    "category": "Taskeither",
+    "fileName": "03-chaining.exercise.ts",
+    "difficulty": "beginner",
+    "order": 3,
+    "exerciseCode": "import * as TE from 'fp-ts/TaskEither'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst fetchUser = (id: number): TE.TaskEither<string, { id: number; name: string; companyId: number }> => {\n  //TODO: Simulate fetching a user - return Right for valid ids (> 0), Left otherwise\n}\n\n// @ts-ignore\nconst fetchCompany = (companyId: number): TE.TaskEither<string, { id: number; name: string }> => {\n  //TODO: Simulate fetching a company - return Right for valid ids (> 0), Left otherwise\n}\n\n// @ts-ignore\nconst fetchUserWithCompany = (userId: number): TE.TaskEither<string, { user: string; company: string }> => {\n  //TODO: Chain fetchUser and fetchCompany to get both user and company name\n  //HINT: Use pipe with TE.flatMap (or TE.chain) to sequence async operations\n}",
+    "solutionCode": "import * as TE from 'fp-ts/TaskEither'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const fetchUser = (id: number): TE.TaskEither<string, { id: number; name: string; companyId: number }> =>\n  id > 0\n    ? TE.right({ id, name: `User ${id}`, companyId: id })\n    : TE.left('Invalid user id')\n\nexport const fetchCompany = (companyId: number): TE.TaskEither<string, { id: number; name: string }> =>\n  companyId > 0\n    ? TE.right({ id: companyId, name: `Company ${companyId}` })\n    : TE.left('Invalid company id')\n\nexport const fetchUserWithCompany = (userId: number): TE.TaskEither<string, { user: string; company: string }> =>\n  pipe(\n    fetchUser(userId),\n    TE.flatMap((user) =>\n      pipe(\n        fetchCompany(user.companyId),\n        TE.map((company) => ({ user: user.name, company: company.name }))\n      )\n    )\n  )",
+    "testCode": "describe('TaskEither chaining', () => {\n  it('chains successful operations', async () => {\n    const result = await fetchUserWithCompany(1)()\n    expect(result._tag).toBe('Right')\n    if (result._tag === 'Right') {\n      expect(result.right).toEqual({ user: 'User 1', company: 'Company 1' })\n    }\n  })\n\n  it('fails on invalid user id', async () => {\n    const result = await fetchUserWithCompany(0)()\n    expect(result._tag).toBe('Left')\n  })\n})"
+  },
+  {
+    "id": "taskeither-04",
+    "title": "Map",
+    "description": "Learn about map in fp-ts taskeither",
+    "category": "Taskeither",
+    "fileName": "04-map.exercise.ts",
+    "difficulty": "intermediate",
+    "order": 4,
+    "exerciseCode": "import * as TE from 'fp-ts/TaskEither'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst doubleSuccess = (te: TE.TaskEither<string, number>): TE.TaskEither<string, number> => {\n  //TODO: Use TE.map to double the success value\n}\n\n// @ts-ignore\nconst prefixError = (te: TE.TaskEither<string, number>): TE.TaskEither<string, number> => {\n  //TODO: Use TE.mapLeft to prefix the error with \"ERROR: \"\n}",
+    "solutionCode": "import * as TE from 'fp-ts/TaskEither'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const doubleSuccess = (te: TE.TaskEither<string, number>): TE.TaskEither<string, number> =>\n  pipe(\n    te,\n    TE.map((n) => n * 2)\n  )\n\nexport const prefixError = (te: TE.TaskEither<string, number>): TE.TaskEither<string, number> =>\n  pipe(\n    te,\n    TE.mapLeft((err) => `ERROR: ${err}`)\n  )",
+    "testCode": "describe('TaskEither map operations', () => {\n  it('maps success value', async () => {\n    const task = TE.right(21)\n    const result = await doubleSuccess(task)()\n    expect(result._tag).toBe('Right')\n    if (result._tag === 'Right') {\n      expect(result.right).toBe(42)\n    }\n  })\n\n  it('does not affect errors on map', async () => {\n    const task = TE.left('error')\n    const result = await doubleSuccess(task)()\n    expect(result._tag).toBe('Left')\n  })\n\n  it('maps error value', async () => {\n    const task = TE.left('failure')\n    const result = await prefixError(task)()\n    expect(result._tag).toBe('Left')\n    if (result._tag === 'Left') {\n      expect(result.left).toBe('ERROR: failure')\n    }\n  })\n\n  it('does not affect success on mapLeft', async () => {\n    const task = TE.right(42)\n    const result = await prefixError(task)()\n    expect(result._tag).toBe('Right')\n  })\n})"
+  },
+  {
+    "id": "taskeither-05",
+    "title": "Fold",
+    "description": "Learn about fold in fp-ts taskeither",
+    "category": "Taskeither",
+    "fileName": "05-fold.exercise.ts",
+    "difficulty": "intermediate",
+    "order": 5,
+    "exerciseCode": "import * as TE from 'fp-ts/TaskEither'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst getMessage = (te: TE.TaskEither<string, number>): Promise<string> => {\n  //TODO: Use TE.match (formerly fold) to handle both success and error cases\n  //HINT: On error return \"Error: {error}\", on success return \"Success: {value}\"\n}\n\n// @ts-ignore\nconst getWithDefault = (te: TE.TaskEither<string, number>): Promise<number> => {\n  //TODO: Use TE.getOrElse to return the success value or default to 0 on error\n}",
+    "solutionCode": "import * as TE from 'fp-ts/TaskEither'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const getMessage = (te: TE.TaskEither<string, number>): Promise<string> =>\n  pipe(\n    te,\n    TE.match(\n      (error) => `Error: ${error}`,\n      (value) => `Success: ${value}`\n    )\n  )()\n\nexport const getWithDefault = (te: TE.TaskEither<string, number>): Promise<number> =>\n  pipe(\n    te,\n    TE.getOrElse(() => () => Promise.resolve(0))\n  )()",
+    "testCode": "describe('TaskEither fold operations', () => {\n  it('matches success case', async () => {\n    const task = TE.right(42)\n    const result = await getMessage(task)\n    expect(result).toBe('Success: 42')\n  })\n\n  it('matches error case', async () => {\n    const task = TE.left('failed')\n    const result = await getMessage(task)\n    expect(result).toBe('Error: failed')\n  })\n\n  it('gets success value', async () => {\n    const task = TE.right(100)\n    const result = await getWithDefault(task)\n    expect(result).toBe(100)\n  })\n\n  it('gets default on error', async () => {\n    const task = TE.left('error')\n    const result = await getWithDefault(task)\n    expect(result).toBe(0)\n  })\n})"
+  },
+  {
+    "id": "taskeither-06",
+    "title": "Recovery",
+    "description": "Learn about recovery in fp-ts taskeither",
+    "category": "Taskeither",
+    "fileName": "06-recovery.exercise.ts",
+    "difficulty": "intermediate",
+    "order": 6,
+    "exerciseCode": "import * as TE from 'fp-ts/TaskEither'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst fetchWithFallback = (primaryUrl: string, fallbackUrl: string): TE.TaskEither<string, string> => {\n  //TODO: Try fetching from primaryUrl, if it fails, try fallbackUrl\n  //HINT: Use TE.orElse to provide a fallback TaskEither\n  const fetchPrimary = TE.tryCatch(\n    () => fetch(primaryUrl).then(res => res.text()),\n    () => 'Primary failed'\n  )\n\n  const fetchFallback = TE.tryCatch(\n    () => fetch(fallbackUrl).then(res => res.text()),\n    () => 'Both failed'\n  )\n\n  //TODO: Combine using orElse\n}\n\n// @ts-ignore\nconst retryOnce = (task: TE.TaskEither<string, number>): TE.TaskEither<string, number> => {\n  //TODO: If task fails, retry it once\n  //HINT: Use TE.orElse with the same task\n}",
+    "solutionCode": "import * as TE from 'fp-ts/TaskEither'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nexport const fetchWithFallback = (primaryUrl: string, fallbackUrl: string): TE.TaskEither<string, string> => {\n  const fetchPrimary = TE.tryCatch(\n    () => fetch(primaryUrl).then(res => res.text()),\n    () => 'Primary failed'\n  )\n\n  const fetchFallback = TE.tryCatch(\n    () => fetch(fallbackUrl).then(res => res.text()),\n    () => 'Both failed'\n  )\n\n  return pipe(\n    fetchPrimary,\n    TE.orElse(() => fetchFallback)\n  )\n}\n\nexport const retryOnce = (task: TE.TaskEither<string, number>): TE.TaskEither<string, number> =>\n  pipe(\n    task,\n    TE.orElse(() => task)\n  )",
+    "testCode": "describe('TaskEither recovery', () => {\n  it('retries task on failure', async () => {\n    let attempts = 0\n    const task = TE.tryCatch(\n      async () => {\n        attempts++\n        if (attempts === 1) throw new Error('First attempt')\n        return 42\n      },\n      () => 'failed'\n    )\n\n    const result = await retryOnce(task)()\n    expect(result._tag).toBe('Right')\n    expect(attempts).toBe(2)\n  })\n\n  it('succeeds on first attempt', async () => {\n    let attempts = 0\n    const task = TE.tryCatch(\n      async () => {\n        attempts++\n        return 100\n      },\n      () => 'failed'\n    )\n\n    const result = await retryOnce(task)()\n    expect(result._tag).toBe('Right')\n    expect(attempts).toBe(1)\n  })\n})"
+  },
+  {
+    "id": "taskeither-07",
+    "title": "Sequencing",
+    "description": "Learn about sequencing in fp-ts taskeither",
+    "category": "Taskeither",
+    "fileName": "07-sequencing.exercise.ts",
+    "difficulty": "advanced",
+    "order": 7,
+    "exerciseCode": "import * as TE from 'fp-ts/TaskEither'\nimport * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst fetchAll = (ids: number[]): TE.TaskEither<string, number[]> => {\n  //TODO: Fetch all ids sequentially (one after another)\n  //HINT: Use A.traverse with TE.ApplicativeSeq to sequence TaskEithers\n  const fetchOne = (id: number): TE.TaskEither<string, number> =>\n    id > 0 ? TE.right(id * 10) : TE.left(`Invalid id: ${id}`)\n\n  //TODO: Apply traverse to fetch all\n}\n\n// @ts-ignore\nconst processInOrder = (numbers: number[]): TE.TaskEither<string, number[]> => {\n  //TODO: Process each number (multiply by 2) in order\n  //HINT: Map each number to a TaskEither, then sequence them\n  const process = (n: number): TE.TaskEither<string, number> =>\n    TE.right(n * 2)\n\n  //TODO: Use A.traverse to sequence the processing\n}",
+    "solutionCode": "import * as TE from 'fp-ts/TaskEither'\nimport * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nconst fetchOne = (id: number): TE.TaskEither<string, number> =>\n  id > 0 ? TE.right(id * 10) : TE.left(`Invalid id: ${id}`)\n\nexport const fetchAll = (ids: number[]): TE.TaskEither<string, number[]> =>\n  pipe(\n    ids,\n    A.traverse(TE.ApplicativeSeq)(fetchOne)\n  )\n\nconst process = (n: number): TE.TaskEither<string, number> =>\n  TE.right(n * 2)\n\nexport const processInOrder = (numbers: number[]): TE.TaskEither<string, number[]> =>\n  pipe(\n    numbers,\n    A.traverse(TE.ApplicativeSeq)(process)\n  )",
+    "testCode": "describe('TaskEither sequencing', () => {\n  it('fetches all successfully', async () => {\n    const result = await fetchAll([1, 2, 3])()\n    expect(result._tag).toBe('Right')\n    if (result._tag === 'Right') {\n      expect(result.right).toEqual([10, 20, 30])\n    }\n  })\n\n  it('fails on first error', async () => {\n    const result = await fetchAll([1, 0, 3])()\n    expect(result._tag).toBe('Left')\n  })\n\n  it('processes in order', async () => {\n    const result = await processInOrder([5, 10, 15])()\n    expect(result._tag).toBe('Right')\n    if (result._tag === 'Right') {\n      expect(result.right).toEqual([10, 20, 30])\n    }\n  })\n})"
+  },
+  {
+    "id": "taskeither-08",
+    "title": "Parallel",
+    "description": "Learn about parallel in fp-ts taskeither",
+    "category": "Taskeither",
+    "fileName": "08-parallel.exercise.ts",
+    "difficulty": "advanced",
+    "order": 8,
+    "exerciseCode": "import * as TE from 'fp-ts/TaskEither'\nimport * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\n// @ts-ignore\nconst fetchAllParallel = (ids: number[]): TE.TaskEither<string, number[]> => {\n  //TODO: Fetch all ids in parallel (all at once)\n  //HINT: Use A.traverse with TE.ApplicativePar for parallel execution\n  const fetchOne = (id: number): TE.TaskEither<string, number> =>\n    TE.tryCatch(\n      () => new Promise<number>((resolve) => setTimeout(() => resolve(id * 10), 10)),\n      () => `Failed to fetch ${id}`\n    )\n\n  //TODO: Use traverse with ApplicativePar\n}\n\n// @ts-ignore\nconst combineResults = (\n  task1: TE.TaskEither<string, number>,\n  task2: TE.TaskEither<string, number>,\n  task3: TE.TaskEither<string, number>\n): TE.TaskEither<string, number> => {\n  //TODO: Run all three tasks in parallel and sum their results\n  //HINT: Use TE.Do notation or sequenceT to combine multiple TaskEithers\n}",
+    "solutionCode": "import * as TE from 'fp-ts/TaskEither'\nimport * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\nconst fetchOne = (id: number): TE.TaskEither<string, number> =>\n  TE.tryCatch(\n    () => new Promise<number>((resolve) => setTimeout(() => resolve(id * 10), 10)),\n    () => `Failed to fetch ${id}`\n  )\n\nexport const fetchAllParallel = (ids: number[]): TE.TaskEither<string, number[]> =>\n  pipe(\n    ids,\n    A.traverse(TE.ApplicativePar)(fetchOne)\n  )\n\nexport const combineResults = (\n  task1: TE.TaskEither<string, number>,\n  task2: TE.TaskEither<string, number>,\n  task3: TE.TaskEither<string, number>\n): TE.TaskEither<string, number> =>\n  pipe(\n    TE.Do,\n    TE.bind('a', () => task1),\n    TE.bind('b', () => task2),\n    TE.bind('c', () => task3),\n    TE.map(({ a, b, c }) => a + b + c)\n  )",
+    "testCode": "describe('TaskEither parallel execution', () => {\n  it('fetches all in parallel', async () => {\n    const start = Date.now()\n    const result = await fetchAllParallel([1, 2, 3])()\n    const duration = Date.now() - start\n\n    expect(result._tag).toBe('Right')\n    if (result._tag === 'Right') {\n      expect(result.right).toEqual([10, 20, 30])\n    }\n    // Should be faster than sequential (< 25ms vs 30ms)\n    expect(duration).toBeLessThan(25)\n  })\n\n  it('combines parallel results', async () => {\n    const task1 = TE.right(10)\n    const task2 = TE.right(20)\n    const task3 = TE.right(30)\n\n    const result = await combineResults(task1, task2, task3)()\n    expect(result._tag).toBe('Right')\n    if (result._tag === 'Right') {\n      expect(result.right).toBe(60)\n    }\n  })\n})"
+  },
+  {
+    "id": "taskeither-09",
+    "title": "Api",
+    "description": "Learn about api in fp-ts taskeither",
+    "category": "Taskeither",
+    "fileName": "09-api.exercise.ts",
+    "difficulty": "advanced",
+    "order": 9,
+    "exerciseCode": "import * as TE from 'fp-ts/TaskEither'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\ntype ApiError = {\n  status: number\n  message: string\n}\n\ntype User = {\n  id: number\n  name: string\n  email: string\n}\n\n// @ts-ignore\nconst parseJSON = <T>(response: Response): TE.TaskEither<ApiError, T> => {\n  //TODO: Parse JSON from response, handle errors\n  //HINT: Use TE.tryCatch and check response.ok first\n}\n\n// @ts-ignore\nconst fetchUser = (id: number): TE.TaskEither<ApiError, User> => {\n  //TODO: Fetch user from API and parse JSON\n  //HINT: Chain TE.tryCatch for fetch, then parseJSON\n  // Mock implementation: return success for id > 0\n  if (id > 0) {\n    return TE.right({ id, name: `User ${id}`, email: `user${id}@example.com` })\n  }\n  return TE.left({ status: 404, message: 'User not found' })\n}\n\n// @ts-ignore\nconst updateUserEmail = (userId: number, newEmail: string): TE.TaskEither<ApiError, User> => {\n  //TODO: Fetch user, then update their email\n  //HINT: Chain fetchUser with a map to update the email\n}",
+    "solutionCode": "import * as TE from 'fp-ts/TaskEither'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\ntype ApiError = {\n  status: number\n  message: string\n}\n\ntype User = {\n  id: number\n  name: string\n  email: string\n}\n\nexport const parseJSON = <T>(response: Response): TE.TaskEither<ApiError, T> =>\n  TE.tryCatch(\n    () => response.json() as Promise<T>,\n    () => ({ status: response.status, message: 'Failed to parse JSON' })\n  )\n\nexport const fetchUser = (id: number): TE.TaskEither<ApiError, User> => {\n  if (id > 0) {\n    return TE.right({ id, name: `User ${id}`, email: `user${id}@example.com` })\n  }\n  return TE.left({ status: 404, message: 'User not found' })\n}\n\nexport const updateUserEmail = (userId: number, newEmail: string): TE.TaskEither<ApiError, User> =>\n  pipe(\n    fetchUser(userId),\n    TE.map((user) => ({ ...user, email: newEmail }))\n  )",
+    "testCode": "describe('TaskEither API operations', () => {\n  it('fetches user successfully', async () => {\n    const result = await fetchUser(1)()\n    expect(result._tag).toBe('Right')\n    if (result._tag === 'Right') {\n      expect(result.right.id).toBe(1)\n      expect(result.right.name).toBe('User 1')\n    }\n  })\n\n  it('handles API error', async () => {\n    const result = await fetchUser(0)()\n    expect(result._tag).toBe('Left')\n    if (result._tag === 'Left') {\n      expect(result.left.status).toBe(404)\n    }\n  })\n\n  it('updates user email', async () => {\n    const result = await updateUserEmail(1, 'newemail@example.com')()\n    expect(result._tag).toBe('Right')\n    if (result._tag === 'Right') {\n      expect(result.right.email).toBe('newemail@example.com')\n    }\n  })\n})"
+  },
+  {
+    "id": "taskeither-10",
+    "title": "Pipeline",
+    "description": "Learn about pipeline in fp-ts taskeither",
+    "category": "Taskeither",
+    "fileName": "10-pipeline.exercise.ts",
+    "difficulty": "advanced",
+    "order": 10,
+    "exerciseCode": "import * as TE from 'fp-ts/TaskEither'\nimport * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\ntype ValidationError = string[]\ntype User = { id: number; email: string; age: number }\ntype ProcessedUser = { id: number; email: string; ageGroup: string }\n\n// @ts-ignore\nconst validateUser = (user: User): TE.TaskEither<ValidationError, User> => {\n  //TODO: Validate user (email must contain @, age must be 18+)\n  //HINT: Collect errors in an array, return left if any errors\n  const errors: string[] = []\n  if (!user.email.includes('@')) errors.push('Invalid email')\n  if (user.age < 18) errors.push('User must be 18+')\n\n  //TODO: Return left with errors or right with user\n}\n\n// @ts-ignore\nconst enrichUser = (user: User): TE.TaskEither<ValidationError, ProcessedUser> => {\n  //TODO: Add age group (18-30: 'young', 31-50: 'middle', 50+: 'senior')\n  //HINT: Map the user and add the ageGroup field\n}\n\n// @ts-ignore\nconst processUsers = (users: User[]): TE.TaskEither<ValidationError, ProcessedUser[]> => {\n  //TODO: Create a complete pipeline:\n  // 1. Validate each user (fail fast on first invalid)\n  // 2. Enrich each valid user with age group\n  // 3. Return array of processed users\n  //HINT: Use A.traverse to sequence the operations\n}",
+    "solutionCode": "import * as TE from 'fp-ts/TaskEither'\nimport * as A from 'fp-ts/Array'\nimport { pipe } from 'fp-ts/function'\nimport { describe, it, expect } from 'vitest'\n\ntype ValidationError = string[]\ntype User = { id: number; email: string; age: number }\ntype ProcessedUser = { id: number; email: string; ageGroup: string }\n\nexport const validateUser = (user: User): TE.TaskEither<ValidationError, User> => {\n  const errors: string[] = []\n  if (!user.email.includes('@')) errors.push('Invalid email')\n  if (user.age < 18) errors.push('User must be 18+')\n\n  return errors.length > 0 ? TE.left(errors) : TE.right(user)\n}\n\nexport const enrichUser = (user: User): TE.TaskEither<ValidationError, ProcessedUser> =>\n  pipe(\n    TE.right(user),\n    TE.map((u) => ({\n      id: u.id,\n      email: u.email,\n      ageGroup: u.age <= 30 ? 'young' : u.age <= 50 ? 'middle' : 'senior',\n    }))\n  )\n\nexport const processUsers = (users: User[]): TE.TaskEither<ValidationError, ProcessedUser[]> =>\n  pipe(\n    users,\n    A.traverse(TE.ApplicativeSeq)((user) =>\n      pipe(\n        validateUser(user),\n        TE.flatMap(enrichUser)\n      )\n    )\n  )",
+    "testCode": "describe('TaskEither complex pipeline', () => {\n  it('processes valid users', async () => {\n    const users: User[] = [\n      { id: 1, email: 'alice@example.com', age: 25 },\n      { id: 2, email: 'bob@example.com', age: 35 },\n      { id: 3, email: 'charlie@example.com', age: 55 },\n    ]\n\n    const result = await processUsers(users)()\n    expect(result._tag).toBe('Right')\n    if (result._tag === 'Right') {\n      expect(result.right).toEqual([\n        { id: 1, email: 'alice@example.com', ageGroup: 'young' },\n        { id: 2, email: 'bob@example.com', ageGroup: 'middle' },\n        { id: 3, email: 'charlie@example.com', ageGroup: 'senior' },\n      ])\n    }\n  })\n\n  it('fails on invalid user', async () => {\n    const users: User[] = [\n      { id: 1, email: 'alice@example.com', age: 25 },\n      { id: 2, email: 'invalid-email', age: 16 },\n    ]\n\n    const result = await processUsers(users)()\n    expect(result._tag).toBe('Left')\n    if (result._tag === 'Left') {\n      expect(result.left.length).toBeGreaterThan(0)\n    }\n  })\n})"
   }
 ]
