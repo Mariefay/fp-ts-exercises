@@ -335,7 +335,7 @@ fp-ts-exercises/
 - 📊 **Progress Tracking**: Track your learning journey
 - 🎯 **Dashboard**: Visualize your progress
 - 🔄 **Real-time Testing**: Execute tests in the browser
-- 📚 **More Exercises**: 28 exercises across 4 modules
+- 📚 **Comprehensive Content**: 97 exercises across 14 modules covering beginner to advanced topics
 
 ### Updated Dependencies
 - **fp-ts 2.16+**: Latest version with improved TypeScript support
