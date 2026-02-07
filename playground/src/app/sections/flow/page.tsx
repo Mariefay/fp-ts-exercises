@@ -8,7 +8,7 @@ const flowConcepts = [
     title: 'Reusable Pipelines',
     description: 'Create functions that can be used anywhere',
     icon: '♻️',
-    color: 'bg-yellow-100 text-yellow-700'
+    color: 'bg-blue-100 text-blue-700'
   },
   {
     title: 'Point-Free Style',
@@ -47,35 +47,32 @@ export default function FlowSection() {
   const flowExercises = exercises.filter(ex => ex.category === 'Flow')
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-yellow-100 rounded-full text-yellow-700 text-sm font-medium mb-6">
-            🌊 Intermediate
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Flow Function
           </h1>
-          <p className="text-xl text-yellow-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Flow is like pipe, but creates reusable function pipelines. Define a transformation once,
             and use it anywhere. It's the key to building modular, composable applications!
           </p>
         </div>
 
         {/* What is Flow */}
-        <div className="mb-16 bg-white backdrop-blur-sm rounded-3xl p-8 border border-yellow-100/20 shadow-soft">
-          <h2 className="text-2xl font-bold text-yellow-800 mb-6">What is Flow?</h2>
+        <div className="mb-16 bg-white rounded-lg p-8 border border-gray-200">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">What is Flow?</h2>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <p className="text-yellow-600 leading-relaxed mb-6">
+              <p className="text-gray-600 leading-relaxed mb-6">
                 Flow composes functions into a new function. While pipe executes transformations immediately,
                 flow creates a reusable transformation that can be called multiple times with different inputs.
               </p>
-              <div className="bg-yellow-50 rounded-xl p-4 font-mono text-sm">
-                <div className="text-yellow-500 mb-2">{`// Pipe (executes immediately):`}</div>
+              <div className="bg-gray-50 rounded-lg p-4 font-mono text-sm">
+                <div className="text-gray-600 mb-2">{`// Pipe (executes immediately):`}</div>
                 <div className="text-red-600 mb-4">{`pipe(5, double, addTen) // 20`}</div>
-                <div className="text-yellow-500 mb-2">{`// Flow (creates function):`}</div>
+                <div className="text-gray-600 mb-2">{`// Flow (creates function):`}</div>
                 <div className="text-green-600">{`const process = flow(double, addTen)`}</div>
                 <div className="text-green-600">{`process(5) // 20`}</div>
                 <div className="text-green-600">{`process(3) // 16`}</div>
@@ -83,12 +80,12 @@ export default function FlowSection() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {flowConcepts.map((concept, index) => (
-                <div key={index} className="bg-white/15 rounded-2xl p-4 border border-yellow-100/20 shadow-sm">
+                <div key={index} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                   <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${concept.color}`}>
                     <span>{concept.icon}</span>
                   </div>
-                  <h3 className="font-semibold text-yellow-800 mb-2">{concept.title}</h3>
-                  <p className="text-sm text-yellow-600">{concept.description}</p>
+                  <h3 className="font-semibold text-gray-900 mb-2">{concept.title}</h3>
+                  <p className="text-sm text-gray-600">{concept.description}</p>
                 </div>
               ))}
             </div>
@@ -96,13 +93,13 @@ export default function FlowSection() {
         </div>
 
         {/* Code Example */}
-        <div className="mb-16 bg-white backdrop-blur-sm rounded-3xl p-8 border border-yellow-100/20 shadow-soft">
-          <h2 className="text-2xl font-bold text-yellow-800 mb-6">Flow in Action</h2>
+        <div className="mb-16 bg-white rounded-lg p-8 border border-gray-200">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Flow in Action</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-semibold text-red-600 mb-4">❌ Repeating Logic</h3>
-              <div className="bg-red-50 rounded-xl p-4 font-mono text-sm">
-                <pre className="text-yellow-800">{`// Same transformation repeated
+              <div className="bg-red-50 rounded-lg p-4 font-mono text-sm">
+                <pre className="text-gray-900">{`// Same transformation repeated
 const process1 = pipe(
   data1,
   validate,
@@ -122,8 +119,8 @@ const process2 = pipe(
             </div>
             <div>
               <h3 className="font-semibold text-green-600 mb-4">✅ Flow Approach</h3>
-              <div className="bg-green-50 rounded-xl p-4 font-mono text-sm">
-                <pre className="text-yellow-800">{`// Reusable pipeline
+              <div className="bg-green-50 rounded-lg p-4 font-mono text-sm">
+                <pre className="text-gray-900">{`// Reusable pipeline
 const processData = flow(
   validate,
   transform,
@@ -141,22 +138,22 @@ const result2 = processData(data2)
 
         {/* Exercises */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-yellow-800 mb-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             Practice Exercises
           </h2>
           <div className="grid gap-6">
             {flowExercises.map((exercise, index) => (
-              <div key={exercise.id} className="bg-white backdrop-blur-sm rounded-2xl p-6 border border-yellow-100/20 shadow-soft hover:shadow-lg transition-all duration-300 group">
+              <div key={exercise.id} className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-xl flex items-center justify-center text-white font-bold">
+                    <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
                       {index + 1}
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-yellow-800 group-hover:text-yellow-600 transition-colors">
+                      <h3 className="text-xl font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
                         {exercise.title}
                       </h3>
-                      <p className="text-yellow-600">{exercise.description}</p>
+                      <p className="text-gray-600">{exercise.description}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
@@ -165,7 +162,7 @@ const result2 = processData(data2)
                     </span>
                     <Link
                       href={`/exercise/${exercise.id}`}
-                      className="px-6 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-medium rounded-xl hover:scale-105 transform transition-all duration-200 shadow-lg hover:shadow-xl"
+                      className="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all duration-200"
                     >
                       Start Exercise
                     </Link>
@@ -177,23 +174,23 @@ const result2 = processData(data2)
         </div>
 
         {/* Benefits */}
-        <div className="bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 rounded-3xl p-8 text-white">
+        <div className="bg-blue-600 rounded-lg p-8 text-white">
           <h2 className="text-2xl font-bold mb-6 text-center">Why Learn Flow?</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
               <div className="text-3xl mb-3">♻️</div>
               <h3 className="font-semibold mb-2">Reusability</h3>
-              <p className="text-yellow-100">Create once, use everywhere in your codebase</p>
+              <p className="text-blue-100">Create once, use everywhere in your codebase</p>
             </div>
             <div className="text-center">
               <div className="text-3xl mb-3">🎯</div>
               <h3 className="font-semibold mb-2">Composability</h3>
-              <p className="text-yellow-100">Build complex behaviors from simple functions</p>
+              <p className="text-blue-100">Build complex behaviors from simple functions</p>
             </div>
             <div className="text-center">
               <div className="text-3xl mb-3">🚀</div>
               <h3 className="font-semibold mb-2">Production Ready</h3>
-              <p className="text-yellow-100">Write maintainable, testable application code</p>
+              <p className="text-blue-100">Write maintainable, testable application code</p>
             </div>
           </div>
         </div>

@@ -3,29 +3,29 @@
 import Link from 'next/link'
 import { exercises } from '@/data/generated-exercises'
 
-const semigroupConcepts = [
+const theseConcepts = [
   {
-    title: 'Concat Operation',
-    description: 'Combine two values into one',
-    icon: '➕',
+    title: 'Three States',
+    description: 'Left, Right, or Both at once',
+    icon: '3️⃣',
     color: 'bg-blue-50 text-blue-700'
   },
   {
-    title: 'Associative',
-    description: 'Order of operations doesn\'t matter',
-    icon: '🔗',
+    title: 'Warnings',
+    description: 'Return success with warnings',
+    icon: '⚠️',
     color: 'bg-blue-50 text-blue-700'
   },
   {
-    title: 'Composable',
-    description: 'Build complex combiners from simple ones',
-    icon: '⚙️',
+    title: 'Accumulation',
+    description: 'Collect errors while succeeding',
+    icon: '📋',
     color: 'bg-blue-50 text-blue-700'
   },
   {
-    title: 'Universal',
-    description: 'Works with any type of data',
-    icon: '🌐',
+    title: 'Flexible',
+    description: 'More powerful than Either',
+    icon: '💪',
     color: 'bg-blue-50 text-blue-700'
   }
 ]
@@ -43,8 +43,8 @@ const getDifficultyColor = (difficulty: string) => {
   }
 }
 
-export default function SemigroupSection() {
-  const semigroupExercises = exercises.filter((ex) => ex.category === 'Semigroup')
+export default function TheseSection() {
+  const theseExercises = exercises.filter((ex) => ex.category === 'These')
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -52,33 +52,33 @@ export default function SemigroupSection() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Semigroup Module
+            These Module
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Learn to combine values systematically. Semigroup provides the foundation for composable operations,
-            enabling you to merge configurations, aggregate statistics, and build reusable combiners.
+            The inclusive-or data type: represents "this", "that", or "both" simultaneously. Perfect for validation
+            with warnings, partial successes, and scenarios where you want both errors and results.
           </p>
         </div>
 
-        {/* What is Semigroup */}
+        {/* What is These */}
         <div className="mb-16 bg-white rounded-lg p-8 border border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">What is Semigroup?</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">What is These?</h2>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <p className="text-gray-600 leading-relaxed mb-6">
-                A Semigroup is a type with a concat operation that combines two values into one. The operation
-                must be associative, meaning (a + b) + c = a + (b + c). This simple concept enables powerful
-                composition patterns for aggregating data, merging configs, and combining results.
+                These is an inclusive-or type with three constructors: Left (error only), Right (success only),
+                or Both (error and success together). This enables scenarios like returning a successful result
+                with warnings, partial validation failures, or collecting all issues while still computing a result.
               </p>
               <div className="bg-gray-50 rounded-lg p-4 font-mono text-sm">
-                <div className="text-gray-600 mb-2">{`// Instead of manual combining:`}</div>
-                <div className="text-red-600 mb-4">{`const result = {...obj1, ...obj2, ...obj3}`}</div>
-                <div className="text-gray-600 mb-2">{`// Use Semigroup:`}</div>
-                <div className="text-green-600">S.concatAll(S.struct({'{'}...{'}'})([obj1, obj2, obj3])</div>
+                <div className="text-gray-600 mb-2">{`// Either - exclusive or:`}</div>
+                <div className="text-red-600 mb-4">{`Either<Error, Result> // One or the other`}</div>
+                <div className="text-gray-600 mb-2">{`// These - inclusive or:`}</div>
+                <div className="text-green-600">These&lt;Warnings, Result&gt; // Error, success, or both!</div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {semigroupConcepts.map((concept, index) => (
+              {theseConcepts.map((concept, index) => (
                 <div key={index} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                   <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${concept.color}`}>
                     <span>{concept.icon}</span>
@@ -93,38 +93,43 @@ export default function SemigroupSection() {
 
         {/* Code Example */}
         <div className="mb-16 bg-white rounded-lg p-8 border border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Semigroup in Action</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">These in Action</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold text-red-600 mb-4">❌ Manual Approach</h3>
+              <h3 className="font-semibold text-red-600 mb-4">❌ Either Approach</h3>
               <div className="bg-red-50 rounded-lg p-4 font-mono text-sm">
-                <pre className="text-gray-900">{`const stats1 = { views: 100, clicks: 10 }
-const stats2 = { views: 200, clicks: 15 }
-const stats3 = { views: 50, clicks: 5 }
-
-const total = {
-  views: stats1.views + stats2.views + stats3.views,
-  clicks: stats1.clicks + stats2.clicks + stats3.clicks
+                <pre className="text-gray-900">{`function validateUser(data: UserData): Either<Error, User> {
+  if (!data.name) {
+    return E.left('Name required')
+  }
+  if (!isEmail(data.email)) {
+    return E.left('Invalid email')
+  }
+  // Can't return warnings with success!
+  return E.right(createUser(data))
 }
 
-// Tedious and error-prone!`}</pre>
+// Either: success OR error, never both`}</pre>
               </div>
             </div>
             <div>
-              <h3 className="font-semibold text-green-600 mb-4">✅ Semigroup Approach</h3>
+              <h3 className="font-semibold text-green-600 mb-4">✅ These Approach</h3>
               <div className="bg-green-50 rounded-lg p-4 font-mono text-sm">
-                <pre className="text-gray-900">{`const StatsSemigroup = S.struct({
-  views: N.SemigroupSum,
-  clicks: N.SemigroupSum
-})
+                <pre className="text-gray-900">{`function validateUser(data: UserData): These<string[], User> {
+  const warnings: string[] = []
 
-const total = S.concatAll(StatsSemigroup)(0)([
-  stats1,
-  stats2,
-  stats3
-])
+  if (!data.avatar) {
+    warnings.push('No avatar - using default')
+  }
 
-// Composable and reusable!`}</pre>
+  const user = createUser(data)
+
+  return warnings.length > 0
+    ? T.both(warnings, user) // Success with warnings!
+    : T.right(user)
+}
+
+// These: success, error, or BOTH!`}</pre>
               </div>
             </div>
           </div>
@@ -136,7 +141,7 @@ const total = S.concatAll(StatsSemigroup)(0)([
             Practice Exercises
           </h2>
           <div className="grid gap-6">
-            {semigroupExercises.map((exercise, index) => (
+            {theseExercises.map((exercise, index) => (
               <div key={exercise.id} className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
@@ -169,22 +174,22 @@ const total = S.concatAll(StatsSemigroup)(0)([
 
         {/* Benefits */}
         <div className="bg-blue-600 rounded-lg p-8 text-white">
-          <h2 className="text-2xl font-bold mb-6 text-center">Why Learn Semigroup?</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">Why Learn These?</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="text-3xl mb-3">🔗</div>
-              <h3 className="font-semibold mb-2">Composability</h3>
-              <p className="text-blue-100">Build complex combiners from simple pieces</p>
+              <div className="text-3xl mb-3">⚠️</div>
+              <h3 className="font-semibold mb-2">Warnings</h3>
+              <p className="text-blue-100">Return success with warnings attached</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl mb-3">📊</div>
-              <h3 className="font-semibold mb-2">Data Aggregation</h3>
-              <p className="text-blue-100">Perfect for merging analytics and stats</p>
+              <div className="text-3xl mb-3">📋</div>
+              <h3 className="font-semibold mb-2">Flexible Validation</h3>
+              <p className="text-blue-100">More powerful than Either</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl mb-3">⚙️</div>
-              <h3 className="font-semibold mb-2">Reusable Logic</h3>
-              <p className="text-blue-100">Write once, use everywhere</p>
+              <div className="text-3xl mb-3">💪</div>
+              <h3 className="font-semibold mb-2">Partial Success</h3>
+              <p className="text-blue-100">Handle complex scenarios elegantly</p>
             </div>
           </div>
         </div>

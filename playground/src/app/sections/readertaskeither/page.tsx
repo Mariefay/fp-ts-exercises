@@ -3,29 +3,29 @@
 import Link from 'next/link'
 import { exercises } from '@/data/generated-exercises'
 
-const semigroupConcepts = [
+const rteConcepts = [
   {
-    title: 'Concat Operation',
-    description: 'Combine two values into one',
-    icon: '➕',
+    title: 'Triple Power',
+    description: 'Reader + Task + Either combined',
+    icon: '🎯',
     color: 'bg-blue-50 text-blue-700'
   },
   {
-    title: 'Associative',
-    description: 'Order of operations doesn\'t matter',
-    icon: '🔗',
+    title: 'Production Ready',
+    description: 'Real-world app architecture',
+    icon: '🚀',
     color: 'bg-blue-50 text-blue-700'
   },
   {
-    title: 'Composable',
-    description: 'Build complex combiners from simple ones',
-    icon: '⚙️',
+    title: 'Testable',
+    description: 'Mock dependencies easily',
+    icon: '🧪',
     color: 'bg-blue-50 text-blue-700'
   },
   {
-    title: 'Universal',
-    description: 'Works with any type of data',
-    icon: '🌐',
+    title: 'Type-Safe',
+    description: 'Dependencies, errors, async all typed',
+    icon: '✅',
     color: 'bg-blue-50 text-blue-700'
   }
 ]
@@ -43,8 +43,8 @@ const getDifficultyColor = (difficulty: string) => {
   }
 }
 
-export default function SemigroupSection() {
-  const semigroupExercises = exercises.filter((ex) => ex.category === 'Semigroup')
+export default function ReaderTaskEitherSection() {
+  const rteExercises = exercises.filter((ex) => ex.category === 'Readertaskeither')
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -52,33 +52,33 @@ export default function SemigroupSection() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Semigroup Module
+            ReaderTaskEither Module
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Learn to combine values systematically. Semigroup provides the foundation for composable operations,
-            enabling you to merge configurations, aggregate statistics, and build reusable combiners.
+            The ultimate composition: Reader (dependency injection) + Task (async) + Either (error handling).
+            Master this and you've mastered functional effects for real-world applications.
           </p>
         </div>
 
-        {/* What is Semigroup */}
+        {/* What is ReaderTaskEither */}
         <div className="mb-16 bg-white rounded-lg p-8 border border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">What is Semigroup?</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">What is ReaderTaskEither?</h2>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <p className="text-gray-600 leading-relaxed mb-6">
-                A Semigroup is a type with a concat operation that combines two values into one. The operation
-                must be associative, meaning (a + b) + c = a + (b + c). This simple concept enables powerful
-                composition patterns for aggregating data, merging configs, and combining results.
+                ReaderTaskEither (RTE) combines three powerful abstractions: Reader for dependency injection,
+                Task for lazy async operations, and Either for type-safe error handling. It's the go-to type
+                for building production applications with testable, composable, and maintainable code.
               </p>
               <div className="bg-gray-50 rounded-lg p-4 font-mono text-sm">
-                <div className="text-gray-600 mb-2">{`// Instead of manual combining:`}</div>
-                <div className="text-red-600 mb-4">{`const result = {...obj1, ...obj2, ...obj3}`}</div>
-                <div className="text-gray-600 mb-2">{`// Use Semigroup:`}</div>
-                <div className="text-green-600">S.concatAll(S.struct({'{'}...{'}'})([obj1, obj2, obj3])</div>
+                <div className="text-gray-600 mb-2">{`// Type signature:`}</div>
+                <div className="text-green-600 mb-4">{`ReaderTaskEither<Env, Error, Value>`}</div>
+                <div className="text-gray-600 mb-2">{`// Example:`}</div>
+                <div className="text-green-600">RTE&lt;Config, ApiError, User&gt;</div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {semigroupConcepts.map((concept, index) => (
+              {rteConcepts.map((concept, index) => (
                 <div key={index} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                   <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${concept.color}`}>
                     <span>{concept.icon}</span>
@@ -93,38 +93,45 @@ export default function SemigroupSection() {
 
         {/* Code Example */}
         <div className="mb-16 bg-white rounded-lg p-8 border border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Semigroup in Action</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">ReaderTaskEither in Action</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold text-red-600 mb-4">❌ Manual Approach</h3>
+              <h3 className="font-semibold text-red-600 mb-4">❌ Traditional Approach</h3>
               <div className="bg-red-50 rounded-lg p-4 font-mono text-sm">
-                <pre className="text-gray-900">{`const stats1 = { views: 100, clicks: 10 }
-const stats2 = { views: 200, clicks: 15 }
-const stats3 = { views: 50, clicks: 5 }
-
-const total = {
-  views: stats1.views + stats2.views + stats3.views,
-  clicks: stats1.clicks + stats2.clicks + stats3.clicks
+                <pre className="text-gray-900">{`async function getUser(id: number) {
+  const config = getGlobalConfig() // Global!
+  try {
+    const response = await fetch(
+      \`\${config.apiUrl}/users/\${id}\`
+    )
+    if (!response.ok) throw new Error('Failed')
+    return await response.json()
+  } catch (e) {
+    console.error(e) // Untyped!
+    throw e
+  }
 }
 
-// Tedious and error-prone!`}</pre>
+// Hard to test, global state, untyped errors`}</pre>
               </div>
             </div>
             <div>
-              <h3 className="font-semibold text-green-600 mb-4">✅ Semigroup Approach</h3>
+              <h3 className="font-semibold text-green-600 mb-4">✅ ReaderTaskEither Approach</h3>
               <div className="bg-green-50 rounded-lg p-4 font-mono text-sm">
-                <pre className="text-gray-900">{`const StatsSemigroup = S.struct({
-  views: N.SemigroupSum,
-  clicks: N.SemigroupSum
-})
+                <pre className="text-gray-900">{`const getUser = (id: number): RTE<Config, ApiError, User> =>
+  pipe(
+    RTE.ask<Config>(),
+    RTE.chain(config =>
+      RTE.tryCatch(
+        () => fetch(\`\${config.apiUrl}/users/\${id}\`),
+        toApiError
+      )
+    ),
+    RTE.chain(parseResponse)
+  )
 
-const total = S.concatAll(StatsSemigroup)(0)([
-  stats1,
-  stats2,
-  stats3
-])
-
-// Composable and reusable!`}</pre>
+// Testable, no globals, typed errors!
+const result = getUser(123)(mockConfig)()`}</pre>
               </div>
             </div>
           </div>
@@ -136,7 +143,7 @@ const total = S.concatAll(StatsSemigroup)(0)([
             Practice Exercises
           </h2>
           <div className="grid gap-6">
-            {semigroupExercises.map((exercise, index) => (
+            {rteExercises.map((exercise, index) => (
               <div key={exercise.id} className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
@@ -169,22 +176,22 @@ const total = S.concatAll(StatsSemigroup)(0)([
 
         {/* Benefits */}
         <div className="bg-blue-600 rounded-lg p-8 text-white">
-          <h2 className="text-2xl font-bold mb-6 text-center">Why Learn Semigroup?</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">Why Learn ReaderTaskEither?</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="text-3xl mb-3">🔗</div>
-              <h3 className="font-semibold mb-2">Composability</h3>
-              <p className="text-blue-100">Build complex combiners from simple pieces</p>
+              <div className="text-3xl mb-3">🚀</div>
+              <h3 className="font-semibold mb-2">Production Ready</h3>
+              <p className="text-blue-100">Real-world app architecture patterns</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl mb-3">📊</div>
-              <h3 className="font-semibold mb-2">Data Aggregation</h3>
-              <p className="text-blue-100">Perfect for merging analytics and stats</p>
+              <div className="text-3xl mb-3">🧪</div>
+              <h3 className="font-semibold mb-2">Highly Testable</h3>
+              <p className="text-blue-100">Mock any dependency easily</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl mb-3">⚙️</div>
-              <h3 className="font-semibold mb-2">Reusable Logic</h3>
-              <p className="text-blue-100">Write once, use everywhere</p>
+              <div className="text-3xl mb-3">✅</div>
+              <h3 className="font-semibold mb-2">Type-Safe</h3>
+              <p className="text-blue-100">Dependencies, errors, async all typed</p>
             </div>
           </div>
         </div>

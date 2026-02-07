@@ -3,29 +3,29 @@
 import Link from 'next/link'
 import { exercises } from '@/data/generated-exercises'
 
-const semigroupConcepts = [
+const ioConcepts = [
   {
-    title: 'Concat Operation',
-    description: 'Combine two values into one',
-    icon: '➕',
+    title: 'Lazy Side Effects',
+    description: 'Defer execution until needed',
+    icon: '⏱️',
     color: 'bg-blue-50 text-blue-700'
   },
   {
-    title: 'Associative',
-    description: 'Order of operations doesn\'t matter',
-    icon: '🔗',
+    title: 'Synchronous',
+    description: 'No async complexity',
+    icon: '🔄',
     color: 'bg-blue-50 text-blue-700'
   },
   {
-    title: 'Composable',
-    description: 'Build complex combiners from simple ones',
-    icon: '⚙️',
+    title: 'Testable',
+    description: 'Control when effects execute',
+    icon: '🧪',
     color: 'bg-blue-50 text-blue-700'
   },
   {
-    title: 'Universal',
-    description: 'Works with any type of data',
-    icon: '🌐',
+    title: 'Type-Safe',
+    description: 'IOEither for error handling',
+    icon: '✅',
     color: 'bg-blue-50 text-blue-700'
   }
 ]
@@ -43,8 +43,8 @@ const getDifficultyColor = (difficulty: string) => {
   }
 }
 
-export default function SemigroupSection() {
-  const semigroupExercises = exercises.filter((ex) => ex.category === 'Semigroup')
+export default function IOSection() {
+  const ioExercises = exercises.filter((ex) => ex.category === 'Io')
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
@@ -52,33 +52,33 @@ export default function SemigroupSection() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Semigroup Module
+            IO Module
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Learn to combine values systematically. Semigroup provides the foundation for composable operations,
-            enabling you to merge configurations, aggregate statistics, and build reusable combiners.
+            Handle synchronous side effects with type safety. IO represents lazy computations that always succeed,
+            while IOEither adds error handling for operations like JSON parsing and config loading.
           </p>
         </div>
 
-        {/* What is Semigroup */}
+        {/* What is IO */}
         <div className="mb-16 bg-white rounded-lg p-8 border border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">What is Semigroup?</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">What is IO?</h2>
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <p className="text-gray-600 leading-relaxed mb-6">
-                A Semigroup is a type with a concat operation that combines two values into one. The operation
-                must be associative, meaning (a + b) + c = a + (b + c). This simple concept enables powerful
-                composition patterns for aggregating data, merging configs, and combining results.
+                IO represents a synchronous side effect that will always succeed. Unlike direct execution, IO
+                is lazy - it describes an effect without executing it. IOEither extends this with error handling,
+                perfect for console I/O, random numbers, timestamps, JSON parsing, and config loading.
               </p>
               <div className="bg-gray-50 rounded-lg p-4 font-mono text-sm">
-                <div className="text-gray-600 mb-2">{`// Instead of manual combining:`}</div>
-                <div className="text-red-600 mb-4">{`const result = {...obj1, ...obj2, ...obj3}`}</div>
-                <div className="text-gray-600 mb-2">{`// Use Semigroup:`}</div>
-                <div className="text-green-600">S.concatAll(S.struct({'{'}...{'}'})([obj1, obj2, obj3])</div>
+                <div className="text-gray-600 mb-2">{`// Direct execution - side effect now:`}</div>
+                <div className="text-red-600 mb-4">{`const time = Date.now() // Already executed!`}</div>
+                <div className="text-gray-600 mb-2">{`// IO - lazy execution:`}</div>
+                <div className="text-green-600">const getTime: IO&lt;number&gt; = () =&gt; Date.now()</div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {semigroupConcepts.map((concept, index) => (
+              {ioConcepts.map((concept, index) => (
                 <div key={index} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                   <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${concept.color}`}>
                     <span>{concept.icon}</span>
@@ -93,38 +93,41 @@ export default function SemigroupSection() {
 
         {/* Code Example */}
         <div className="mb-16 bg-white rounded-lg p-8 border border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Semigroup in Action</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">IO in Action</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold text-red-600 mb-4">❌ Manual Approach</h3>
+              <h3 className="font-semibold text-red-600 mb-4">❌ Direct Execution</h3>
               <div className="bg-red-50 rounded-lg p-4 font-mono text-sm">
-                <pre className="text-gray-900">{`const stats1 = { views: 100, clicks: 10 }
-const stats2 = { views: 200, clicks: 15 }
-const stats3 = { views: 50, clicks: 5 }
+                <pre className="text-gray-900">{`// Side effects execute immediately
+const time = Date.now()
+console.log('Current time:', time)
 
-const total = {
-  views: stats1.views + stats2.views + stats3.views,
-  clicks: stats1.clicks + stats2.clicks + stats3.clicks
+function parseConfig(json: string) {
+  try {
+    return JSON.parse(json)
+  } catch (e) {
+    throw e // Untyped error!
+  }
 }
 
-// Tedious and error-prone!`}</pre>
+// Hard to test, immediate execution`}</pre>
               </div>
             </div>
             <div>
-              <h3 className="font-semibold text-green-600 mb-4">✅ Semigroup Approach</h3>
+              <h3 className="font-semibold text-green-600 mb-4">✅ IO Approach</h3>
               <div className="bg-green-50 rounded-lg p-4 font-mono text-sm">
-                <pre className="text-gray-900">{`const StatsSemigroup = S.struct({
-  views: N.SemigroupSum,
-  clicks: N.SemigroupSum
-})
+                <pre className="text-gray-900">{`// Lazy - only executes when called
+const getTime: IO<number> =
+  () => Date.now()
 
-const total = S.concatAll(StatsSemigroup)(0)([
-  stats1,
-  stats2,
-  stats3
-])
+const parseConfig = (json: string): IOE<Error, Config> =>
+  IOE.tryCatch(
+    () => JSON.parse(json),
+    (e) => new Error('Parse failed')
+  )
 
-// Composable and reusable!`}</pre>
+// Testable, controlled execution
+const time = getTime() // Execute when needed`}</pre>
               </div>
             </div>
           </div>
@@ -136,7 +139,7 @@ const total = S.concatAll(StatsSemigroup)(0)([
             Practice Exercises
           </h2>
           <div className="grid gap-6">
-            {semigroupExercises.map((exercise, index) => (
+            {ioExercises.map((exercise, index) => (
               <div key={exercise.id} className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-lg transition-all duration-300 group">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
@@ -169,22 +172,22 @@ const total = S.concatAll(StatsSemigroup)(0)([
 
         {/* Benefits */}
         <div className="bg-blue-600 rounded-lg p-8 text-white">
-          <h2 className="text-2xl font-bold mb-6 text-center">Why Learn Semigroup?</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">Why Learn IO?</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="text-3xl mb-3">🔗</div>
-              <h3 className="font-semibold mb-2">Composability</h3>
-              <p className="text-blue-100">Build complex combiners from simple pieces</p>
+              <div className="text-3xl mb-3">⏱️</div>
+              <h3 className="font-semibold mb-2">Lazy Execution</h3>
+              <p className="text-blue-100">Control when side effects happen</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl mb-3">📊</div>
-              <h3 className="font-semibold mb-2">Data Aggregation</h3>
-              <p className="text-blue-100">Perfect for merging analytics and stats</p>
+              <div className="text-3xl mb-3">🧪</div>
+              <h3 className="font-semibold mb-2">Testable</h3>
+              <p className="text-blue-100">Easier to test effectful code</p>
             </div>
             <div className="text-center">
-              <div className="text-3xl mb-3">⚙️</div>
-              <h3 className="font-semibold mb-2">Reusable Logic</h3>
-              <p className="text-blue-100">Write once, use everywhere</p>
+              <div className="text-3xl mb-3">✅</div>
+              <h3 className="font-semibold mb-2">Type-Safe Errors</h3>
+              <p className="text-blue-100">IOEither for explicit error handling</p>
             </div>
           </div>
         </div>

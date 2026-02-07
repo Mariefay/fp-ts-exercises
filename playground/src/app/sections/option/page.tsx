@@ -51,9 +51,6 @@ export default function OptionSection() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-green-50 rounded-full text-green-700 text-sm font-medium mb-6">
-            🛡️ Beginner Friendly
-          </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Option Type
           </h1>

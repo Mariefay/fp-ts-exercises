@@ -18,7 +18,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\"",
     "dev": "npm run exercise",
-    "clean": "rm -rf dist node_modules/.cache"
+    "clean": "rm -rf dist node_modules/.cache",
+    "prepare": "husky"
   },
   "keywords": [
     "fp-ts",

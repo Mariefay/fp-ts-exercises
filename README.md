@@ -82,7 +82,7 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📖 Exercise Modules
 
-This project contains **97 exercises** across 14 fp-ts modules:
+This project contains **118 exercises** across 18 fp-ts modules:
 
 ### Option (10 exercises)
 Learn to handle nullable values safely without null/undefined.
@@ -235,7 +235,40 @@ Dependency injection without global state.
 - `05-dependency-injection` - DI patterns
 - `06-local` - Local context
 - `07-real-world-config` - Configuration management
-- Plus 1 more advanced exercise
+- `08-advanced` - Advanced patterns
+
+### ReaderTaskEither (8 exercises)
+The ultimate composition: Reader + Task + Either for real-world apps.
+
+- `01-basic` - Creating RTE values
+- `02-ask` - Environment access
+- `03-map` - Mapping success values
+- `04-chain` - Chaining operations
+- `05-local` - Local environment modifications
+- `06-mapleft` - Transforming errors
+- `07-parallel` - Parallel execution
+- `08-practical` - Cache with fallback
+
+### IO/IOEither (7 exercises)
+Synchronous side effects with type safety.
+
+- `01-basic-io` - Creating IO values
+- `02-io-chain` - Chaining IO operations
+- `03-ioeither-basic` - IOEither basics
+- `04-trycatch` - Wrapping throwing code
+- `05-chain` - Chaining with error handling
+- `06-from-io` - Converting IO to IOEither
+- `07-practical` - Config loading
+
+### These (6 exercises)
+Inclusive-or: "this", "that", or "both" simultaneously.
+
+- `01-basic` - Creating These values
+- `02-fold` - Pattern matching
+- `03-map` - Mapping values
+- `04-from-options` - Converting from Options
+- `05-semigroup` - Combining These values
+- `06-practical` - Validation with warnings
 
 ## 🎓 Recommended Learning Path
 
@@ -258,6 +291,11 @@ Dependency injection without global state.
 12. **Monoid** - Semigroup with identity (4 exercises)
 13. **Validation** - Error accumulation patterns (7 exercises)
 14. **Reader** - Dependency injection patterns (8 exercises)
+15. **IO/IOEither** - Synchronous side effects (7 exercises)
+16. **These** - Inclusive-or type (6 exercises)
+
+### Expert Path
+17. **ReaderTaskEither** - Ultimate composition for real-world apps (8 exercises)
 
 ## 💻 Available Scripts
 
@@ -312,7 +350,10 @@ fp-ts-exercises/
 │   ├── nonemptyarray/       # NonEmptyArray exercises (6)
 │   ├── task/                # Task exercises (6)
 │   ├── ord/                 # Ord exercises (6)
-│   └── reader/              # Reader exercises (8)
+│   ├── reader/              # Reader exercises (8)
+│   ├── readertaskeither/    # ReaderTaskEither exercises (8)
+│   ├── io/                  # IO/IOEither exercises (7)
+│   └── these/               # These exercises (6)
 ├── scripts/                  # CLI tools
 │   ├── exercise.js          # Exercise runner
 │   └── generate-playground-data.js  # Sync to playground
@@ -335,7 +376,7 @@ fp-ts-exercises/
 - 📊 **Progress Tracking**: Track your learning journey
 - 🎯 **Dashboard**: Visualize your progress
 - 🔄 **Real-time Testing**: Execute tests in the browser
-- 📚 **Comprehensive Content**: 97 exercises across 14 modules covering beginner to advanced topics
+- 📚 **Comprehensive Content**: 118 exercises across 18 modules covering beginner to expert topics
 
 ### Updated Dependencies
 - **fp-ts 2.16+**: Latest version with improved TypeScript support
