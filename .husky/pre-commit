@@ -1,3 +1,18 @@
+#!/usr/bin/env sh
 . ~/.config/husky/init.sh
-nvm use
-cd playground && npm run lint
+
+# Load nvm and use correct Node version
+nvm use > /dev/null 2>&1
+
+# Run TypeScript type checking from playground directory
+cd playground
+echo "🔍 Running TypeScript type check..."
+npm run typecheck
+
+if [ $? -eq 0 ]; then
+  echo "✓ Type check passed!"
+  exit 0
+else
+  echo "✗ Type check failed. Fix errors before committing."
+  exit 1
+fi
