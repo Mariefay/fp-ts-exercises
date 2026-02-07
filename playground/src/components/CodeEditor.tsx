@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import dynamic from 'next/dynamic'
+import type * as Monaco from 'monaco-editor'
 
 const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
   ssr: false,
@@ -15,13 +16,16 @@ const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
 interface CodeEditorProps {
   code: string
   onChange: (code: string) => void
-  fileName: string
+  fileName?: string
 }
 
-export function CodeEditor({ code, onChange, fileName }: CodeEditorProps) {
-  const editorRef = useRef<any>(null)
+export function CodeEditor({ code, onChange }: CodeEditorProps) {
+  const editorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null)
 
-  const handleEditorDidMount = (editor: any, monaco: any) => {
+  const handleEditorDidMount = (
+    editor: Monaco.editor.IStandaloneCodeEditor,
+    monaco: typeof Monaco
+  ) => {
     editorRef.current = editor
 
     // Configure Monaco for TypeScript
@@ -36,8 +40,8 @@ export function CodeEditor({ code, onChange, fileName }: CodeEditorProps) {
       allowSyntheticDefaultImports: true,
     })
 
-    // Add fp-ts type definitions (simplified for demo)
-    const optionTypes = `
+    // Add fp-ts type definitions
+    const fptsTypes = `
       declare module 'fp-ts/Option' {
         export interface None {
           readonly _tag: 'None'
@@ -61,6 +65,39 @@ export function CodeEditor({ code, onChange, fileName }: CodeEditorProps) {
         export function isNone<A>(ma: Option<A>): ma is None
         export function toNullable<A>(ma: Option<A>): A | null
         export function toUndefined<A>(ma: Option<A>): A | undefined
+        export function fromEither<E, A>(ma: import('fp-ts/Either').Either<E, A>): Option<A>
+      }
+
+      declare module 'fp-ts/Either' {
+        export interface Left<E> {
+          readonly _tag: 'Left'
+          readonly left: E
+        }
+        export interface Right<A> {
+          readonly _tag: 'Right'
+          readonly right: A
+        }
+        export type Either<E, A> = Left<E> | Right<A>
+        export function left<E>(e: E): Either<E, never>
+        export function right<A>(a: A): Either<never, A>
+        export function of<A>(a: A): Either<never, A>
+        export function fromPredicate<E, A>(
+          predicate: (a: A) => boolean,
+          onFalse: (a: A) => E
+        ): (a: A) => Either<E, A>
+        export function fold<E, A, B>(
+          onLeft: (e: E) => B,
+          onRight: (a: A) => B
+        ): (ma: Either<E, A>) => B
+        export function getOrElse<E, A>(onLeft: (e: E) => A): (ma: Either<E, A>) => A
+        export function map<A, B>(f: (a: A) => B): <E>(ma: Either<E, A>) => Either<E, B>
+        export function mapLeft<E, G>(f: (e: E) => G): <A>(ma: Either<E, A>) => Either<G, A>
+        export function chain<E, A, B>(
+          f: (a: A) => Either<E, B>
+        ): (ma: Either<E, A>) => Either<E, B>
+        export function isLeft<E, A>(ma: Either<E, A>): ma is Left<E>
+        export function isRight<E, A>(ma: Either<E, A>): ma is Right<A>
+        export function toUnion<E, A>(ma: Either<E, A>): E | A
       }
 
       declare module 'fp-ts/function' {
@@ -80,6 +117,14 @@ export function CodeEditor({ code, onChange, fileName }: CodeEditorProps) {
           cd: (c: C) => D,
           de: (d: D) => E
         ): E
+        export function pipe<A, B, C, D, E, F>(
+          a: A,
+          ab: (a: A) => B,
+          bc: (b: B) => C,
+          cd: (c: C) => D,
+          de: (d: D) => E,
+          ef: (e: E) => F
+        ): F
         export function flow<A extends ReadonlyArray<unknown>, B>(
           ab: (...a: A) => B
         ): (...a: A) => B
@@ -87,6 +132,26 @@ export function CodeEditor({ code, onChange, fileName }: CodeEditorProps) {
           ab: (...a: A) => B,
           bc: (b: B) => C
         ): (...a: A) => C
+        export function flow<A extends ReadonlyArray<unknown>, B, C, D>(
+          ab: (...a: A) => B,
+          bc: (b: B) => C,
+          cd: (c: C) => D
+        ): (...a: A) => D
+        export function flow<A extends ReadonlyArray<unknown>, B, C, D, E>(
+          ab: (...a: A) => B,
+          bc: (b: B) => C,
+          cd: (c: C) => D,
+          de: (d: D) => E
+        ): (...a: A) => E
+        export function flow<A extends ReadonlyArray<unknown>, B, C, D, E, F>(
+          ab: (...a: A) => B,
+          bc: (b: B) => C,
+          cd: (c: C) => D,
+          de: (d: D) => E,
+          ef: (e: E) => F
+        ): (...a: A) => F
+        export function identity<A>(a: A): A
+        export function constant<A>(a: A): () => A
       }
     `
 
@@ -95,9 +160,9 @@ export function CodeEditor({ code, onChange, fileName }: CodeEditorProps) {
         export function describe(name: string, fn: () => void): void
         export function it(name: string, fn: () => void): void
         export const expect: {
-          (actual: any): {
-            toEqual(expected: any): void
-            toBe(expected: any): void
+          <T>(actual: T): {
+            toEqual<U>(expected: U): void
+            toBe<U>(expected: U): void
             toBeUndefined(): void
             toBeNull(): void
             toBeTruthy(): void
@@ -108,8 +173,8 @@ export function CodeEditor({ code, onChange, fileName }: CodeEditorProps) {
     `
 
     monaco.languages.typescript.typescriptDefaults.addExtraLib(
-      optionTypes,
-      'file:///node_modules/@types/fp-ts-option.d.ts'
+      fptsTypes,
+      'file:///node_modules/@types/fp-ts.d.ts'
     )
 
     monaco.languages.typescript.typescriptDefaults.addExtraLib(

@@ -7,7 +7,9 @@
   "scripts": {
     "exercise": "node scripts/exercise.js",
     "solution": "cross-env SOLUTION=true node scripts/exercise.js",
+    "generate:exercises": "node scripts/generate-playground-data.js",
     "test": "vitest run",
+    "test:all": "vitest run src/**/*.{exercise,solution}.ts",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "type-check": "tsc --noEmit",

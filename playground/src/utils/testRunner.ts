@@ -88,7 +88,7 @@ export class SimpleTestRunner {
     )
   }
   
-  private hasBasicTypeErrors(code: string): boolean {
+  private hasBasicTypeErrors(_code: string): boolean {
     // Very basic type error detection
     // In a real implementation, you'd use the TypeScript compiler API
     return false // Simplified for demo

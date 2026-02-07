@@ -1,13 +1,13 @@
 export default function About() {
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             About This Project
           </h1>
-          <p className="text-xl text-purple-600 leading-relaxed">
+          <p className="text-xl text-gray-600 leading-relaxed">
             Hi! I&apos;m passionate about functional programming and making it
             accessible to everyone.
           </p>
@@ -16,11 +16,11 @@ export default function About() {
         {/* About Content */}
         <div className="space-y-12">
           {/* Personal Section */}
-          <div className="bg-white backdrop-blur-sm rounded-3xl p-8 border border-purple-100/20 shadow-soft">
-            <h2 className="text-2xl font-bold text-purple-800 mb-6">
+          <div className="bg-white rounded-lg p-8 border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
               About Me
             </h2>
-            <div className="prose prose-lg text-purple-600">
+            <div className="prose prose-lg text-gray-600">
               <p className="mb-4">
                 I&apos;m a developer who fell in love with functional
                 programming and its ability to make code more predictable,
@@ -43,16 +43,16 @@ export default function About() {
           </div>
 
           {/* Project Motivation */}
-          <div className="bg-white backdrop-blur-sm rounded-3xl p-8 border border-blue-100/20 shadow-soft">
-            <h2 className="text-2xl font-bold text-purple-800 mb-6">
+          <div className="bg-white rounded-lg p-8 border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Why This Playground?
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h3 className="text-lg font-semibold text-purple-700 mb-3">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
                   The Problem
                 </h3>
-                <ul className="space-y-2 text-purple-600">
+                <ul className="space-y-2 text-gray-600">
                   <li>
                     • fp-ts documentation can be overwhelming for beginners
                   </li>
@@ -62,10 +62,10 @@ export default function About() {
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-blue-700 mb-3">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
                   The Solution
                 </h3>
-                <ul className="space-y-2 text-purple-600">
+                <ul className="space-y-2 text-gray-600">
                   <li>• Hands-on exercises with real code</li>
                   <li>• Immediate feedback and error messages</li>
                   <li>• Progressive difficulty levels</li>
@@ -76,8 +76,8 @@ export default function About() {
           </div>
 
           {/* Technology Stack */}
-          <div className="bg-white backdrop-blur-sm rounded-3xl p-8 border border-green-100/20 shadow-soft">
-            <h2 className="text-2xl font-bold text-purple-800 mb-6">
+          <div className="bg-white rounded-lg p-8 border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Built With
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -109,8 +109,8 @@ export default function About() {
               ].map(tech => (
                 <div key={tech.name} className="text-center">
                   <div className="text-2xl mb-2">{tech.icon}</div>
-                  <div className="font-medium text-purple-800">{tech.name}</div>
-                  <div className="text-sm text-purple-600">
+                  <div className="font-medium text-gray-900">{tech.name}</div>
+                  <div className="text-sm text-gray-600">
                     {tech.description}
                   </div>
                 </div>
@@ -119,11 +119,11 @@ export default function About() {
           </div>
 
           {/* Contributions */}
-          <div className="bg-white backdrop-blur-sm rounded-3xl p-8 border border-yellow-100/20 shadow-soft">
-            <h2 className="text-2xl font-bold text-purple-800 mb-6">
+          <div className="bg-white rounded-lg p-8 border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Want to Contribute?
             </h2>
-            <div className="text-purple-600 space-y-4">
+            <div className="text-gray-600 space-y-4">
               <p>
                 This project is open source and welcomes contributions! Whether
                 you want to:
@@ -141,7 +141,7 @@ export default function About() {
               <div className="flex flex-wrap gap-4 pt-4">
                 <a
                   href="https://github.com"
-                  className="inline-flex items-center px-4 py-2 bg-purple-800 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -150,7 +150,7 @@ export default function About() {
                 </a>
                 <a
                   href="mailto:contact@example.com"
-                  className="inline-flex items-center px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
+                  className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                 >
                   <span className="mr-2">📧</span>
                   Get in Touch
@@ -160,27 +160,27 @@ export default function About() {
           </div>
 
           {/* Learning Philosophy */}
-          <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-3xl p-8 text-white">
+          <div className="bg-blue-600 rounded-lg p-8 text-white">
             <h2 className="text-2xl font-bold mb-6">Learning Philosophy</h2>
             <div className="grid md:grid-cols-3 gap-6 text-center">
               <div>
                 <div className="text-3xl mb-3">🎯</div>
                 <h3 className="font-semibold mb-2">Practice Over Theory</h3>
-                <p className="text-purple-100">
+                <p className="text-blue-100">
                   Learn by writing real code, not just reading about it
                 </p>
               </div>
               <div>
                 <div className="text-3xl mb-3">🚀</div>
                 <h3 className="font-semibold mb-2">Progressive Learning</h3>
-                <p className="text-purple-100">
+                <p className="text-blue-100">
                   Start simple, build complexity step by step
                 </p>
               </div>
               <div>
                 <div className="text-3xl mb-3">✨</div>
                 <h3 className="font-semibold mb-2">Immediate Feedback</h3>
-                <p className="text-purple-100">
+                <p className="text-blue-100">
                   See results instantly and learn from mistakes
                 </p>
               </div>
