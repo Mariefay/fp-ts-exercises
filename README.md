@@ -2,16 +2,20 @@
 
 Interactive exercises to learn functional programming in TypeScript using the fp-ts library.
 
-🎯 **Two Ways to Learn**: Practice with either the CLI exercise runner or the interactive web playground!
+🎯 **Two Ways to Learn**: Practice with either the CLI exercise runner or the interactive web playground! The playground is available online, no install required.
 
 ## 🚀 Quick Start
 
-### Requirements
+**Want to try it immediately?** Visit the hosted playground: [https://fp-ts-exercises.vercel.app](https://fp-ts-exercises.vercel.app)
+
+### Local Development
+
+#### Requirements
 
 - Node.js >= 20.9.0 (automatically managed with `.nvmrc` if using nvm)
 - npm >= 8.0.0
 
-### Installation
+#### Installation
 
 1. Clone the repository
    ```bash
@@ -62,7 +66,11 @@ npm run exercise -- help
 
 An interactive browser-based learning environment with real-time feedback and progress tracking.
 
-**Start the playground:**
+**Try it online:** [https://fp-ts-exercises.vercel.app](https://fp-ts-exercises.vercel.app)
+
+No installation required - just open the link and start learning!
+
+**Or run locally:**
 ```bash
 cd playground
 npm install
@@ -330,7 +338,7 @@ The web playground includes a **progress tracking system**:
   - 🔄 In Progress (attempted but not completed)
   - ⭕ Not Started
 
-Access the dashboard at [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
+Access the dashboard at [https://fp-ts-exercises.vercel.app/dashboard](https://fp-ts-exercises.vercel.app/dashboard) or locally at [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
 
 ## 🏗️ Project Structure
 
@@ -461,4 +469,4 @@ MIT License - see [LICENSE.txt](LICENSE.txt) for details.
 
 **Happy Learning! 🎉**
 
-Start with `npm run exercise -- option 01` or launch the playground with `cd playground && npm run dev`
+Try the playground at [https://fp-ts-exercises.vercel.app](https://fp-ts-exercises.vercel.app) or start with `npm run exercise -- option 01` for CLI exercises.
