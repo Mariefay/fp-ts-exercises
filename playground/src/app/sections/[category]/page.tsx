@@ -158,30 +158,30 @@ export default function CategorySection({ params }: { params: Promise<{ category
           </div>
         </div>
 
-        {/* Learning Path - Uses module-specific colors */}
-        <div className={`${metadata.bgColor} rounded-lg p-4 sm:p-8 border-2 ${metadata.borderColor}`}>
-          <h2 className={`text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center ${metadata.textColor}`}>
+        {/* Learning Path - Solid blue theme */}
+        <div className="bg-blue-600 rounded-lg p-4 sm:p-8">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center text-white">
             Why Learn {metadata.title}?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
             <div className="text-center">
               <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">{metadata.icon}</div>
-              <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">Master {metadata.title}</h3>
-              <p className={`${metadata.textColor} text-xs sm:text-sm`}>
+              <h3 className="font-semibold text-white mb-1 sm:mb-2 text-sm sm:text-base">Master {metadata.title}</h3>
+              <p className="text-blue-100 text-xs sm:text-sm">
                 Learn the fundamental concepts and patterns that make {metadata.title} powerful
               </p>
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">💪</div>
-              <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">{categoryExercises.length} Exercises</h3>
-              <p className={`${metadata.textColor} text-xs sm:text-sm`}>
+              <h3 className="font-semibold text-white mb-1 sm:mb-2 text-sm sm:text-base">{categoryExercises.length} Exercises</h3>
+              <p className="text-blue-100 text-xs sm:text-sm">
                 Practice with hands-on exercises from {metadata.difficulty.toLowerCase()} level
               </p>
             </div>
             <div className="text-center">
               <div className="text-2xl sm:text-3xl mb-2 sm:mb-3">🚀</div>
-              <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">Production Ready</h3>
-              <p className={`${metadata.textColor} text-xs sm:text-sm`}>
+              <h3 className="font-semibold text-white mb-1 sm:mb-2 text-sm sm:text-base">Production Ready</h3>
+              <p className="text-blue-100 text-xs sm:text-sm">
                 Apply {metadata.title} patterns to build robust, type-safe applications
               </p>
             </div>
