@@ -282,16 +282,16 @@ function SectionCard({ section }: { section: typeof sections[0] }) {
 
 	return (
 		<div
-			className={`relative bg-white rounded-lg p-8 border transition-all duration-300 ${
+			className={`relative bg-white rounded-lg p-4 sm:p-6 md:p-8 border transition-all duration-300 flex flex-col h-full ${
 				isAvailable
 					? 'hover:shadow-lg cursor-pointer border-gray-200'
 					: 'border-gray-200 opacity-75'
 			} group`}
 		>
 			{/* Status Badge */}
-			<div className="absolute top-4 right-4">
+			<div className="absolute top-3 right-3 sm:top-4 sm:right-4">
 				<div
-					className={`px-3 py-1 rounded-full text-xs font-medium ${
+					className={`px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium ${
 						section.status === 'Available'
 							? 'bg-green-100 text-green-700'
 							: 'bg-purple-100 text-purple-500'
@@ -302,17 +302,17 @@ function SectionCard({ section }: { section: typeof sections[0] }) {
 			</div>
 
 			{/* Icon */}
-			<div className="text-4xl mb-4">{section.icon}</div>
+			<div className="text-3xl sm:text-4xl mb-3 sm:mb-4">{section.icon}</div>
 
-			{/* Content */}
-			<div className="space-y-4">
-				<div>
-					<h3 className="text-2xl font-bold text-gray-900 mb-2">{section.title}</h3>
-					<p className="text-gray-600 leading-relaxed">{section.description}</p>
+			{/* Content - grows to fill available space */}
+			<div className="flex flex-col flex-1">
+				<div className="flex-1">
+					<h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">{section.title}</h3>
+					<p className="text-sm sm:text-base text-gray-600 leading-relaxed">{section.description}</p>
 				</div>
 
 				{/* Stats */}
-				<div className="flex items-center space-x-4 text-sm text-gray-600">
+				<div className="flex items-center flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 mt-3 sm:mt-4">
 					<div className="flex items-center space-x-1">
 						<span>📝</span>
 						<span>{section.exerciseCount} exercises</span>
@@ -323,19 +323,21 @@ function SectionCard({ section }: { section: typeof sections[0] }) {
 					</div>
 				</div>
 
-				{/* CTA */}
-				{isAvailable ? (
-					<Link
-						href={`/sections/${section.id}`}
-						className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all duration-200"
-					>
-						Start Learning
-					</Link>
-				) : (
-					<div className="px-6 py-2 bg-gray-200 text-gray-400 font-medium rounded-lg cursor-not-allowed">
-						Coming Soon
-					</div>
-				)}
+				{/* CTA - always at bottom */}
+				<div className="mt-4 sm:mt-6">
+					{isAvailable ? (
+						<Link
+							href={`/sections/${section.id}`}
+							className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white text-sm sm:text-base font-medium rounded-lg hover:bg-blue-700 transition-all duration-200"
+						>
+							Start Learning
+						</Link>
+					) : (
+						<div className="inline-block px-4 sm:px-6 py-2 bg-gray-200 text-gray-400 text-sm sm:text-base font-medium rounded-lg cursor-not-allowed">
+							Coming Soon
+						</div>
+					)}
+				</div>
 			</div>
 		</div>
 	)
