@@ -52,12 +52,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-light);
+  background: #93c5fd; /* blue-300 */
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: #2563eb; /* blue-600 */
 }
 
 /* Smooth transitions */

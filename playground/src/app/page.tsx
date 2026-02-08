@@ -49,15 +49,10 @@ export default function Home() {
             <div>
               <div className="bg-white rounded-lg p-8 border border-gray-200">
                 <h3 className="text-xl font-semibold mb-4 text-gray-900">Functional Programming for TypeScript</h3>
-                <p className="text-gray-600 leading-relaxed mb-6">
+                <p className="text-gray-600 leading-relaxed">
                   fp-ts brings the power of functional programming to TypeScript with type-safe abstractions
                   for handling common programming patterns like error handling, nullable values, and asynchronous operations.
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-md text-sm border border-blue-200">Type Safety</span>
-                  <span className="px-3 py-1 bg-green-50 text-green-700 rounded-md text-sm border border-green-200">Composability</span>
-                  <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm border border-gray-200">Predictability</span>
-                </div>
               </div>
             </div>
 
