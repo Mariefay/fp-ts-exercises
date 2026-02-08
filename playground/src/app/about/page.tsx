@@ -16,7 +16,7 @@ export default function About() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">About Me</h2>
             <div className="prose prose-lg text-gray-600">
               <p className="mb-4">
-                I built this because a few years ago I had to learn fp-ts for
+                A few years ago, I had to learn fp-ts for
                 work and got completely stuck. Pure functional programming was
                 brand new to me, and most resources either jumped straight into
                 heavy theory or didn’t give me a good way to actually practice.

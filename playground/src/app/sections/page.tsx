@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { generatedExercises } from '@/data/generated-exercises'
 
 // Module metadata - colors, icons, descriptions
-const moduleMetadata: Record<string, {
+// Exported for use in dynamic [category] route
+export const moduleMetadata: Record<string, {
 	title: string
 	description: string
 	difficulty: string
